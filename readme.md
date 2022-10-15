@@ -1,6 +1,15 @@
 # 简介
 封装各种Cesium组件
 
+# 如何使用
+
+```shell
+npm run build
+```
+会在dist目录下生成一个gy.cesium.min.js文件，引入即可
+
+必须在Cesium.js之后引入
+
 # 更新日志
 
 **2020-10-14**
