@@ -1,6 +1,22 @@
 # 简介
 封装各种Cesium组件
 
+# 功能点
+1. Cesium 地图插件，用于添加国内各大地图厂商的地图。该功能基于[cesium-map](https://github.com/dvgis/cesium-map)插件进行封装。
+2. Cesium navigation插件，用于添加地图导航控件。该功能基于[cesium-navigation-umd](https://github.com/worlddai/cesium-navigation-umd)插件进行封装。
+3. 截屏
+4. 测量
+5. 点聚合
+6. 图形绘制
+7. 图层管理
+8. 3dtiles模型
+9. 第一人称视角
+10. 鹰眼图
+11. 雷达扫描
+12. 热力图
+13. geojson
+14. 水面
+15. 坐标转换
 # 如何使用
 
 ```shell
