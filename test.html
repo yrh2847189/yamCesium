@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>初始化地球</title>
+  <link rel="stylesheet"
+        href="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Widgets/widgets.css" />
+  <script type="text/javascript"
+          src="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Cesium.js"></script>
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+<div id="cesiumContainer"></div>
+<script src="./dist/gy.cesium.min.js"></script>
+<script>
+  Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0YWJlYzNkNS0yY2M0LTQxZWQtOGZhNi05MjEzYmVmZGVkNTkiLCJpZCI6MzU1NTEsImlhdCI6MTYwNDYyNzY2NH0.JxhQQxEvJTrmeARILcywKaPoPEPjO1RlqL28CRjktx8";
+  const viewer = new Cesium.Viewer("cesiumContainer", {
+    animation: false,
+    timeline: false,
+  });
+
+  let options = {};
+  options.defaultResetView = Cesium.Rectangle.fromDegrees(78.443464, 14.801562, 126.103033, 49.773957);
+  //options.defaultResetView = new Cesium.Cartographic(Cesium.Math.toRadians(114), Cesium.Math.toRadians(33), 500);
+
+  // 指北针
+  options.enableCompass = true;
+  // 缩放
+  options.enableZoomControls = true;
+  // 比例尺
+  options.enableDistanceLegend = true;
+  // 指南针外环
+  options.enableCompassOuterRing= true;
+  viewer.extend(Cesium.viewerCesiumNavigationMixin, options);
+</script>
+</body>
+
+</html>
