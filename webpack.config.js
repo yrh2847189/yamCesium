@@ -8,7 +8,7 @@ const {
 const webpack = require("webpack");
 const banner = `
 ${pkg.name}
-${pkg.description}n
+${pkg.description}
 @version v${pkg.version}
 @homepage ${pkg.homepage}
 (c) 2022 ${pkg.author}
