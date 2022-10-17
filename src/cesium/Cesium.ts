@@ -1,2 +1,4 @@
 // @ts-ignore
-export default Cesium = window.Cesium
+const Cesium: any = window.Cesium
+
+export default Cesium;

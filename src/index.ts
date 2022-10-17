@@ -29,3 +29,10 @@ import viewerCesiumNavigationMixin from "./navigation/viewerCesiumNavigationMixi
 // export { CesiumNavigation };
 
 Cesium.viewerCesiumNavigationMixin = viewerCesiumNavigationMixin;
+
+// 截屏
+export { Canvas2Image } from "./scene/shortcut/Canvas2Image";
+
+import Gy from "./cesium/Gy";
+
+export { Gy };
