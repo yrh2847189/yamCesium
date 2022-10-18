@@ -4,6 +4,9 @@ const pkg = require("../package.json");
 // 设置版本号
 export const version = pkg.version;
 
+// 设置默认token
+Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0YWJlYzNkNS0yY2M0LTQxZWQtOGZhNi05MjEzYmVmZGVkNTkiLCJpZCI6MzU1NTEsImlhdCI6MTYwNDYyNzY2NH0.JxhQQxEvJTrmeARILcywKaPoPEPjO1RlqL28CRjktx8";
+
 // 图层加载
 import BaiduImageryProvider from "./imagery/baidu/BaiduImageryProvider";
 import AmapImageryProvider from "./imagery/amap/AmapImageryProvider";
