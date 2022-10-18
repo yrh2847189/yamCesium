@@ -23,6 +23,7 @@
 19. proj4js TODO
 20. 汉化 TODO
 21. Geocoder TODO
+22. 引入CesiumMethod和PublicMethod TODO
 # 如何使用
 
 ```shell
