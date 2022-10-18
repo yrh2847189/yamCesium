@@ -1,5 +1,6 @@
 import Cesium from "../../cesium/Cesium";
 import Immersion from "./Immersion";
+import HawkEyeMap from "./hawkEyeMap/HawkEyeMap";
 
 const Knockout = Cesium.knockout;
 export default class Camera {
@@ -8,11 +9,18 @@ export default class Camera {
    * 第一人称视角
    */
   immersion: Immersion | null = null
+
+  /**
+   * 鹰眼图
+   * @param viewer
+   */
+  hawkEye: HawkEyeMap | null = null;
   constructor(viewer: any) {
     if (!viewer) {
       throw Error("viewer can not be null");
     }
     this.immersion = new Immersion(viewer);
+    this.hawkEye = new HawkEyeMap(viewer);
   }
 
 }

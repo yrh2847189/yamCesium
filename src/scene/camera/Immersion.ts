@@ -13,7 +13,8 @@ export default class Immersion {
   scene: any = null;
   canvas: HTMLCanvasElement;
   viewModel = {
-    enabled: false
+    enabled: false,
+    firstPersonPerspective: false
   };
   handler: any;
   clockEvent: Function | undefined;
@@ -26,6 +27,9 @@ export default class Immersion {
     this.scene = viewer.scene;
     this.canvas = viewer.canvas as HTMLCanvasElement;
     this.bindModel();
+    if (this.viewModel.enabled) {
+      this.enable();
+    }
   }
 
   disEnable() {
@@ -36,9 +40,11 @@ export default class Immersion {
     scene.screenSpaceCameraController.enableZoom = true;
     scene.screenSpaceCameraController.enableTilt = true;
     scene.screenSpaceCameraController.enableLook = true;
-    this.handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOWN);
-    this.handler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-    this.handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_UP);
+    if (this.handler) {
+      this.handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOWN);
+      this.handler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+      this.handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_UP);
+    }
     this.viewer.clock.onTick.removeEventListener(this.clockEvent);
   }
 
@@ -52,12 +58,14 @@ export default class Immersion {
     };
     let ellipsoid = scene.globe.ellipsoid;
 
-    // 禁用默认事件
-    scene.screenSpaceCameraController.enableRotate = false;
-    scene.screenSpaceCameraController.enableTranslate = false;
-    scene.screenSpaceCameraController.enableZoom = false;
-    scene.screenSpaceCameraController.enableTilt = false;
-    scene.screenSpaceCameraController.enableLook = false;
+    if (this.viewModel.firstPersonPerspective) {
+      // 禁用默认事件
+      scene.screenSpaceCameraController.enableRotate = false;
+      scene.screenSpaceCameraController.enableTranslate = false;
+      scene.screenSpaceCameraController.enableZoom = false;
+      scene.screenSpaceCameraController.enableTilt = false;
+      scene.screenSpaceCameraController.enableLook = false;
+    }
 
     let startMousePosition: any;
     let mousePosition: any;
@@ -124,7 +132,7 @@ export default class Immersion {
     this.clockEvent = function clockEvent(clock: any) {
       let camera = _this.viewer.camera;
 
-      if (flags.looking) {
+      if (_this.viewModel.firstPersonPerspective && flags.looking) {
         let width = canvas.clientWidth;
         let height = canvas.clientHeight;
 
@@ -175,6 +183,29 @@ export default class Immersion {
           this.enable();
         } else {
           this.disEnable();
+        }
+      }
+    );
+    Knockout.getObservable(_this.viewModel, "firstPersonPerspective").subscribe((enabled: boolean) => {
+        if (enabled) {
+          _this.disEnable();
+          if (!_this.viewModel.enabled) {
+            _this.viewModel.enabled = enabled;
+          } else {
+            _this.enable();
+          }
+        } else {
+          let scene = this.scene;
+          scene.screenSpaceCameraController.enableRotate = true;
+          scene.screenSpaceCameraController.enableTranslate = true;
+          scene.screenSpaceCameraController.enableZoom = true;
+          scene.screenSpaceCameraController.enableTilt = true;
+          scene.screenSpaceCameraController.enableLook = true;
+          if (this.handler) {
+            this.handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOWN);
+            this.handler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+            this.handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_UP);
+          }
         }
       }
     );

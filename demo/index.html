@@ -33,7 +33,9 @@
   <div id="cesiumContainer">
     <div id="tool">
       <button id="shortcut">截屏</button>
-      <button id="immersion">第一视角</button>
+      <button id="immersion">沉浸式键盘控制</button>
+      <button id="firstPersonPerspective">第一人称</button>
+      <button id="hawkEye">鹰眼图</button>
     </div>
   </div>
   <script src="../dist/gy.cesium.min.js"></script>
@@ -55,7 +57,6 @@
 
     let options = {};
     options.defaultResetView = Cesium.Rectangle.fromDegrees(78.443464, 14.801562, 126.103033, 49.773957);
-    //options.defaultResetView = new Cesium.Cartographic(Cesium.Math.toRadians(114), Cesium.Math.toRadians(33), 500);
 
     // 指北针
     options.enableCompass = true;
@@ -78,6 +79,16 @@
 
     document.querySelector("#immersion").addEventListener("click", () => {
       Gy.camera.immersion.viewModel.enabled = !Gy.camera.immersion.viewModel.enabled;
+    })
+
+    document.querySelector("#firstPersonPerspective").addEventListener("click", () => {
+      Gy.camera.immersion.viewModel.firstPersonPerspective = !Gy.camera.immersion.viewModel.firstPersonPerspective;
+    })
+
+    document.querySelector("#hawkEye").addEventListener("click", () => {
+      Gy.camera.hawkEye.viewModel.enabled = !Gy.camera.hawkEye.viewModel.enabled;
+      // 销毁鹰眼图
+      // Gy.camera.hawkEye.destroy();
     })
 
   </script>
