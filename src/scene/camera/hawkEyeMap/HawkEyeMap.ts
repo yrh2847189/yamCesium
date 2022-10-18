@@ -1,5 +1,6 @@
 import Cesium from "../../../cesium/Cesium";
-import './hawkEyeMap.css';
+import "./hawkEyeMap.css";
+
 const Knockout = Cesium.knockout;
 
 export default class HawkEyeMap {
@@ -61,11 +62,15 @@ export default class HawkEyeMap {
   }
 
   destroy() {
-    this.viewer.scene.preRender.removeEventListener(this.syncMap, this);
-    // this.hawkEyeMap.destroy();
-    this.hawkEyeMap = null;
-    this.viewModel.enabled = false;
-    this.eye && document.body.removeChild(this.eye);
+    let isRemoved1 = this.viewer.scene.preRender.removeEventListener(this.syncMap, this);
+    if (isRemoved1) {
+      this.hawkEyeMap.destroy();
+      this.hawkEyeMap = null;
+      this.viewModel.enabled = false;
+      this.eye && document.body.removeChild(this.eye);
+    } else {
+      throw new Error("鹰眼地图销毁失败");
+    }
   }
 
   // 同步主图与鹰眼地图
