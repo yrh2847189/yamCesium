@@ -10,16 +10,17 @@
 6. 图形绘制 TODO
 7. 图层管理 TODO
 8. 3dtiles模型 TODO
-9. 第一人称视角
-10. 鹰眼图
-11. 雷达扫描 TODO
-12. 热力图 TODO
-13. geojson TODO
-14. 水面 TODO
-15. 坐标转换
-16. dat.gui TODO
-17. turf TODO
-18. proj4js TODO
+9. popup TODO
+10. 第一人称视角
+11. 鹰眼图
+12. 雷达扫描 TODO
+13. 热力图 TODO
+14. geojson TODO
+15. 水面 TODO
+16. 坐标转换
+17. dat.gui TODO
+18. turf TODO
+19. proj4js TODO
 # 如何使用
 
 ```shell
