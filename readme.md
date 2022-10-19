@@ -21,7 +21,7 @@
 17. dat.gui TODO
 18. turf TODO
 19. proj4js TODO
-20. 汉化 TODO
+20. 汉化
 21. Geocoder TODO
 22. 引入CesiumMethod和PublicMethod TODO
 23. 挖坑 TODO
