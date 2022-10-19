@@ -1,4 +1,4 @@
-import Cesium from "../../cesium/Cesium";
+import Cesium from "../../../cesium/Cesium";
 import loadView from "../core/loadView";
 import ResetViewNavigationControl from "./ResetViewNavigationControl";
 import ZoomNavigationControl from "./ZoomNavigationControl";

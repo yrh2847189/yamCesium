@@ -1,4 +1,4 @@
-import Cesium from "../../cesium/Cesium";
+import Cesium from "../../../cesium/Cesium";
 import svgReset from "../svgPaths/svgReset";
 import NavigationControl from "./NavigationControl";
 
@@ -40,9 +40,9 @@ class ResetViewNavigationControl extends NavigationControl {
      * This property is observable.
      * @type {String}
      */
-    this.name = "resetView";
+    this.name = "重置视角";
     this.navigationLocked = false;
-    this.tooltip = "Reset the view";
+    this.tooltip = "重置视角";
     /**
      * Gets or sets the height of the svg icon.  This property is observable.
      * @type {Integer}

@@ -7,6 +7,10 @@ export const version = pkg.version;
 // 设置默认token
 Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0YWJlYzNkNS0yY2M0LTQxZWQtOGZhNi05MjEzYmVmZGVkNTkiLCJpZCI6MzU1NTEsImlhdCI6MTYwNDYyNzY2NH0.JxhQQxEvJTrmeARILcywKaPoPEPjO1RlqL28CRjktx8";
 
+import Gy from "./cesium/Gy";
+
+export { Gy };
+
 // 图层加载
 import BaiduImageryProvider from "./imagery/baidu/BaiduImageryProvider";
 import AmapImageryProvider from "./imagery/amap/AmapImageryProvider";
@@ -26,7 +30,7 @@ import coordTransform from "./transform/CoordTransform";
 export { coordTransform };
 
 // 指北针
-import viewerCesiumNavigationMixin from "./navigation/viewerCesiumNavigationMixin";
+import viewerCesiumNavigationMixin from "./plugins/navigation/viewerCesiumNavigationMixin";
 // import CesiumNavigation from "./navigation/CesiumNavigation";
 
 // export { CesiumNavigation };
@@ -36,6 +40,5 @@ Cesium.viewerCesiumNavigationMixin = viewerCesiumNavigationMixin;
 // 截屏
 export { Canvas2Image } from "./scene/shortcut/Canvas2Image";
 
-import Gy from "./cesium/Gy";
-
-export { Gy };
+// 汉化
+export {CesiumZh} from "./plugins/cesiumZh/CesiumZh"

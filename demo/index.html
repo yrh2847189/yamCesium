@@ -53,7 +53,10 @@
       },
     });
 
-    var Gy = new gyCesium.Gy(viewer);
+    const Gy = new gyCesium.Gy(viewer);
+
+    // 汉化
+    gyCesium.CesiumZh.load();
 
     let options = {};
     options.defaultResetView = Cesium.Rectangle.fromDegrees(78.443464, 14.801562, 126.103033, 49.773957);

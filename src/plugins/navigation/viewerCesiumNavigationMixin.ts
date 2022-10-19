@@ -1,4 +1,4 @@
-import Cesium from '../cesium/Cesium'
+import Cesium from '../../cesium/Cesium'
 import CesiumNavigation from './CesiumNavigation'
 import './styles/cesium-navigation.css'
 

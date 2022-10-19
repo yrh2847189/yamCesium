@@ -1,4 +1,4 @@
-import Cesium from "../../cesium/Cesium";
+import Cesium from "../../../cesium/Cesium";
 import NavigationControl from "./NavigationControl";
 import Utils from "../core/Utils";
 
@@ -46,8 +46,8 @@ class ZoomNavigationControl extends NavigationControl {
   constructor(terria: any, zoomIn: any) {
     super(terria);
     this.zoomIn = zoomIn;
-    this.name = zoomIn ? "zoomIn" : "zoomOut";
-    this.tooltip = zoomIn ? "Zoom in" : "Zoom out";
+    this.name = zoomIn ? "放大一级" : "缩小一级";
+    this.tooltip = zoomIn ? "放大一级" : "缩小一级";
     this.cssClass = "navigation-control-icon-zoom-" + (zoomIn ? "in" : "out");
     this.text = zoomIn ? "+" : "-";
     this.relativeAmount = 2;

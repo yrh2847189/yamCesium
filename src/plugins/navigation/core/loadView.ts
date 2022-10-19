@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-import Cesium from '../../cesium/Cesium'
+import Cesium from '../../../cesium/Cesium'
 import createFragmentFromTemplate from './createFragmentFromTemplate'
 var getElement = Cesium.getElement
 var Knockout = Cesium.knockout
 
-var loadView = function (htmlString, container, viewModel) {
+var loadView = function (htmlString: string, container: any, viewModel: any) {
   container = getElement(container)
 
   var fragment = createFragmentFromTemplate(htmlString)

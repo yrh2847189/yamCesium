@@ -1,4 +1,4 @@
-import Cesium from "../../cesium/Cesium";
+import Cesium from "../../../cesium/Cesium";
 
 var defined = Cesium.defined;
 var defineProperties = Object.defineProperties;

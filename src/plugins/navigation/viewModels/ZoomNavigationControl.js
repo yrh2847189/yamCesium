@@ -1,4 +1,4 @@
-import Cesium from '../../cesium/Cesium'
+import Cesium from '../../../cesium/Cesium'
 import NavigationControl from './NavigationControl'
 import Utils from '../core/Utils'
 var defined = Cesium.defined
@@ -25,7 +25,7 @@ var ZoomNavigationControl = function (terria, zoomIn) {
    * This property is observable.
    * @type {String}
    */
-  this.name = 'Zoom ' + (zoomIn ? 'In' : 'Out')
+  this.name = (zoomIn ? '放大' : '缩小') + '一级'
 
   /**
    * Gets or sets the text to be displayed in the nav control. Controls that

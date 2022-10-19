@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import Cesium from "../cesium/Cesium";
+import Cesium from "../../cesium/Cesium";
 // import registerKnockoutBindings from './core/registerKnockoutBindings'
 import DistanceLegendViewModel from "./viewModels/DistanceLegendViewModel";
 import NavigationViewModel from "./viewModels/NavigationViewModel";

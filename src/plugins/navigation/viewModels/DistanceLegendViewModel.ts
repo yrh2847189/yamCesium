@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import Cesium from "../../cesium/Cesium";
+import Cesium from "../../../cesium/Cesium";
 import loadView from "../core/loadView";
 
 const defined = Cesium.defined;
