@@ -52,7 +52,7 @@ module.exports = {
 
 
   plugins: [
-    new BundleAnalyzerPlugin(), // 查看打包文件大小
+    // new BundleAnalyzerPlugin(), // 查看打包文件大小
     new CleanWebpackPlugin(),
     new webpack.BannerPlugin(banner)
     // new HtmlWebpackPlugin({
