@@ -25,6 +25,7 @@
 21. Geocoder TODO
 22. 引入CesiumMethod和PublicMethod TODO
 23. 挖坑 TODO
+24. 双击旋转 TODO
 # 如何使用
 
 ```shell

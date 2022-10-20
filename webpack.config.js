@@ -1,6 +1,7 @@
 const path = require("path");
 const pkg = require('./package.json');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const {
   CleanWebpackPlugin
 
@@ -16,7 +17,7 @@ hash: [hash]
 `
 module.exports = {
   optimization: {
-    minimize: false // 关闭代码压缩，可选
+    minimize: true // 关闭代码压缩，可选
   },
   mode: "production", //'development' 、 'production'、'none'
   entry: "./src/index.ts",
@@ -51,6 +52,7 @@ module.exports = {
 
 
   plugins: [
+    new BundleAnalyzerPlugin(), // 查看打包文件大小
     new CleanWebpackPlugin(),
     new webpack.BannerPlugin(banner)
     // new HtmlWebpackPlugin({
