@@ -18,6 +18,8 @@ declare module  "src/cesium/Gy" {
     immersion: Immersion;
     constructor(viewer: any);
   }
+
+  // export {default as turf } from "@turf/turf";
 }
 declare module "src/scene/camera/Immersion" {
   import {Immersion} from "src/cesium/Gy";
@@ -27,3 +29,8 @@ declare module "src/scene/camera/Camera" {
   import {Camera} from "src/cesium/Gy";
   export default Camera;
 }
+
+// declare module "@turf/turf" {
+//   import * as turf from "@turf/turf";
+//   export default turf;
+// }

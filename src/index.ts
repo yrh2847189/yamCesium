@@ -41,4 +41,19 @@ Cesium.viewerCesiumNavigationMixin = viewerCesiumNavigationMixin;
 export { Canvas2Image } from "./scene/shortcut/Canvas2Image";
 
 // 汉化
-export {CesiumZh} from "./plugins/cesiumZh/CesiumZh"
+export { CesiumZh } from "./plugins/cesiumZh/CesiumZh";
+
+// turf
+// 引入turf打包文件较大，建议在需要的时候再引入
+// const turf = require("@turf/turf");
+// export { turf };
+
+// CesiumMethod
+import CesiumMethod from "./plugins/lib/CesiumMethod";
+
+export { CesiumMethod };
+
+// PublicMethod
+import PublicMethod from "./plugins/lib/PublicMethod";
+
+export { PublicMethod };

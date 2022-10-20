@@ -19,11 +19,11 @@
 15. 水面 TODO
 16. 坐标转换
 17. dat.gui TODO
-18. turf TODO
+18. turf
 19. proj4js TODO
 20. 汉化
 21. Geocoder TODO
-22. 引入CesiumMethod和PublicMethod TODO
+22. 引入CesiumMethod和PublicMethod
 23. 挖坑 TODO
 24. 双击旋转 TODO
 # 如何使用
@@ -55,3 +55,8 @@ npm run build
 **2022-10-18**
 
 添加鹰眼图
+
+**2022-10-20**
+
+添加公共方法
+引入turf
