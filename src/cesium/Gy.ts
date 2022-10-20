@@ -5,7 +5,7 @@ export default class Gy {
 
   constructor(viewer: any) {
     if (!viewer) {
-      throw Error("viewer can not be null");
+      throw Error("the constructor of Gy need a parameter of type Cesium.Viewer");
     }
     // 去除版权信息
     viewer._cesiumWidget._creditContainer.style.display = "none";
