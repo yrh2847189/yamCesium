@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrimitiveCluster</title>
+  <link rel="stylesheet"
+        href="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Widgets/widgets.css" />
+  <script type="text/javascript"
+          src="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/CesiumUnminified/Cesium.js"></script>
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+<div id="cesiumContainer"></div>
+<script src="../dist/yam.cesium.min.js"></script>
+<script>
+  Cesium.Ion.defaultAccessToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0YWJlYzNkNS0yY2M0LTQxZWQtOGZhNi05MjEzYmVmZGVkNTkiLCJpZCI6MzU1NTEsImlhdCI6MTYwNDYyNzY2NH0.JxhQQxEvJTrmeARILcywKaPoPEPjO1RlqL28CRjktx8";
+  const viewer = new Cesium.Viewer("cesiumContainer");
+  viewer.scene.debugShowFramesPerSecond = true;
+
+  const ellipsoid = viewer.scene.globe.ellipsoid;
+  let billboardCount = 100489;
+  // seneca
+  const centerLongitude = -1.385205433269729;
+  const centerLatitude = 0.6777926580888163;
+  const rectangleHalfSize = 0.5;
+  const e = new Cesium.Rectangle(
+    centerLongitude - rectangleHalfSize,
+    centerLatitude - rectangleHalfSize,
+    centerLongitude + rectangleHalfSize,
+    centerLatitude + rectangleHalfSize
+  );
+
+  var billboardCollection = new Cesium.BillboardCollection();
+  var primitives = viewer.scene.primitives.add(new Cesium.PrimitiveCollection());
+
+  var datasource = Cesium.Resource.fetchJson({
+    url: './map.geojson'
+  });
+  datasource.then(jsonData => {
+    let feature = jsonData.features;
+    const gridSize = Math.sqrt(billboardCount);
+    for (let y = 0; y < gridSize; ++y) {
+      for (let x = 0; x < gridSize; ++x) {
+        const longitude = Cesium.Math.lerp(
+          e.west,
+          e.east,
+          x / (gridSize - 1)
+        );
+        const latitude = Cesium.Math.lerp(
+          e.south,
+          e.north,
+          y / (gridSize - 1)
+        );
+        const position = new Cesium.Cartographic(
+          longitude,
+          latitude,
+          10000.0
+        );
+
+        billboardCollection.add({
+          // id: i + '',
+          image: './fatboy.jpg',
+          width: 38,
+          height: 38,
+          position: ellipsoid.cartographicToCartesian(position),
+        })
+      }
+    }
+  })
+
+  var scene = viewer.scene;
+  var primitivecluster = new Cesium.PrimitiveCluster();
+  // var primitivecluster = new PrimitiveCluster();
+  primitives.add(primitivecluster);
+  //与entitycluster相同设置其是否聚合 以及最大最小值
+  primitivecluster.enabled = true;
+  // primitivecluster.pixelRange = 50;
+  // primitivecluster.minimumClusterSize = 2;
+  // primitivecluster._pointCollection = pointCollection;
+  primitivecluster._billboardCollection = billboardCollection;
+  // primitivecluster._labelCollection = labelCollection;
+  //同时在赋值时调用_initialize方法
+  primitivecluster._initialize(scene);
+
+  const pinBuilder = new Cesium.PinBuilder();
+  const pin50 = pinBuilder
+    .fromText("50+", Cesium.Color.RED, 48)
+    .toDataURL();
+  const pin40 = pinBuilder
+    .fromText("40+", Cesium.Color.ORANGE, 48)
+    .toDataURL();
+  const pin30 = pinBuilder
+    .fromText("30+", Cesium.Color.YELLOW, 48)
+    .toDataURL();
+  const pin20 = pinBuilder
+    .fromText("20+", Cesium.Color.GREEN, 48)
+    .toDataURL();
+  const pin10 = pinBuilder
+    .fromText("10+", Cesium.Color.BLUE, 48)
+    .toDataURL();
+
+  const singleDigitPins = new Array(8);
+  for (let i = 0; i < singleDigitPins.length; ++i) {
+    singleDigitPins[i] = pinBuilder
+      .fromText(`${i + 2}`, Cesium.Color.VIOLET, 48)
+      .toDataURL();
+  }
+
+
+  primitivecluster.clusterEvent.addEventListener(function (clusteredEntities, cluster) {
+    cluster.label.show = false;
+    cluster.billboard.show = true;
+    cluster.billboard.id = cluster.label.id;
+    cluster.billboard.verticalOrigin =
+      Cesium.VerticalOrigin.BOTTOM;
+
+    if (clusteredEntities.length >= 50) {
+      cluster.billboard.image = pin50;
+    } else if (clusteredEntities.length >= 40) {
+      cluster.billboard.image = pin40;
+    } else if (clusteredEntities.length >= 30) {
+      cluster.billboard.image = pin30;
+    } else if (clusteredEntities.length >= 20) {
+      cluster.billboard.image = pin20;
+    } else if (clusteredEntities.length >= 10) {
+      cluster.billboard.image = pin10;
+    } else {
+      cluster.billboard.image =
+        singleDigitPins[clusteredEntities.length - 2];
+    }
+  });
+</script>
+</body>
+
+</html>

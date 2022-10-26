@@ -7,9 +7,9 @@ export const version = pkg.version;
 // 设置默认token
 Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0YWJlYzNkNS0yY2M0LTQxZWQtOGZhNi05MjEzYmVmZGVkNTkiLCJpZCI6MzU1NTEsImlhdCI6MTYwNDYyNzY2NH0.JxhQQxEvJTrmeARILcywKaPoPEPjO1RlqL28CRjktx8";
 
-import Gy from "./cesium/Gy";
+import Map from "./cesium/Map";
 
-export { Gy };
+export { Map };
 
 // 图层加载
 import BaiduImageryProvider from "./imagery/baidu/BaiduImageryProvider";
@@ -57,3 +57,13 @@ export { CesiumMethod };
 import PublicMethod from "./plugins/lib/PublicMethod";
 
 export { PublicMethod };
+
+// primitive图元聚合 （打包KDBush会增加打包文件50kb）
+import PrimitiveCluster from "./entity/dataSource/PrimitiveCluster";
+
+Cesium.PrimitiveCluster = PrimitiveCluster;
+
+// 聚合工具类
+import Cluster from "./entity/dataSource/Cluster";
+
+export { Cluster };

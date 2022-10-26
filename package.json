@@ -1,5 +1,5 @@
 {
-  "name": "gycesium",
+  "name": "yamCesium",
   "version": "0.0.4",
   "description": "cesium组件",
   "main": "index.js",
@@ -41,6 +41,8 @@
     "webpack-dev-server": "^4.10.0"
   },
   "dependencies": {
-    "@turf/turf": "^6.5.0"
+    "@turf/turf": "^6.5.0",
+    "@types/kdbush": "^3.0.1",
+    "kdbush": "^3.0.0"
   }
 }

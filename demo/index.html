@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>初始化地球</title>
   <link rel="stylesheet"
-    href="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Widgets/widgets.css" />
+        href="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Widgets/widgets.css" />
   <script type="text/javascript"
-    src="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Cesium.js"></script>
+          src="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Cesium.js"></script>
   <style>
     html,
     body,
@@ -30,72 +30,173 @@
 </head>
 
 <body>
-  <div id="cesiumContainer">
-    <div id="tool">
-      <button id="shortcut">截屏</button>
-      <button id="immersion">沉浸式键盘控制</button>
-      <button id="firstPersonPerspective">第一人称</button>
-      <button id="hawkEye">鹰眼图</button>
-    </div>
+<div id="cesiumContainer">
+  <div id="tool">
+    <button id="shortcut">截屏</button>
+    <button id="immersion">沉浸式键盘控制</button>
+    <button id="firstPersonPerspective">第一人称</button>
+    <button id="hawkEye">鹰眼图</button>
   </div>
-  <script src="../dist/gy.cesium.min.js"></script>
-  <script>
-    Cesium.Ion.defaultAccessToken =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0YWJlYzNkNS0yY2M0LTQxZWQtOGZhNi05MjEzYmVmZGVkNTkiLCJpZCI6MzU1NTEsImlhdCI6MTYwNDYyNzY2NH0.JxhQQxEvJTrmeARILcywKaPoPEPjO1RlqL28CRjktx8";
-    const viewer = new Cesium.Viewer("cesiumContainer", {
-      animation: false,
-      timeline: false,
-      contextOptions: {
-        webgl: {
-          //通过canvas.toDataURL()实现截图需要将该项设置为true
-          preserveDrawingBuffer: true
+</div>
+<script src="../dist/yam.cesium.min.js"></script>
+<script>
+  Cesium.Ion.defaultAccessToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0YWJlYzNkNS0yY2M0LTQxZWQtOGZhNi05MjEzYmVmZGVkNTkiLCJpZCI6MzU1NTEsImlhdCI6MTYwNDYyNzY2NH0.JxhQQxEvJTrmeARILcywKaPoPEPjO1RlqL28CRjktx8";
+  const viewer = new Cesium.Viewer("cesiumContainer", {
+    animation: false,
+    timeline: false,
+    contextOptions: {
+      webgl: {
+        //通过canvas.toDataURL()实现截图需要将该项设置为true
+        preserveDrawingBuffer: true
+      }
+    }
+  });
+
+  const map = new yamCesium.Map(viewer);
+
+  // 汉化
+  yamCesium.CesiumZh.load();
+
+  let options = {};
+  options.defaultResetView = Cesium.Rectangle.fromDegrees(78.443464, 14.801562, 126.103033, 49.773957);
+
+  // 指北针
+  options.enableCompass = true;
+  // 缩放
+  options.enableZoomControls = true;
+  // 比例尺
+  options.enableDistanceLegend = true;
+  // 指南针外环
+  options.enableCompassOuterRing = true;
+  viewer.extend(Cesium.viewerCesiumNavigationMixin, options);
+
+  document.querySelector("#shortcut").addEventListener("click", () => {
+    // 获取canvas
+    let canvas = viewer.scene.canvas;
+    //只需要定义图片的宽度（高度计算得到）
+    let imageWidth = window.innerWidth;
+    //保存（下载）图片
+    yamCesium.Canvas2Image.saveAsImage(canvas, imageWidth, imageWidth * canvas.height / canvas.width, "png", "截图");
+  });
+
+  document.querySelector("#immersion").addEventListener("click", () => {
+    map.camera.immersion.viewModel.enabled = !map.camera.immersion.viewModel.enabled;
+  });
+
+  document.querySelector("#firstPersonPerspective").addEventListener("click", () => {
+    map.camera.immersion.viewModel.firstPersonPerspective = !map.camera.immersion.viewModel.firstPersonPerspective;
+  });
+
+  document.querySelector("#hawkEye").addEventListener("click", () => {
+    map.camera.hawkEye.viewModel.enabled = !map.camera.hawkEye.viewModel.enabled;
+    // 销毁鹰眼图
+    // map.camera.hawkEye.destroy();
+    console.log(map.camera.hawkEye.hawkEyeMap);
+  });
+
+  const cluster = new yamCesium.Cluster(viewer);
+
+  const ellipsoid = viewer.scene.globe.ellipsoid;
+  let billboardCount = 1000489;
+  // seneca
+  const centerLongitude = -1.385205433269729;
+  const centerLatitude = 0.6777926580888163;
+  const rectangleHalfSize = 0.5;
+  const e = new Cesium.Rectangle(
+    centerLongitude - rectangleHalfSize,
+    centerLatitude - rectangleHalfSize,
+    centerLongitude + rectangleHalfSize,
+    centerLatitude + rectangleHalfSize
+  );
+
+  var datasource = Cesium.Resource.fetchJson({
+    url: "./map.geojson"
+  });
+  let billboards;
+  datasource.then(jsonData => {
+    try {
+      billboards = cluster.load({
+        enabled: true,
+        delay: 1200,
+        pixelRange: 30,
+        customStyle1: function(_, removeListener, primitiveCluster) {
+          console.log(1);
+          if (Cesium.defined(removeListener)) {
+            removeListener();
+            removeListener = undefined;
+          } else {
+            removeListener = primitiveCluster.clusterEvent.addEventListener(
+              function(clusteredEntities, cluster) {
+                console.log(2);
+                cluster.label.show = false;
+                cluster.billboard.show = true;
+                cluster.billboard.id = cluster.label.id;
+                cluster.billboard.verticalOrigin = Cesium.VerticalOrigin
+                  .BOTTOM;
+                /* 根据站点(参数)的数量给予对应的广告牌  */
+                // if (clusteredEntities.length >= 50) {
+                //     cluster.billboard.image = pin50;
+                // } else if (clusteredEntities.length >= 40) {
+                //     cluster.billboard.image = pin40;
+                // } else if (clusteredEntities.length >= 30) {
+                //     cluster.billboard.image = pin30;
+                // } else if (clusteredEntities.length >= 20) {
+                //     cluster.billboard.image = pin20;
+                // } else if (clusteredEntities.length >= 10) {
+                //     cluster.billboard.image = pin10;
+                // } else {
+                //     cluster.billboard.image =
+                //         singleDigitPins[clusteredEntities.length - 2];
+                // }
+                cluster.billboard.image = "./fatboy.jpg";
+                cluster.billboard.width = 38;
+                cluster.billboard.height = 38;
+              }
+            );
+          }
+          // force a re-cluster with the new styling
+          let pixelRange = primitiveCluster.pixelRange;
+          primitiveCluster.pixelRange = 0;
+          primitiveCluster.pixelRange = pixelRange;
+          _.myPrimitiveCluster = primitiveCluster;
         }
-      },
-    });
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
-    const Gy = new gyCesium.Gy(viewer);
+    let feature = jsonData.features;
+    const gridSize = Math.sqrt(billboardCount);
+    for (let y = 0; y < gridSize; ++y) {
+      for (let x = 0; x < gridSize; ++x) {
+        const longitude = Cesium.Math.lerp(
+          e.west,
+          e.east,
+          x / (gridSize - 1)
+        );
+        const latitude = Cesium.Math.lerp(
+          e.south,
+          e.north,
+          y / (gridSize - 1)
+        );
+        const position = new Cesium.Cartographic(
+          longitude,
+          latitude,
+          10000.0
+        );
+        billboards.add({
+          image: "./fatboy.jpg",
+          scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1, 1.5e7, 0.2),
+          width: 38, // default: undefined
+          height: 38, // default: undefined
+          position: ellipsoid.cartographicToCartesian(position)
+        });
+      }
+    }
+  });
 
-    // 汉化
-    gyCesium.CesiumZh.load();
-
-    let options = {};
-    options.defaultResetView = Cesium.Rectangle.fromDegrees(78.443464, 14.801562, 126.103033, 49.773957);
-
-    // 指北针
-    options.enableCompass = true;
-    // 缩放
-    options.enableZoomControls = true;
-    // 比例尺
-    options.enableDistanceLegend = true;
-    // 指南针外环
-    options.enableCompassOuterRing = true;
-    viewer.extend(Cesium.viewerCesiumNavigationMixin, options);
-
-    document.querySelector("#shortcut").addEventListener("click", () => {
-      // 获取canvas
-      let canvas = viewer.scene.canvas;
-      //只需要定义图片的宽度（高度计算得到）
-      let imageWidth = window.innerWidth;
-      //保存（下载）图片
-      gyCesium.Canvas2Image.saveAsImage(canvas, imageWidth, imageWidth * canvas.height / canvas.width, 'png', "截图");
-    })
-
-    document.querySelector("#immersion").addEventListener("click", () => {
-      Gy.camera.immersion.viewModel.enabled = !Gy.camera.immersion.viewModel.enabled;
-    })
-
-    document.querySelector("#firstPersonPerspective").addEventListener("click", () => {
-      Gy.camera.immersion.viewModel.firstPersonPerspective = !Gy.camera.immersion.viewModel.firstPersonPerspective;
-    })
-
-    document.querySelector("#hawkEye").addEventListener("click", () => {
-      Gy.camera.hawkEye.viewModel.enabled = !Gy.camera.hawkEye.viewModel.enabled;
-      // 销毁鹰眼图
-      // Gy.camera.hawkEye.destroy();
-      console.log(Gy.camera.hawkEye.hawkEyeMap)
-    })
-
-  </script>
+</script>
 </body>
 
 </html>

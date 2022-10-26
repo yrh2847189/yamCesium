@@ -1,4 +1,4 @@
-declare module  "src/cesium/Gy" {
+declare module  "src/cesium/Map" {
 
   export class Immersion {
     viewer: any;
@@ -22,11 +22,11 @@ declare module  "src/cesium/Gy" {
   // export {default as turf } from "@turf/turf";
 }
 declare module "src/scene/camera/Immersion" {
-  import {Immersion} from "src/cesium/Gy";
+  import {Immersion} from "src/cesium/Map";
   export default Immersion;
 }
 declare module "src/scene/camera/Camera" {
-  import {Camera} from "src/cesium/Gy";
+  import {Camera} from "src/cesium/Map";
   export default Camera;
 }
 

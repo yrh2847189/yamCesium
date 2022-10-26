@@ -33,13 +33,13 @@ module.exports = {
   // },
 
   output: {
-    library: 'gyCesium',
+    library: 'yamCesium',
     // libraryExport: ['func', 'sum'],
     libraryTarget: 'umd',
     // 输出的路径  是绝对路径(导入path模块) 这里是用node来做的
     path: path.resolve(__dirname, "dist"),
     // 输出的文件名称
-    filename: 'gy.cesium.min.js',
+    filename: 'yam.cesium.min.js',
     environment: {
       arrowFunction: false // 关闭webpack的箭头函数，可选
     }
