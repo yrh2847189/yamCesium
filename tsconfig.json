@@ -3,5 +3,6 @@
 		"target": "ES2015",
 		"module": "ES2015",
 		"strict": true,
+    "allowSyntheticDefaultImports": true
   }
 }
