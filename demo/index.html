@@ -95,6 +95,8 @@
     console.log(map.camera.hawkEye.hawkEyeMap);
   });
 
+  // primitive聚合
+  viewer.scene.debugShowFramesPerSecond = true;
   const cluster = new yamCesium.Cluster(viewer);
 
   const ellipsoid = viewer.scene.globe.ellipsoid;
