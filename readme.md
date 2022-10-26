@@ -31,7 +31,7 @@
 ```shell
 npm run build
 ```
-会在dist目录下生成一个gy.cesium.min.js文件，引入即可
+会在dist目录下生成一个yam.cesium.min.js文件，引入即可
 
 必须在Cesium.js之后引入
 
