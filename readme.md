@@ -6,7 +6,7 @@
 2. Cesium navigation插件，用于添加地图导航控件。该功能基于[cesium-navigation-umd](https://github.com/worlddai/cesium-navigation-umd)插件进行封装。
 3. 截屏，保存场景图片。注：必须设置preserveDrawingBuffer: true
 4. 测量 TODO
-5. 点聚合 TODO
+5. 点聚合 TODO 完成primitive聚合，datasource聚合待完成
 6. 图形绘制 TODO
 7. 图层管理 TODO
 8. 3dtiles模型 TODO
@@ -60,3 +60,7 @@ npm run build
 
 添加公共方法
 引入turf
+
+**2022-10-26**
+
+添加primitive聚合类和聚合工具类
