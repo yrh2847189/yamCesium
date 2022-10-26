@@ -98,7 +98,7 @@
   const cluster = new yamCesium.Cluster(viewer);
 
   const ellipsoid = viewer.scene.globe.ellipsoid;
-  let billboardCount = 1000489;
+  let billboardCount = 100489;
   // seneca
   const centerLongitude = -1.385205433269729;
   const centerLatitude = 0.6777926580888163;
@@ -120,15 +120,13 @@
         enabled: true,
         delay: 1200,
         pixelRange: 30,
-        customStyle1: function(_, removeListener, primitiveCluster) {
-          console.log(1);
+        customStyle: function(_, removeListener, primitiveCluster) {
           if (Cesium.defined(removeListener)) {
             removeListener();
             removeListener = undefined;
           } else {
             removeListener = primitiveCluster.clusterEvent.addEventListener(
               function(clusteredEntities, cluster) {
-                console.log(2);
                 cluster.label.show = false;
                 cluster.billboard.show = true;
                 cluster.billboard.id = cluster.label.id;
