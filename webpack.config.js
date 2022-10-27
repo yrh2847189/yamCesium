@@ -17,7 +17,7 @@ hash: [hash]
 `
 module.exports = {
   optimization: {
-    minimize: true // 关闭代码压缩，可选
+    minimize: false // 关闭代码压缩，可选
   },
   mode: "production", //'development' 、 'production'、'none'
   entry: "./src/index.ts",

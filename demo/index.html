@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>初始化地球</title>
   <link rel="stylesheet"
-        href="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Widgets/widgets.css" />
+        href="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Widgets/widgets.css"/>
   <script type="text/javascript"
           src="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Cesium.js"></script>
   <style>
@@ -17,6 +17,7 @@
       height: 100%;
       width: 100%;
       margin: 0;
+      overflow: hidden;
     }
 
     #tool {
@@ -100,7 +101,7 @@
   const cluster = new yamCesium.Cluster(viewer);
 
   const ellipsoid = viewer.scene.globe.ellipsoid;
-  let billboardCount = 100489;
+  let billboardCount = 1489;
   // seneca
   const centerLongitude = -1.385205433269729;
   const centerLatitude = 0.6777926580888163;
@@ -185,16 +186,21 @@
           latitude,
           10000.0
         );
-        billboards.add({
-          image: "./fatboy.jpg",
-          scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1, 1.5e7, 0.2),
-          width: 38, // default: undefined
-          height: 38, // default: undefined
-          position: ellipsoid.cartographicToCartesian(position)
-        });
+        // billboards.add({
+        //   image: "./fatboy.jpg",
+        //   scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1, 1.5e7, 0.2),
+        //   width: 38, // default: undefined
+        //   height: 38, // default: undefined
+        //   position: ellipsoid.cartographicToCartesian(position)
+        // });
       }
     }
   });
+
+  const plot = new yamCesium.PlotTracker(viewer);
+  plot.trackPoint((position, lonLat) => {
+    console.log(position, lonLat)
+  })
 
 </script>
 </body>

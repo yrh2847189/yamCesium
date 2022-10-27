@@ -138,7 +138,7 @@ function updateDistanceLegendCesium (viewModel, scene) {
   // Find the first distance that makes the scale bar less than 100 pixels.
   var maxBarWidth = 100
   var distance
-  for (var i = distances.length - 1; !defined(distance) && i >= 0; --i) {
+  for (let i = distances.length - 1; !defined(distance) && i >= 0; --i) {
     if (distances[i] / pixelDistance < maxBarWidth) {
       distance = distances[i]
     }

@@ -149,7 +149,7 @@ class CesiumNavigation {
     }
     delete this.container;
 
-    for (var i = 0; i < this._onDestroyListeners.length; i++) {
+    for (let i = 0; i < this._onDestroyListeners.length; i++) {
       this._onDestroyListeners[i]();
     }
   }

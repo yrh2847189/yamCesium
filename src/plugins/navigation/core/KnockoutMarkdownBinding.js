@@ -41,7 +41,7 @@ var KnockoutMarkdownBinding = {
         var nodes = Knockout.utils.parseHtmlFragment(html, element)
         element.className = element.className + ' markdown'
 
-        for (var i = 0; i < nodes.length; ++i) {
+        for (let i = 0; i < nodes.length; ++i) {
           var node = nodes[i]
           setAnchorTargets(node)
           element.appendChild(node)
@@ -57,7 +57,7 @@ function setAnchorTargets (element) {
   }
 
   if (element.childNodes && element.childNodes.length > 0) {
-    for (var i = 0; i < element.childNodes.length; ++i) {
+    for (let i = 0; i < element.childNodes.length; ++i) {
       setAnchorTargets(element.childNodes[i])
     }
   }
