@@ -1,7 +1,5 @@
 import Cesium from "./cesium/Cesium";
 
-import "layer-src/src/theme/default/layer.css";
-
 const pkg = require("../package.json");
 // 设置版本号
 export const version = pkg.version;
@@ -74,3 +72,6 @@ export { Cluster };
 import PlotTracker from "./entity/plot/PlotTracker";
 
 export { PlotTracker };
+
+import Plot from "./entity/plot/Plot";
+export { Plot };

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>初始化地球</title>
   <link rel="stylesheet"
-        href="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Widgets/widgets.css"/>
+        href="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Widgets/widgets.css" />
   <script type="text/javascript"
           src="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Cesium.js"></script>
   <style>
@@ -197,10 +197,12 @@
     }
   });
 
-  const plot = new yamCesium.PlotTracker(viewer);
-  plot.trackPoint((position, lonLat) => {
-    console.log(position, lonLat)
-  })
+  const plot = new yamCesium.Plot(viewer);
+  plot.showPoint().then((position) => {
+    console.log(position);
+  }).catch((error) => {
+    console.log(error);
+  });
 
 </script>
 </body>

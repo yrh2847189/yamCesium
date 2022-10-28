@@ -24,3 +24,95 @@
 .yam-layer-dialog {
   min-width: 300px;
 }
+
+.yam-layer-title-lan .yam-layer-title {
+  background: #4476A7;
+  color: #fff;
+  border: none;
+}
+
+.yam-layer-title {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.yam-layer-title {
+  padding: 0 80px 0 20px;
+  height: 50px;
+  line-height: 50px;
+  border-bottom: 1px solid #F0F0F0;
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  border-radius: 2px 2px 0 0;
+}
+
+.yam-layer-content {
+  position: relative;
+}
+
+.yam-layer-dialog .yam-layer-content {
+  position: relative;
+  padding: 20px;
+  line-height: 24px;
+  word-break: break-all;
+  overflow: hidden;
+  font-size: 14px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.yam-layer-btn {
+  text-align: right;
+  padding: 0 15px 12px;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+
+.yam-layer-btn a {
+  height: 28px;
+  line-height: 28px;
+  margin: 5px 5px 0;
+  padding: 0 15px;
+  border: 1px solid #dedede;
+  background-color: #fff;
+  color: #333;
+  border-radius: 2px;
+  font-weight: 400;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.yam-layer-btn-yes {
+  color: #4b80a2;
+  border: 1px solid #F0F0F0;
+  background-color: #fff;
+  border-radius: 2px;
+  padding: 0 15px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+}
+
+.yam-layer-btn-yes:hover {
+  opacity: .9;
+  text-decoration: none;
+}
+
+.yam-layer-btn-cancel {
+  color: #333;
+  border: 1px solid #F0F0F0;
+  background-color: #fff;
+  border-radius: 2px;
+  padding: 0 15px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+}
+
+.yam-layer-btn-cancel:hover {
+  opacity: .9;
+  text-decoration: none;
+}

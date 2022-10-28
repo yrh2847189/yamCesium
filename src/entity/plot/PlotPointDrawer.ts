@@ -198,11 +198,32 @@ export default class PlotPointDrawer {
   }
 
   _showToolBar() {
-    this._createToolBar();
-    layer.open({
-      title: "操作",
-      content: "测试"
-    })
+    // this._createToolBar();
+    layer.confirm("哈哈哈", {
+        title: "操作",
+        content: "测试",
+        type: 1,
+        area: ["300px", "200px"],
+        skin: "yam-layer-title-lan", //加上边框
+        shade: 0.3,
+        shadeClose: true,
+        move: true
+      }, (index: any) => {
+        this.clear();
+        layer.close(index);
+        if (this.okHandler) {
+          const lonLat = this._getLonLat(this.position);
+          this.okHandler(this.position, lonLat);
+
+        }
+      }, (index: any) => {
+        this.clear();
+        layer.close(index);
+        if (this.cancelHandler) {
+          this.cancelHandler();
+        }
+      }
+    );
     // var width = $(window).width();
     // var wTop = 60;
     // var wLeft = parseInt((width - 145) / 2);
@@ -237,10 +258,10 @@ export default class PlotPointDrawer {
     // btnOK.unbind("click").bind("click", function() {
     //   this.clear();
     //   // layer.close(this.toolBarIndex);
-    if (this.okHandler) {
-      const lonLat = this._getLonLat(this.position);
-      this.okHandler(this.position, lonLat);
-    }
+    // if (this.okHandler) {
+    //   const lonLat = this._getLonLat(this.position);
+    //   this.okHandler(this.position, lonLat);
+    // }
     // });
     // btnCancel.unbind("click").bind("click", function() {
     //   this.clear();

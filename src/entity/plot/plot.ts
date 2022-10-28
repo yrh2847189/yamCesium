@@ -1,4 +1,5 @@
 import Cesium from "../../cesium/Cesium";
+import PlotTracker from "./PlotTracker";
 
 interface Draw {
   flag: number,
@@ -15,9 +16,11 @@ export default class Plot {
     shape: [],
     shapeDic: {}
   };
+  plotTracker: PlotTracker;
 
   constructor(viewer: any) {
     this.viewer = viewer;
+    this.plotTracker = new PlotTracker(this.viewer);
   }
 
   bindGloveEvent() {
@@ -73,6 +76,36 @@ export default class Plot {
         _this.clearEntityById(objId);
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+  }
+
+  showPoint() {
+    const objId = (new Date()).getTime() + "";
+    return new Promise((resolve, reject) => {
+      this.plotTracker.trackPoint((position: any, lonLat: any) => {
+        const cartographics = Cesium.Cartographic.fromCartesian(position);
+        let lat = Cesium.Math.toDegrees(cartographics.latitude);
+        let lng = Cesium.Math.toDegrees(cartographics.longitude);
+        const entity = this.viewer.entities.add({
+          layerId: this.draw.layerId,
+          objId: objId,
+          shapeType: "Point",
+          position: position,
+          billboard: {
+            image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjUlEQVQ4T5WTO0gDQRCG598TUohgLqUIChcSEBsfjQ9MEWvtFDs7E+0tUllaa5JSECzstLdI46NQGxESc2JELBMLCxEuO86dXkhiAndX7c3O/PvPzregHl+sWBlpOioOQyXdbW7qsjGgq/VM4r07Hd0Bs2gfMfMkgT6hKcKAI0nfTBwF8NDIWJvtNR0CZsF+kcSaBFO9nEnskQiDjaw17u+3BKKF6q38TPcp7Agz0d1HNj7jBj2BWNHeF9sLspwLIiA5p9LOaz1j7cLM26Ni+wygqYDFXhoz3YOwCvPwaRkKObG1FEZAzF+S1nuI5e0dDV6XXubDCdANGCeIFp63xNAGiBdDCTBdM9Qxhg+qKWUgJyLpMAIMKrFD0oJQp1mdBx2hf4g7SgW94o3RpU+udVaWE0FcSHFJxlhzqWyB5FIobYwFEZAJ1HwaO1D+o9EWkbU+QldyesSnsEVie7JLpdacFotf4siQgqYicjTTkFK4cOlrz//3Gr07ETqJdRJQiV/qdIWgyo1t663b2Q/kAI6uzOBy0gAAAABJRU5ErkJggg==",
+            eyeOffset: new Cesium.ConstantProperty(new Cesium.Cartesian3(0, 0, 0)),
+            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND, //绝对贴地
+            clampToGround: true,
+            disableDepthTestDistance: Number.POSITIVE_INFINITY //元素在正上方
+          },
+          clampToGround: true
+        });
+        this.draw.shape.push(entity);
+        resolve(position);
+      }, () => {
+        console.log("取消绘制");
+        reject("取消绘制");
+      });
+    });
   }
 
   clearEntityById(objId: string) {
