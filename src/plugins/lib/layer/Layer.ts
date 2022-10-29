@@ -51,26 +51,45 @@ export default class layer {
     this.open(layerOptions);
   }
 
-  static confirm(content: string, options?: LayerOptions, yes?: Function, cancel?: Function) {
+  static confirm(content: string | LayerOptions, options?: LayerOptions) {
+    if (arguments.length === 1) {
+      options = content as LayerOptions;
+      content = options.content as string;
+    }
     const layerOptions = {
       title: false,
       type: 0,
-      content: content,
+      content: content as string,
       skin: "yam-layer-title-lan", //加上边框
       shade: 0.3,
       shadeClose: true,
-      move: true,
-      yes: yes || function() {
-        layer.close(layer.layerId);
-      },
-      cancel: cancel || function() {
-        layer.close(layer.layerId);
-      }
+      move: true
     };
     if (options) {
       Object.assign(layerOptions, options);
     }
-    this.open(layerOptions);
+    return this.open(layerOptions).then((layerId) => {
+      return new Promise((resolve, reject) => {
+        const btn = document.createElement("div");
+        btn.classList.add("yam-layer-btn");
+        const yes = document.createElement("a");
+        yes.classList.add("yam-layer-btn-yes");
+        yes.innerHTML = "确定";
+        btn.appendChild(yes);
+        yes.addEventListener("click", () => {
+          resolve(layerId);
+        });
+        const cancel = document.createElement("a");
+        cancel.classList.add("yam-layer-btn-cancel");
+        cancel.innerHTML = "取消";
+        btn.appendChild(cancel);
+        cancel.addEventListener("click", () => {
+          reject(layerId);
+        });
+        const layer = document.querySelector(`#yam-layer${this.layerId}`) as HTMLElement;
+        layer.appendChild(btn);
+      });
+    });
   }
 
   static open(options: LayerOptions) {
@@ -199,28 +218,31 @@ export default class layer {
         });
       }
     }
-    if (options.yes) {
-      const btn = document.createElement("div");
-      btn.classList.add("yam-layer-btn");
-      const yes = document.createElement("a");
-      yes.classList.add("yam-layer-btn-yes");
-      yes.innerHTML = "确定";
-      btn.appendChild(yes);
-      yes.addEventListener("click", () => {
-        options.yes && options.yes(this.layerId);
-      });
-      if (options.cancel) {
-        const cancel = document.createElement("a");
-        cancel.classList.add("yam-layer-btn-cancel");
-        cancel.innerHTML = "取消";
-        btn.appendChild(cancel);
-        cancel.addEventListener("click", () => {
-          options.cancel && options.cancel(this.layerId);
-        });
-      }
-      layer.appendChild(btn);
-    }
+    // if (options.yes) {
+    //   const btn = document.createElement("div");
+    //   btn.classList.add("yam-layer-btn");
+    //   const yes = document.createElement("a");
+    //   yes.classList.add("yam-layer-btn-yes");
+    //   yes.innerHTML = "确定";
+    //   btn.appendChild(yes);
+    //   yes.addEventListener("click", () => {
+    //     options.yes && options.yes(this.layerId);
+    //   });
+    //   if (options.cancel) {
+    //     const cancel = document.createElement("a");
+    //     cancel.classList.add("yam-layer-btn-cancel");
+    //     cancel.innerHTML = "取消";
+    //     btn.appendChild(cancel);
+    //     cancel.addEventListener("click", () => {
+    //       options.cancel && options.cancel(this.layerId);
+    //     });
+    //   }
+    //   layer.appendChild(btn);
+    // }
     this.layers.push(this.layerId);
-    return this.layerId;
+    // return this.layerId;
+    return new Promise((resolve, reject) => {
+      resolve(this.layerId);
+    });
   }
 }

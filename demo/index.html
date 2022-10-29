@@ -198,8 +198,14 @@
   });
 
   const plot = new yamCesium.Plot(viewer);
-  plot.showPoint().then((position) => {
-    console.log(position);
+  plot.drawPoint({
+    confirmHandler1: function() {
+      return new Promise((resolve, reject) => {
+        confirm("确定要添加吗？") ? resolve() : reject();
+      });
+    }
+  }).then((data) => {
+    console.log(data);
   }).catch((error) => {
     console.log(error);
   });

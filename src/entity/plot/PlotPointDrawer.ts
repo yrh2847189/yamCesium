@@ -1,9 +1,13 @@
 import PlotToolTip from "./GlobeTooltip";
 import Cesium from "../../cesium/Cesium";
 import layer from "../../plugins/lib/layer/Layer";
+import Plot from "./plot";
+
+interface drawOptions {
+  confirmHandler: Function; // 自定义确认弹窗事件
+}
 
 export default class PlotPointDrawer {
-
   viewer: any;
   scene: any;
   clock: any;
@@ -57,13 +61,15 @@ export default class PlotPointDrawer {
     this._startModify();
   }
 
-  startDrawPoint(okHandler: Function, cancelHandler: Function) {
-    this.okHandler = okHandler;
-    this.cancelHandler = cancelHandler;
+  startDrawPoint(options: drawOptions) {
+    // this.okHandler = okHandler;
+    // this.cancelHandler = cancelHandler;
     this.entity = null;
     this.position = null;
-    var floatingPoint = null;
+    const floatingPoint = null;
     this.drawHandler = new Cesium.ScreenSpaceEventHandler(this.canvas);
+
+    let isClickConfirm = false;
 
     this.drawHandler.setInputAction((event: any) => {
       const wp = event.position;
@@ -82,6 +88,7 @@ export default class PlotPointDrawer {
       this.entity.position.setValue(cartesian);
       this.tooltip.setVisible(false);
       this._startModify();
+      isClickConfirm = true;
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
     this.drawHandler.setInputAction((event: any) => {
@@ -105,6 +112,32 @@ export default class PlotPointDrawer {
         this.entity.position.setValue(cartesian);
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+    return new Promise((resolve, reject) => {
+      // 等待点击确认点位
+      const timeId = setInterval(() => {
+        // 如果确认点位则清楚定时器
+        if (isClickConfirm) {
+          clearInterval(timeId);
+          // 如果自定义了确认按钮则显示自定义按钮
+          if (options && options.confirmHandler) {
+            // confirmHandler需返回一个promise事件
+            options.confirmHandler().then(() => {
+              resolve(this.position);
+            }).catch(() => {
+              reject();
+            });
+          } else {
+            this._showToolBar().then(() => {
+              resolve(this.position);
+            }).catch((err) => {
+              reject(err);
+            });
+          }
+          this.clear();
+        }
+      }, 100);
+    });
   }
 
   _startModify() {
@@ -114,7 +147,7 @@ export default class PlotPointDrawer {
       this.drawHandler.destroy();
       this.drawHandler = null;
     }
-    this._showToolBar();
+    // this._showToolBar();
 
     this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.canvas);
 
@@ -198,78 +231,26 @@ export default class PlotPointDrawer {
   }
 
   _showToolBar() {
-    // this._createToolBar();
-    layer.confirm("哈哈哈", {
+    return new Promise<void>((resolve, reject) => {
+      layer.confirm({
         title: "操作",
-        content: "测试",
+        content: "是否确认该点位？",
         type: 1,
         area: ["300px", "200px"],
         skin: "yam-layer-title-lan", //加上边框
         shade: 0.3,
         shadeClose: true,
         move: true
-      }, (index: any) => {
+      }).then((index: any) => {
         this.clear();
         layer.close(index);
-        if (this.okHandler) {
-          const lonLat = this._getLonLat(this.position);
-          this.okHandler(this.position, lonLat);
-
-        }
-      }, (index: any) => {
+        resolve();
+      }).catch((index: any) => {
         this.clear();
         layer.close(index);
-        if (this.cancelHandler) {
-          this.cancelHandler();
-        }
-      }
-    );
-    // var width = $(window).width();
-    // var wTop = 60;
-    // var wLeft = parseInt((width - 145) / 2);
-    // this.toolBarIndex = layer.open({
-    //   title: false,
-    //   type: 1,
-    //   fixed: true,
-    //   resize: false,
-    //   shade: 0,
-    //   content: $("#shapeEditContainer"),
-    //   offset: [wTop + "px", wLeft + "px"],
-    //   move: "#shapeEditRTCorner"
-    // });
-    // var cssSel = "#layui-layer" + this.toolBarIndex + " .layui-layer-close2";
-    // $(cssSel).hide();
-  }
-
-  _createToolBar() {
-    // var this = this;
-    // var objs = $("#shapeEditContainer");
-    // objs.remove();
-    // var html = "<div id=\"shapeEditContainer\" style=\"padding: 10px 10px;\">"
-    //   + "    <button name=\"btnOK\" class=\"layui-btn layui-btn-xs layui-btn-normal\"> 确定 </button>"
-    //   + "    <button name=\"btnCancel\" class=\"layui-btn layui-btn-xs layui-btn-danger\"> 取消 </button>"
-    //   + "    <div id=\"shapeEditRTCorner\" style=\"width: 16px; position: absolute; right: 0px; top: 0px; bottom: 0px\">"
-    //   + "    </div>"
-    //   + "</div>";
-    // $("body").append(html);
-    //
-    // var btnOK = $("#shapeEditContainer button[name='btnOK']");
-    // var btnCancel = $("#shapeEditContainer button[name='btnCancel']");
-    // btnOK.unbind("click").bind("click", function() {
-    //   this.clear();
-    //   // layer.close(this.toolBarIndex);
-    // if (this.okHandler) {
-    //   const lonLat = this._getLonLat(this.position);
-    //   this.okHandler(this.position, lonLat);
-    // }
-    // });
-    // btnCancel.unbind("click").bind("click", function() {
-    //   this.clear();
-    //   // layer.close(this.toolBarIndex);
-    //   if (this.cancelHandler) {
-    //     this.cancelHandler();
-    //   }
-    // });
+        reject();
+      });
+    });
   }
 
   _getLonLat(cartesian: any) {

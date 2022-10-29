@@ -26,12 +26,12 @@ export default class PlotTracker {
     }
   }
 
-  trackPoint(okHandler: Function, cancelHandler: Function) {
+  trackPoint(options: any) {
     this.clear();
     if (this.pointDrawer == null) {
       this.pointDrawer = new PlotPointDrawer(this.viewer);
       this.ctrArr.push(this.pointDrawer);
     }
-    this.pointDrawer.startDrawPoint(okHandler, cancelHandler);
+    return this.pointDrawer.startDrawPoint(options);
   }
 }

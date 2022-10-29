@@ -78,10 +78,10 @@ export default class Plot {
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   }
 
-  showPoint() {
+  drawPoint(options?: any) {
     const objId = (new Date()).getTime() + "";
     return new Promise((resolve, reject) => {
-      this.plotTracker.trackPoint((position: any, lonLat: any) => {
+      this.plotTracker.trackPoint(options).then((position: any) => {
         const cartographics = Cesium.Cartographic.fromCartesian(position);
         let lat = Cesium.Math.toDegrees(cartographics.latitude);
         let lng = Cesium.Math.toDegrees(cartographics.longitude);
@@ -100,10 +100,9 @@ export default class Plot {
           clampToGround: true
         });
         this.draw.shape.push(entity);
-        resolve(position);
-      }, () => {
-        console.log("取消绘制");
-        reject("取消绘制");
+        resolve({position: position, entity: entity});
+      }).catch((err: any) => {
+        reject(err);
       });
     });
   }
