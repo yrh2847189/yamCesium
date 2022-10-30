@@ -41,6 +41,7 @@
     </div>
     <div>
       <button id="drawPoint">绘制点</button>
+      <button id="editPoint">编辑点</button>
     </div>
   </div>
 </div>
@@ -215,6 +216,15 @@
       console.log("绘制完成");
     }).catch(() => {
       console.log("取消添加");
+    });
+  });
+
+  document.querySelector("#editPoint").addEventListener("click", () => {
+    plot.editShape().then((data) => {
+      console.log(data);
+      console.log("编辑成功");
+    }).catch(() => {
+      console.log("取消编辑");
     });
   });
 

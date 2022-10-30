@@ -5,6 +5,7 @@ import Plot from "./plot";
 
 interface drawOptions {
   confirmHandler: Function; // 自定义确认弹窗事件
+  position?: any;
 }
 
 export default class PlotPointDrawer {
@@ -24,6 +25,7 @@ export default class PlotPointDrawer {
   image: string = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjUlEQVQ4T5WTO0gDQRCG598TUohgLqUIChcSEBsfjQ9MEWvtFDs7E+0tUllaa5JSECzstLdI46NQGxESc2JELBMLCxEuO86dXkhiAndX7c3O/PvPzregHl+sWBlpOioOQyXdbW7qsjGgq/VM4r07Hd0Bs2gfMfMkgT6hKcKAI0nfTBwF8NDIWJvtNR0CZsF+kcSaBFO9nEnskQiDjaw17u+3BKKF6q38TPcp7Agz0d1HNj7jBj2BWNHeF9sLspwLIiA5p9LOaz1j7cLM26Ni+wygqYDFXhoz3YOwCvPwaRkKObG1FEZAzF+S1nuI5e0dDV6XXubDCdANGCeIFp63xNAGiBdDCTBdM9Qxhg+qKWUgJyLpMAIMKrFD0oJQp1mdBx2hf4g7SgW94o3RpU+udVaWE0FcSHFJxlhzqWyB5FIobYwFEZAJ1HwaO1D+o9EWkbU+QldyesSnsEVie7JLpdacFotf4siQgqYicjTTkFK4cOlrz//3Gr07ETqJdRJQiV/qdIWgyo1t663b2Q/kAI6uzOBy0gAAAABJRU5ErkJggg==";
   toolBarIndex: any;
   layerId: string = "globeEntityDrawerLayer";
+  isClickConfirm: boolean = false;
 
   constructor(viewer: any) {
     this.viewer = viewer;
@@ -52,24 +54,25 @@ export default class PlotPointDrawer {
     this.tooltip.setVisible(false);
   }
 
-  showModifyPoint(position: any, okHandler: Function, cancelHandler: Function) {
-    this.position = position;
-    this.okHandler = okHandler;
-    this.cancelHandler = cancelHandler;
+  showModifyPoint(options: drawOptions) {
+    // this.position = position;
+    // this.okHandler = okHandler;
+    // this.cancelHandler = cancelHandler;
+    this.isClickConfirm = false;
     this.entity = null;
-    this._createPoint();
-    this._startModify();
+    // this._createPoint();
+    // this._startModify();
+
+    return this.startDrawPoint(options);
   }
 
   startDrawPoint(options: drawOptions) {
     // this.okHandler = okHandler;
     // this.cancelHandler = cancelHandler;
     this.entity = null;
-    this.position = null;
+    this.position = options.position; // 如果有传入position，则直接使用，没有传入则为undefined
     const floatingPoint = null;
     this.drawHandler = new Cesium.ScreenSpaceEventHandler(this.canvas);
-
-    let isClickConfirm = false;
 
     this.drawHandler.setInputAction((event: any) => {
       const wp = event.position;
@@ -88,7 +91,7 @@ export default class PlotPointDrawer {
       this.entity.position.setValue(cartesian);
       this.tooltip.setVisible(false);
       this._startModify();
-      isClickConfirm = true;
+      this.isClickConfirm = true;
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
     this.drawHandler.setInputAction((event: any) => {
@@ -117,7 +120,7 @@ export default class PlotPointDrawer {
       // 等待点击确认点位
       const timeId = setInterval(() => {
         // 如果确认点位则清楚定时器
-        if (isClickConfirm) {
+        if (this.isClickConfirm) {
           clearInterval(timeId);
           // 如果自定义了确认按钮则显示自定义按钮
           if (options && options.confirmHandler) {
@@ -237,10 +240,10 @@ export default class PlotPointDrawer {
     return new Promise<void>((resolve, reject) => {
       layer.confirm({
         title: false,
-        // content: "是否确认该点位？",
+        content: "是否确认该点位？",
         type: 1,
         area: ["300px", "200px"],
-        offset: '80px',
+        offset: "80px",
         skin: "yam-layer-title-lan", //加上边框
         shade: false,
         shadeClose: false,
