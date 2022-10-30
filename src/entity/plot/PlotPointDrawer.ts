@@ -123,18 +123,21 @@ export default class PlotPointDrawer {
           if (options && options.confirmHandler) {
             // confirmHandler需返回一个promise事件
             options.confirmHandler().then(() => {
+              this.clear();
               resolve(this.position);
             }).catch(() => {
+              this.clear();
               reject();
             });
           } else {
             this._showToolBar().then(() => {
+              this.clear();
               resolve(this.position);
             }).catch((err) => {
+              this.clear();
               reject(err);
             });
           }
-          this.clear();
         }
       }, 100);
     });
@@ -233,13 +236,14 @@ export default class PlotPointDrawer {
   _showToolBar() {
     return new Promise<void>((resolve, reject) => {
       layer.confirm({
-        title: "操作",
-        content: "是否确认该点位？",
+        title: false,
+        // content: "是否确认该点位？",
         type: 1,
         area: ["300px", "200px"],
+        offset: '80px',
         skin: "yam-layer-title-lan", //加上边框
-        shade: 0.3,
-        shadeClose: true,
+        shade: false,
+        shadeClose: false,
         move: true
       }).then((index: any) => {
         this.clear();

@@ -71,6 +71,13 @@
   cursor: pointer;
 }
 
+.yam-layer-btn a, .yam-layer-dialog .yam-layer-ico, a {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  vertical-align: top;
+}
+
 .yam-layer-btn a {
   height: 28px;
   line-height: 28px;

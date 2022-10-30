@@ -33,10 +33,15 @@
 <body>
 <div id="cesiumContainer">
   <div id="tool">
-    <button id="shortcut">截屏</button>
-    <button id="immersion">沉浸式键盘控制</button>
-    <button id="firstPersonPerspective">第一人称</button>
-    <button id="hawkEye">鹰眼图</button>
+    <div>
+      <button id="shortcut">截屏</button>
+      <button id="immersion">沉浸式键盘控制</button>
+      <button id="firstPersonPerspective">第一人称</button>
+      <button id="hawkEye">鹰眼图</button>
+    </div>
+    <div>
+      <button id="drawPoint">绘制点</button>
+    </div>
   </div>
 </div>
 <script src="../dist/yam.cesium.min.js"></script>
@@ -198,17 +203,21 @@
   });
 
   const plot = new yamCesium.Plot(viewer);
-  plot.drawPoint({
-    confirmHandler1: function() {
-      return new Promise((resolve, reject) => {
-        confirm("确定要添加吗？") ? resolve() : reject();
-      });
-    }
-  }).then((data) => {
-    console.log(data);
-  }).catch((error) => {
-    console.log(error);
+  document.querySelector("#drawPoint").addEventListener("click", () => {
+    plot.drawPoint({
+      confirmHandler1: function() {
+        return new Promise((resolve, reject) => {
+          confirm("确定要添加吗？") ? resolve() : reject();
+        });
+      }
+    }).then((data) => {
+      console.log(data);
+      console.log("绘制完成");
+    }).catch(() => {
+      console.log("取消添加");
+    });
   });
+
 
 </script>
 </body>

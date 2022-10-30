@@ -94,7 +94,7 @@ export default class layer {
 
   static open(options: LayerOptions) {
     this.close(this.layerId);
-    if (!options.title) {
+    if (typeof options.title == "undefined") {
       options.title = "信息";
     }
     const layerDiv = document.createElement("div");
@@ -109,6 +109,10 @@ export default class layer {
     layerDiv.id = "yam-layer-container" + this.layerId;
     document.body.appendChild(layerDiv);
     const layer = document.querySelector(`#yam-layer${this.layerId}`) as HTMLElement;
+
+    if (options.title == false) {
+      layer?.querySelector(".yam-layer-title")?.remove();
+    }
     const clientWidth = layer.clientWidth;
     const clientHeight = layer.clientHeight;
     const windowHeight = window.innerHeight;
@@ -117,12 +121,49 @@ export default class layer {
     const left = windowWidth / 2 - clientWidth / 2;
     layer.style.top = top + "px";
     layer.style.left = left + "px";
-
     if (options.offset) {
       if (typeof options.offset === "string") {
-        const offset = options.offset.split(" ");
-        layer.style.top = offset[0];
-        layer.style.left = offset[1];
+        switch (options.offset) {
+          case "auto":
+            layer.style.top = top + "px";
+            layer.style.left = left + "px";
+            break;
+          case "t":
+            layer.style.top = "0px";
+            layer.style.left = left + "px";
+            break;
+          case "r":
+            layer.style.top = top + "px";
+            layer.style.left = windowWidth - clientWidth + "px";
+            break;
+          case "b":
+            layer.style.top = windowHeight - clientHeight + "px";
+            layer.style.left = left + "px";
+            break;
+          case "l":
+            layer.style.top = top + "px";
+            layer.style.left = "0px";
+            break;
+          case "lt":
+            layer.style.top = "0px";
+            layer.style.left = "0px";
+            break;
+          case "lb":
+            layer.style.top = windowHeight - clientHeight + "px";
+            layer.style.left = "0px";
+            break;
+          case "rt":
+            layer.style.top = "0px";
+            layer.style.left = windowWidth - clientWidth + "px";
+            break;
+          case "rb":
+            layer.style.top = windowHeight - clientHeight + "px";
+            layer.style.left = windowWidth - clientWidth + "px";
+            break;
+          default:
+            layer.style.top = options.offset;
+            layer.style.left = left + "px";
+        }
       } else {
         layer.style.top = options.offset[0] + "px";
         layer.style.left = options.offset[1] + "px";
@@ -150,8 +191,8 @@ export default class layer {
         this.close(this.layerId);
       });
     }
+    const shade = document.querySelector(`#yam-layer-shade${this.layerId}`) as HTMLElement;
     if (options.shade) {
-      const shade = document.querySelector(`#yam-layer-shade${this.layerId}`) as HTMLElement;
       if (typeof options.shade === "number") {
         shade.style.backgroundColor = `rgba(0,0,0,${options.shade})`;
       } else if (typeof options.shade === "boolean") {
@@ -159,6 +200,8 @@ export default class layer {
       } else {
         shade.style.backgroundColor = `rgba(${options.shade[0]},${options.shade[1]},${options.shade[2]},${options.shade[3]})`;
       }
+    } else {
+      shade.style.display = "none";
     }
     if (options.shadeClose) {
       const shade = document.querySelector(`#yam-layer-shade${this.layerId}`) as HTMLElement;
@@ -186,14 +229,27 @@ export default class layer {
     if (options.move) {
       if (typeof options.move === "string") {
         const move = document.querySelector(options.move) as HTMLElement;
+        move.style.userSelect = "none";
+        move.style.cursor = "move";
         move.addEventListener("mousedown", (e) => {
           const x = e.clientX - layer.offsetLeft;
           const y = e.clientY - layer.offsetTop;
           document.onmousemove = (e) => {
-            const left = e.clientX - x;
-            const top = e.clientY - y;
-            layer.style.left = left + "px";
-            layer.style.top = top + "px";
+            layer.style.left = e.clientX - x + "px";
+            layer.style.top = e.clientY - y + "px";
+            // 拖动div，禁止拖动超出屏幕
+            if (e.clientX - x < 0) {
+              layer.style.left = 0 + "px";
+            }
+            if (e.clientX - x > window.innerWidth - layer.clientWidth) {
+              layer.style.left = window.innerWidth - layer.clientWidth + "px";
+            }
+            if (e.clientY - y < 0) {
+              layer.style.top = 0 + "px";
+            }
+            if (e.clientY - y > window.innerHeight - layer.clientHeight) {
+              layer.style.top = window.innerHeight - layer.clientHeight + "px";
+            }
           };
           document.onmouseup = () => {
             document.onmousemove = null;
@@ -201,21 +257,36 @@ export default class layer {
           };
         });
       } else {
-        const move = document.querySelector(`#yam-layer${this.layerId}`) as HTMLElement;
-        move.addEventListener("mousedown", (e) => {
-          const x = e.clientX - layer.offsetLeft;
-          const y = e.clientY - layer.offsetTop;
-          document.onmousemove = (e) => {
-            const left = e.clientX - x;
-            const top = e.clientY - y;
-            layer.style.left = left + "px";
-            layer.style.top = top + "px";
-          };
-          document.onmouseup = () => {
-            document.onmousemove = null;
-            document.onmouseup = null;
-          };
-        });
+        const move = document.querySelector(`#yam-layer${this.layerId} .yam-layer-title`) as HTMLElement;
+        if (move) {
+          move.style.userSelect = "none";
+          move.style.cursor = "move";
+          move.addEventListener("mousedown", (e) => {
+            const x = e.clientX - layer.offsetLeft;
+            const y = e.clientY - layer.offsetTop;
+            document.onmousemove = (e) => {
+              layer.style.left = e.clientX - x + "px";
+              layer.style.top = e.clientY - y + "px";
+              // 拖动div，禁止拖动超出屏幕
+              if (e.clientX - x < 0) {
+                layer.style.left = 0 + "px";
+              }
+              if (e.clientX - x > window.innerWidth - layer.clientWidth) {
+                layer.style.left = window.innerWidth - layer.clientWidth + "px";
+              }
+              if (e.clientY - y < 0) {
+                layer.style.top = 0 + "px";
+              }
+              if (e.clientY - y > window.innerHeight - layer.clientHeight) {
+                layer.style.top = window.innerHeight - layer.clientHeight + "px";
+              }
+            };
+            document.onmouseup = () => {
+              document.onmousemove = null;
+              document.onmouseup = null;
+            };
+          });
+        }
       }
     }
     // if (options.yes) {
