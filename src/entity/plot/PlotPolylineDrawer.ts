@@ -144,6 +144,7 @@ export default class PlotPolylineDrawer {
 
       //进入编辑状态
       this.isClickConfirm = true;
+      this.clear();
       this._showModifyPolyline2Map(); // 这句注释能够做到右键撤销上次绘制的线
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 
