@@ -1,15 +1,18 @@
 import PlotPointDrawer from "./PlotPointDrawer";
 
 import './css/plot.css'
+import PlotPolylineDrawer from "./PlotPolylineDrawer";
 
 export default class PlotTracker {
   viewer: any;
   ctrArr: any = [];
   pointDrawer: PlotPointDrawer;
+  polylineDrawer: PlotPolylineDrawer;
 
   constructor(viewer: any) {
     this.viewer = viewer;
     this.pointDrawer = new PlotPointDrawer(viewer);
+    this.polylineDrawer = new PlotPolylineDrawer(viewer);
     this.ctrArr.push(this.pointDrawer);
   }
 
@@ -33,5 +36,14 @@ export default class PlotTracker {
       this.ctrArr.push(this.pointDrawer);
     }
     return this.pointDrawer.startDrawPoint(options);
+  }
+
+  trackPolyline(options: any) {
+    this.clear();
+    if (this.polylineDrawer == null) {
+      this.polylineDrawer = new PlotPolylineDrawer(this.viewer);
+      this.ctrArr.push(this.polylineDrawer);
+    }
+    return this.polylineDrawer.startDrawPolyline(options);
   }
 }

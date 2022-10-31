@@ -141,6 +141,41 @@ export default class Plot {
     });
   }
 
+  drawPolyline(options?: any) {
+    const objId = (new Date()).getTime() + "";
+    return new Promise((resolve, reject) => {
+      this.plotTracker.trackPolyline(options).then((positions: any) => {
+        this.draw.shapeDic[objId] = positions;
+        let entity = this.createPolyline(positions, objId);
+        resolve({ positions: positions, entity: entity });
+      }).catch((err: any) => {
+        reject(err);
+      });
+    });
+  }
+
+  createPolyline(positions: any, objId: string) {
+    const material = new Cesium.PolylineGlowMaterialProperty({
+      glowPower: 0.25,
+      color: Cesium.Color.fromCssColorString("#00f").withAlpha(0.9)
+    });
+    const bData = {
+      name: "折线",
+      layerId: this.draw.layerId,
+      objId: objId,
+      shapeType: "Polyline",
+      polyline: {
+        positions: positions,
+        clampToGround: true,
+        width: 8,
+        material: material
+      }
+    };
+    const entity = this.viewer.entities.add(bData);
+    this.draw.shape.push(entity);
+    return entity;
+  }
+
   clearEntityById(objId: string) {
     let _this = this;
     let entityList = _this.viewer.entities.values;
@@ -156,7 +191,7 @@ export default class Plot {
     }
   }
 
-  getParams(objId: string) {
+  getEntity(objId: string) {
     let _this = this;
     let entityList = _this.viewer.entities.values;
     if (entityList == null || entityList.length < 1) {

@@ -42,6 +42,7 @@
     <div>
       <button id="drawPoint">绘制点</button>
       <button id="editPoint">编辑点</button>
+      <button id="drawPolyline">绘制折线</button>
     </div>
   </div>
 </div>
@@ -228,6 +229,20 @@
     });
   });
 
+  document.querySelector("#drawPolyline").addEventListener("click", () => {
+    plot.drawPolyline({
+      confirmHandler1: function() {
+        return new Promise((resolve, reject) => {
+          confirm("确定要添加吗？") ? resolve() : reject();
+        });
+      }
+    }).then((data) => {
+      console.log(data);
+      console.log("绘制完成");
+    }).catch(() => {
+      console.log("取消添加");
+    });
+  });
 
 </script>
 </body>
