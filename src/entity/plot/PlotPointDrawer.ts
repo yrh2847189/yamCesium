@@ -4,7 +4,7 @@ import layer from "../../plugins/lib/layer/Layer";
 import Plot from "./plot";
 
 interface drawOptions {
-  confirmHandler: Function; // 自定义确认弹窗事件
+  confirmHandler?: Function; // 自定义确认弹窗事件
   position?: any;
 }
 
@@ -121,6 +121,7 @@ export default class PlotPointDrawer {
       const timeId = setInterval(() => {
         // 如果确认点位则清楚定时器
         if (this.isClickConfirm) {
+          this.isClickConfirm = false;
           clearInterval(timeId);
           // 如果自定义了确认按钮则显示自定义按钮
           if (options && options.confirmHandler) {

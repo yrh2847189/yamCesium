@@ -7,6 +7,7 @@ interface Draw {
   shape: Array<any>,
   shapeDic: any,
 }
+
 interface _editParams {
   objId: string,
   isEdit: boolean,
@@ -23,7 +24,11 @@ export default class Plot {
   };
   plotTracker: PlotTracker;
   editHandler: any;
-  _editParams: any;
+  _editParams: _editParams = {
+    objId: "",
+    isEdit: false,
+    shapeType: ""
+  };
 
   constructor(viewer: any) {
     this.viewer = viewer;
@@ -60,11 +65,11 @@ export default class Plot {
             break;
           case "Point":
             this.draw.flag = 0;
-            this._editParams ={
+            this._editParams = {
               objId: objId,
               isEdit: true,
               shapeType: obj.shapeType
-            }
+            };
             break;
           case "BufferLine":
             this.draw.flag = 0;
@@ -96,10 +101,14 @@ export default class Plot {
     this.plotTracker.clear();
     return new Promise((resolve, reject) => {
       const timeId = setInterval(() => {
-        if (this._isEdit) {
+        if (this._editParams.isEdit) {
           clearInterval(timeId);
-          this.editPoint(objId).then((res: any) => {
+          this.editPoint(this._editParams.objId).then((res: any) => {
+            this._editParams.isEdit = false;
             resolve(res);
+          }).catch(() => {
+            this._editParams.isEdit = false;
+            reject();
           });
         }
       }, 100);
@@ -110,6 +119,7 @@ export default class Plot {
     const objId = (new Date()).getTime() + "";
     return new Promise((resolve, reject) => {
       this.plotTracker.trackPoint(options).then((position: any) => {
+        this.draw.shapeDic[objId] = position;
         const cartographics = Cesium.Cartographic.fromCartesian(position);
         let lat = Cesium.Math.toDegrees(cartographics.latitude);
         let lng = Cesium.Math.toDegrees(cartographics.longitude);
@@ -159,13 +169,16 @@ export default class Plot {
   }
 
   editPoint(objId: string) {
-    const oldPosition = this.draw.shapeDic[objId];
-
+    let oldPosition = this.draw.shapeDic[objId];
+    if (oldPosition instanceof Cesium.Cartesian3) {
+      oldPosition = JSON.parse(JSON.stringify(oldPosition));
+    }
     //先移除entity
     this.clearEntityById(objId);
 
     return new Promise((resolve, reject) => {
-      this.plotTracker.pointDrawer.showModifyPoint(oldPosition).then((position: any) => {
+      this.plotTracker.pointDrawer.showModifyPoint({ position: oldPosition }).then((position: any) => {
+        this.draw.shapeDic[objId] = position;
         let res = this.showPoint({ position: position, objId: objId });
         resolve(res);
       }).catch(() => {
