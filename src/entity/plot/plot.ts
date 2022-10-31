@@ -29,6 +29,7 @@ export default class Plot {
     isEdit: false,
     shapeType: ""
   };
+  _shapeTypes: Array<string> = ["Polygon", "Polyline", "Rectangle", "Circle", "Point", "BufferLine", "StraightArrow", "AttackArrow", "PincerArrow"];
 
   constructor(viewer: any) {
     this.viewer = viewer;
@@ -49,43 +50,13 @@ export default class Plot {
       }
       const objId = obj.objId;
       //flag为编辑或删除标识,1为编辑，2为删除
-      if (this.draw.flag == 1) {
-        switch (obj.shapeType) {
-          case "Polygon":
-            this.draw.flag = 0;
-            break;
-          case "Polyline":
-            this.draw.flag = 0;
-            break;
-          case "Rectangle":
-            this.draw.flag = 0;
-            break;
-          case "Circle":
-            this.draw.flag = 0;
-            break;
-          case "Point":
-            this.draw.flag = 0;
-            this._editParams = {
-              objId: objId,
-              isEdit: true,
-              shapeType: obj.shapeType
-            };
-            break;
-          case "BufferLine":
-            this.draw.flag = 0;
-            break;
-          case "StraightArrow":
-            this.draw.flag = 0;
-            break;
-          case "AttackArrow":
-            this.draw.flag = 0;
-            break;
-          case "PincerArrow":
-            this.draw.flag = 0;
-            break;
-          default:
-            break;
-        }
+      if (this.draw.flag == 1 && this._shapeTypes.indexOf(obj.shapeType) > -1) {
+        this.draw.flag = 0;
+        this._editParams = {
+          objId: objId,
+          isEdit: true,
+          shapeType: obj.shapeType
+        };
       } else if (this.draw.flag == 2) {
         this.clearEntityById(objId);
       }
