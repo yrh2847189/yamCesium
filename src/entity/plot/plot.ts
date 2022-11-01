@@ -71,7 +71,8 @@ export default class Plot {
       const timeId = setInterval(() => {
         if (this._editParams.isEdit) {
           clearInterval(timeId);
-          this.editPoint(this._editParams.objId).then((res: any) => {
+          // @ts-ignore
+          this[`edit${this._editParams.shapeType}`](this._editParams.objId).then((res: any) => {
             this._editParams.isEdit = false;
             resolve(res);
           }).catch(() => {
@@ -154,6 +155,12 @@ export default class Plot {
     });
   }
 
+  showPolyline(options: any) {
+    const { positions, objId } = options;
+    let entity = this.createPolyline(positions, objId);
+    return { positions: positions, entity: entity };
+  }
+
   createPolyline(positions: any, objId: string) {
     const material = new Cesium.PolylineGlowMaterialProperty({
       glowPower: 0.25,
@@ -175,6 +182,94 @@ export default class Plot {
     this.draw.shape.push(entity);
     return entity;
   }
+
+
+  editPolyline(objId: string) {
+    let oldPositions = this.draw.shapeDic[objId];
+    oldPositions = JSON.parse(JSON.stringify(oldPositions));
+    //先移除entity
+    this.clearEntityById(objId);
+    return new Promise((resolve, reject) => {
+      this.plotTracker.polylineDrawer.showModifyPolyline({ positions: oldPositions }).then((positions: any) => {
+        this.draw.shapeDic[objId] = positions;
+        let res = this.showPolyline({ positions: positions, objId: objId });
+        resolve(res);
+      }).catch(() => {
+        let res = this.showPolyline({ positions: oldPositions, objId: objId });
+        reject(res);
+      });
+    });
+  }
+
+  drawPolygon(options?: any) {
+    const objId = (new Date()).getTime() + "";
+    return new Promise((resolve, reject) => {
+      this.plotTracker.trackPolygon(options).then((positions: any) => {
+        console.log(positions);
+        this.draw.shapeDic[objId] = positions;
+        let entity = this.createPolygon(positions, objId);
+        resolve({ positions: positions, entity: entity });
+      }).catch((err: any) => {
+        reject(err);
+      });
+    });
+  }
+
+  showPolygon(options: any) {
+    const { positions, objId } = options;
+    let entity = this.createPolygon(positions, objId);
+    return { positions: positions, entity: entity };
+  }
+
+  createPolygon(positions: Array<any>, objId: string) {
+    let outlineMaterial = new Cesium.PolylineDashMaterialProperty({
+      dashLength: 16,
+      color: Cesium.Color.fromCssColorString("#00f").withAlpha(0.7)
+    });
+    // @ts-ignore
+    let outlinePositions = [].concat(positions);
+    // @ts-ignore
+    outlinePositions.push(positions[0]);
+    let bData = {
+      layerId: this.draw.layerId,
+      objId: objId,
+      shapeType: "Polygon",
+      cType: "plot",
+      polyline: {
+        positions: outlinePositions,
+        clampToGround: true,
+        width: 2,
+        material: outlineMaterial
+      },
+      polygon: {
+        hierarchy: positions,
+        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+        asynchronous: false,
+        material: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
+      }
+    };
+    return this.viewer.entities.add(bData);
+  }
+
+
+  editPolygon(objId: string) {
+    let oldPositions = this.draw.shapeDic[objId];
+    oldPositions = JSON.parse(JSON.stringify(oldPositions));
+    //先移除entity
+    this.clearEntityById(objId);
+    return new Promise((resolve, reject) => {
+      this.plotTracker.polygonDrawer.showModifyPolygon({ positions: oldPositions }).then((positions: any) => {
+        console.log(positions);
+        this.draw.shapeDic[objId] = positions;
+        let res = this.showPolygon({ positions: positions, objId: objId });
+        resolve(res);
+      }).catch(() => {
+        let res = this.showPolygon({ positions: oldPositions, objId: objId });
+        reject(res);
+      });
+    });
+  }
+
 
   clearEntityById(objId: string) {
     let _this = this;

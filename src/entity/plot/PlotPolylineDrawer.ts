@@ -56,21 +56,45 @@ export default class PlotPolylineDrawer {
     this.tooltip.setVisible(false);
   }
 
-  showModifyPolyline(positions: any, oldParams: any, okHandler: any, cancelHandler: any) {
-    let _this = this;
-    _this.positions = positions;
-    _this.okHandler = okHandler;
-    _this.cancelHandler = cancelHandler;
-    _this.params = oldParams;
-    _this.shapeColor = _this.params.color;
-    _this.shapeName = _this.params.name;
-    _this.width = _this.params.width;
-    _this._showModifyPolyline2Map();
+  showModifyPolyline(options: any) {
+    this.positions = options.positions;
+
+    this.isClickConfirm = false;
+
+    this._showModifyPolyline2Map();
+    // 如果自定义了确认按钮则显示自定义按钮
+    return new Promise((resolve, reject) => {
+      if (options && options.confirmHandler) {
+        // confirmHandler需返回一个promise事件
+        options.confirmHandler().then(() => {
+          const positions = this._getPositionsWithSid();
+          const lonLats = this._getLonLats(positions);
+          this.positions = positions;
+          resolve(this.positions);
+          this.clear();
+        }).catch(() => {
+          this.clear();
+          reject();
+        });
+      } else {
+        this._showToolBar().then(() => {
+          const positions = this._getPositionsWithSid();
+          const lonLats = this._getLonLats(positions);
+          this.positions = positions;
+          resolve(this.positions);
+          this.clear();
+        }).catch(() => {
+          this.clear();
+          reject();
+        });
+      }
+    })
+    // return
   }
 
   startDrawPolyline(options: any) {
 
-    this.positions = [];
+    this.positions = options.positions || [];
     this.shapeColor = "rgba(255,255,255,1)"; // 设置自定义的绘图颜色
     this.drawHandler = new Cesium.ScreenSpaceEventHandler(this.canvas);
     this.drawHandler.setInputAction((event: any) => {
@@ -486,7 +510,7 @@ export default class PlotPolylineDrawer {
     return new Promise<void>((resolve, reject) => {
       layer.confirm({
         title: false,
-        content: "是否确认该点位？",
+        content: "是否完成绘制？",
         type: 1,
         area: ["300px", "200px"],
         offset: "80px",

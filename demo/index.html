@@ -41,8 +41,9 @@
     </div>
     <div>
       <button id="drawPoint">绘制点</button>
-      <button id="editPoint">编辑点</button>
       <button id="drawPolyline">绘制折线</button>
+      <button id="drawPolygon">绘制多边形</button>
+      <button id="editShape">编辑图形</button>
     </div>
   </div>
 </div>
@@ -220,15 +221,6 @@
     });
   });
 
-  document.querySelector("#editPoint").addEventListener("click", () => {
-    plot.editShape().then((data) => {
-      // console.log(data);
-      console.log("编辑成功");
-    }).catch(() => {
-      console.log("取消编辑");
-    });
-  });
-
   document.querySelector("#drawPolyline").addEventListener("click", () => {
     plot.drawPolyline({
       confirmHandler1: function() {
@@ -243,7 +235,30 @@
       console.log("取消添加");
     });
   });
+  document.querySelector("#drawPolygon").addEventListener("click", () => {
+    plot.drawPolygon({
+      confirmHandler1: function() {
+        return new Promise((resolve, reject) => {
+          confirm("确定要添加吗？") ? resolve() : reject();
+        });
+      }
+    }).then((data) => {
+      console.log(data);
+      console.log("绘制完成");
+    }).catch(() => {
+      console.log("取消添加");
+    });
+  });
 
+
+  document.querySelector("#editShape").addEventListener("click", () => {
+    plot.editShape().then((data) => {
+      console.log(data);
+      console.log("编辑成功");
+    }).catch(() => {
+      console.log("取消编辑");
+    });
+  });
 </script>
 </body>
 
