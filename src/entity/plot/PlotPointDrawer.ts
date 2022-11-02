@@ -1,4 +1,4 @@
-import PlotToolTip from "./GlobeTooltip";
+import PlotToolTip from "./PlotToolTip";
 import Cesium from "../../cesium/Cesium";
 import layer from "../../plugins/lib/layer/Layer";
 import Plot from "./plot";

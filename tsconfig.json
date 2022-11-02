@@ -1,8 +1,9 @@
 {
-	"compilerOptions": {
-		"target": "ES2015",
+  "include": ["src/**/*"],
+  "compilerOptions": {
+		"target": "ES6",
 		"module": "ES2015",
 		"strict": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
   }
 }

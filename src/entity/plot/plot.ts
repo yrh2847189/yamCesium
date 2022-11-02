@@ -123,15 +123,13 @@ export default class Plot {
   }
 
   editPoint(objId: string) {
-    let oldPosition = this.draw.shapeDic[objId];
-    if (oldPosition instanceof Cesium.Cartesian3) {
-      oldPosition = JSON.parse(JSON.stringify(oldPosition));
-    }
+    let position = this.draw.shapeDic[objId];
+    let oldPosition = JSON.parse(JSON.stringify(position));
     //先移除entity
     this.clearEntityById(objId);
 
     return new Promise((resolve, reject) => {
-      this.plotTracker.pointDrawer.showModifyPoint({ position: oldPosition }).then((position: any) => {
+      this.plotTracker.pointDrawer.showModifyPoint({ position: position }).then((position: any) => {
         this.draw.shapeDic[objId] = position;
         let res = this.showPoint({ position: position, objId: objId });
         resolve(res);
@@ -164,7 +162,7 @@ export default class Plot {
   createPolyline(positions: any, objId: string) {
     const material = new Cesium.PolylineGlowMaterialProperty({
       glowPower: 0.25,
-      color: Cesium.Color.fromCssColorString("#00f").withAlpha(0.9)
+      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
     });
     const bData = {
       name: "折线",
@@ -185,12 +183,12 @@ export default class Plot {
 
 
   editPolyline(objId: string) {
-    let oldPositions = this.draw.shapeDic[objId];
-    oldPositions = JSON.parse(JSON.stringify(oldPositions));
+    let positions = this.draw.shapeDic[objId];
+    let oldPositions = JSON.parse(JSON.stringify(positions));
     //先移除entity
     this.clearEntityById(objId);
     return new Promise((resolve, reject) => {
-      this.plotTracker.polylineDrawer.showModifyPolyline({ positions: oldPositions }).then((positions: any) => {
+      this.plotTracker.polylineDrawer.showModifyPolyline({ positions: positions }).then((positions: any) => {
         this.draw.shapeDic[objId] = positions;
         let res = this.showPolyline({ positions: positions, objId: objId });
         resolve(res);
@@ -224,7 +222,7 @@ export default class Plot {
   createPolygon(positions: Array<any>, objId: string) {
     let outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString("#00f").withAlpha(0.7)
+      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
     });
     // @ts-ignore
     let outlinePositions = [].concat(positions);
@@ -248,23 +246,200 @@ export default class Plot {
         material: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
       }
     };
-    return this.viewer.entities.add(bData);
+    const entity = this.viewer.entities.add(bData);
+    this.draw.shape.push(entity);
+    return entity;
   }
 
 
   editPolygon(objId: string) {
-    let oldPositions = this.draw.shapeDic[objId];
-    oldPositions = JSON.parse(JSON.stringify(oldPositions));
+    let positions = this.draw.shapeDic[objId];
+    let oldPositions = JSON.parse(JSON.stringify(positions));
     //先移除entity
     this.clearEntityById(objId);
     return new Promise((resolve, reject) => {
-      this.plotTracker.polygonDrawer.showModifyPolygon({ positions: oldPositions }).then((positions: any) => {
+      this.plotTracker.polygonDrawer.showModifyPolygon({ positions: positions }).then((positions: any) => {
         console.log(positions);
         this.draw.shapeDic[objId] = positions;
         let res = this.showPolygon({ positions: positions, objId: objId });
         resolve(res);
       }).catch(() => {
         let res = this.showPolygon({ positions: oldPositions, objId: objId });
+        reject(res);
+      });
+    });
+  }
+
+  drawRectangle(options?: any) {
+    const objId = (new Date()).getTime() + "";
+    return new Promise((resolve, reject) => {
+      this.plotTracker.trackRectangle(options).then((positions: any) => {
+        console.log(positions);
+        this.draw.shapeDic[objId] = positions;
+        let entity = this.createRectangle(positions, objId);
+        resolve({ positions: positions, entity: entity });
+      }).catch((err: any) => {
+        reject(err);
+      });
+    });
+  }
+
+  showRectangle(options: any) {
+    const { positions, objId } = options;
+    let entity = this.createRectangle(positions, objId);
+    return { positions: positions, entity: entity };
+  }
+
+  createRectangle(positions: Array<any>, objId: string) {
+    let material = new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)"));
+    let outlineMaterial = new Cesium.PolylineDashMaterialProperty({
+      dashLength: 16,
+      color: Cesium.Color.fromCssColorString('rgba(67,106,190,0.5)')
+    });
+    let rect = Cesium.Rectangle.fromCartesianArray(positions);
+    let arr = [rect.west, rect.north, rect.east, rect.north, rect.east, rect.south, rect.west, rect.south, rect.west,
+      rect.north
+    ];
+    let outlinePositions = Cesium.Cartesian3.fromRadiansArray(arr);
+    let bData = {
+      rectanglePosition: positions,
+      layerId: this.draw.layerId,
+      objId: objId,
+      shapeType: "Rectangle",
+      polyline: {
+          positions: outlinePositions,
+          clampToGround: true,
+          width: 2,
+          material: outlineMaterial
+      },
+      rectangle: {
+        coordinates: rect,
+        material: material
+      }
+    };
+    const entity = this.viewer.entities.add(bData);
+    this.draw.shape.push(entity)
+    return entity;
+  }
+
+
+  editRectangle(objId: string) {
+    let positions = this.draw.shapeDic[objId];
+    let oldPositions = JSON.parse(JSON.stringify(positions));
+    //先移除entity
+    this.clearEntityById(objId);
+    return new Promise((resolve, reject) => {
+      this.plotTracker.rectangleDrawer.showModifyRectangle({ positions: positions }).then((positions: any) => {
+        console.log(positions);
+        this.draw.shapeDic[objId] = positions;
+        let res = this.showRectangle({ positions: positions, objId: objId });
+        resolve(res);
+      }).catch(() => {
+        this.draw.shapeDic[objId] = oldPositions;
+        let res = this.showRectangle({ positions: oldPositions, objId: objId });
+        reject(res);
+      });
+    });
+  }
+
+  drawCircle(options?: any) {
+    const objId = (new Date()).getTime() + "";
+    return new Promise((resolve, reject) => {
+      this.plotTracker.trackCircle(options).then((positions: any) => {
+        console.log(positions);
+        this.draw.shapeDic[objId] = positions;
+        let entity = this.createCircle(positions, objId);
+        resolve({ positions: positions, entity: entity });
+      }).catch((err: any) => {
+        reject(err);
+      });
+    });
+  }
+
+  showCircle(options: any) {
+    const { positions, objId } = options;
+    let entity = this.createCircle(positions, objId);
+    return { positions: positions, entity: entity };
+  }
+
+  createCircle(positions: any, objId: string) {
+    var distance = 0;
+    for (let i = 0; i < positions.length - 1; i++) {
+      const point1cartographic = Cesium.Cartographic.fromCartesian(positions[i]);
+      const point2cartographic = Cesium.Cartographic.fromCartesian(positions[i + 1]);
+      /**根据经纬度计算出距离**/
+      const geodesic = new Cesium.EllipsoidGeodesic();
+      geodesic.setEndPoints(point1cartographic, point2cartographic);
+      let s = geodesic.surfaceDistance;
+      //返回两点之间的距离
+      //			s = Math.sqrt(Math.pow(s, 2) + Math.pow(point2cartographic.height - point1cartographic.height, 2));
+      s = Math.abs(point2cartographic.height - point1cartographic.height);
+      distance = distance + s;
+    }
+    const material = Cesium.Color.fromCssColorString("#ff0").withAlpha(0.5);
+    const outlineMaterial = new Cesium.PolylineGlowMaterialProperty({
+      // dashLength: 16,
+      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.7)")
+    });
+    const radiusMaterial = new Cesium.PolylineGlowMaterialProperty({
+      dashLength: 16,
+      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
+    });
+    const pnts = this.plotTracker.circleDrawer._computeCirclePolygon(positions);
+    const dis = this.plotTracker.circleDrawer._computeCircleRadius3D(positions);
+    // dis = (dis / 1000).toFixed(3);
+    const value = typeof positions.getValue === "function" ? positions.getValue(0) : positions;
+    const text = dis + "km";
+    const r = Math.sqrt(Math.pow(value[0].x - value[value.length - 1].x, 2) + Math.pow(value[0].y - value[value.length - 1].y, 2));
+    // var r = Math.sqrt(Math.pow(value[0].x - value[value.length - 1].x, 2) + Math.pow(value[0].y - value[value.length - 1].y, 2));
+
+    const bData = {
+      circlePosition: positions,
+      layerId: this.draw.layerId,
+      objId: objId,
+      shapeType: "Circle",
+      position: positions[0],
+      ellipse: {
+        semiMajorAxis: dis ? dis : dis + 1,
+        semiMinorAxis: dis ? dis : dis + 1,
+        material: material,
+        outline: true
+      },
+      polyline: {
+        positions: pnts,
+        clampToGround: true,
+        width: 2,
+        material: outlineMaterial
+      }
+    };
+
+    const outlineBdata = {
+      layerId: this.draw.layerId,
+      objId: objId,
+      shapeType: "CircleOutline"
+
+    };
+    const entity = this.viewer.entities.add(bData);
+    this.draw.shape.push(entity);
+    // const outlineEntity = this.viewer.entities.add(outlineBdata);
+    // this.draw.shape.push(outlineEntity)
+    return entity;
+  }
+
+
+  editCircle(objId: string) {
+    let positions = this.draw.shapeDic[objId];
+    let oldPositions = JSON.parse(JSON.stringify(positions));
+    //先移除entity
+    this.clearEntityById(objId);
+    return new Promise((resolve, reject) => {
+      this.plotTracker.circleDrawer.showModifyCircle({ positions: positions }).then((positions: any) => {
+        console.log(positions);
+        this.draw.shapeDic[objId] = positions;
+        let res = this.showCircle({ positions: positions, objId: objId });
+        resolve(res);
+      }).catch(() => {
+        let res = this.showCircle({ positions: oldPositions, objId: objId });
         reject(res);
       });
     });

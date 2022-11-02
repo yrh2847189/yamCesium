@@ -6,10 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>初始化地球</title>
-  <link rel="stylesheet"
-        href="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Widgets/widgets.css" />
-  <script type="text/javascript"
-          src="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Cesium.js"></script>
+  <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/1.85/Build/Cesium/Widgets/widgets.css" />
+  <script type="text/javascript" src="https://cesium.com/downloads/cesiumjs/releases/1.85/Build/Cesium/Cesium.js"></script>
   <style>
     html,
     body,
@@ -43,6 +41,8 @@
       <button id="drawPoint">绘制点</button>
       <button id="drawPolyline">绘制折线</button>
       <button id="drawPolygon">绘制多边形</button>
+      <button id="drawRectangle">绘制矩形</button>
+      <button id="drawCircle">绘制圆形</button>
       <button id="editShape">编辑图形</button>
     </div>
   </div>
@@ -237,6 +237,35 @@
   });
   document.querySelector("#drawPolygon").addEventListener("click", () => {
     plot.drawPolygon({
+      confirmHandler1: function() {
+        return new Promise((resolve, reject) => {
+          confirm("确定要添加吗？") ? resolve() : reject();
+        });
+      }
+    }).then((data) => {
+      console.log(data);
+      console.log("绘制完成");
+    }).catch(() => {
+      console.log("取消添加");
+    });
+  });
+
+  document.querySelector("#drawCircle").addEventListener("click", () => {
+    plot.drawCircle({
+      confirmHandler1: function() {
+        return new Promise((resolve, reject) => {
+          confirm("确定要添加吗？") ? resolve() : reject();
+        });
+      }
+    }).then((data) => {
+      console.log(data);
+      console.log("绘制完成");
+    }).catch(() => {
+      console.log("取消添加");
+    });
+  });
+  document.querySelector("#drawRectangle").addEventListener("click", () => {
+    plot.drawRectangle({
       confirmHandler1: function() {
         return new Promise((resolve, reject) => {
           confirm("确定要添加吗？") ? resolve() : reject();

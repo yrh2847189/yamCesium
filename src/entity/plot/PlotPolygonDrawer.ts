@@ -1,4 +1,4 @@
-import PlotToolTip from "./GlobeTooltip";
+import PlotToolTip from "./PlotToolTip";
 import Cesium from "../../cesium/Cesium";
 import layer from "../../plugins/lib/layer/Layer";
 
@@ -123,7 +123,7 @@ export default class PlotPolygonDrawer {
 
     // let definedColor = $("#paigusu").data("color2");
     // if (definedColor) {
-    _this.shapeColor = "#0000FFB2"; // 设置自定义的绘图颜色
+    _this.shapeColor = "rgba(67,106,190,0.5)"; // 设置自定义的绘图颜色
     // }
     _this.drawHandler.setInputAction((event: any) => {
       // viewer.scene.screenSpaceCameraController.enableRotate = false; //锁定相机
@@ -196,7 +196,6 @@ export default class PlotPolygonDrawer {
       _this.clear();
       _this._showModifyRegion2Map();
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
-
 
     return new Promise((resolve, reject) => {
       // 等待点击确认点位
@@ -345,7 +344,7 @@ export default class PlotPolygonDrawer {
     // if (_this.outlineMaterial == null) {
     _this.outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString("#00f").withAlpha(0.7)
+      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
     });
     // }
     let dynamicHierarchy = new Cesium.CallbackProperty(function() {
@@ -418,7 +417,7 @@ export default class PlotPolygonDrawer {
     // if (_this.outlineMaterial == null) {
     _this.outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString("#00f").withAlpha(0.7)
+      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
     });
     // }
     let bData = {

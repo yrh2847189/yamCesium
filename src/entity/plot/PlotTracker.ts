@@ -1,8 +1,10 @@
 import PlotPointDrawer from "./PlotPointDrawer";
 
-import './css/plot.css'
+import "./css/plot.css";
 import PlotPolylineDrawer from "./PlotPolylineDrawer";
 import PlotPolygonDrawer from "./PlotPolygonDrawer";
+import PlotCircleDrawer from "./PlotCircleDrawer";
+import PlotRectangleDrawer from "./PlotRectangleDrawer";
 
 export default class PlotTracker {
   viewer: any;
@@ -10,12 +12,16 @@ export default class PlotTracker {
   pointDrawer: PlotPointDrawer;
   polylineDrawer: PlotPolylineDrawer;
   polygonDrawer: PlotPolygonDrawer;
+  rectangleDrawer: PlotRectangleDrawer;
+  circleDrawer: PlotCircleDrawer;
 
   constructor(viewer: any) {
     this.viewer = viewer;
     this.pointDrawer = new PlotPointDrawer(viewer);
     this.polylineDrawer = new PlotPolylineDrawer(viewer);
     this.polygonDrawer = new PlotPolygonDrawer(viewer);
+    this.rectangleDrawer = new PlotRectangleDrawer(viewer);
+    this.circleDrawer = new PlotCircleDrawer(viewer);
     this.ctrArr.push(this.pointDrawer);
   }
 
@@ -57,5 +63,23 @@ export default class PlotTracker {
       this.ctrArr.push(this.polygonDrawer);
     }
     return this.polygonDrawer.startDrawPolygon(options);
+  }
+
+  trackRectangle(options: any) {
+    this.clear();
+    if (this.rectangleDrawer == null) {
+      this.rectangleDrawer = new PlotRectangleDrawer(this.viewer);
+      this.ctrArr.push(this.rectangleDrawer);
+    }
+    return this.rectangleDrawer.startDrawRectangle(options);
+  }
+
+  trackCircle(options: any) {
+    this.clear();
+    if (this.circleDrawer == null) {
+      this.circleDrawer = new PlotCircleDrawer(this.viewer);
+      this.ctrArr.push(this.circleDrawer);
+    }
+    return this.circleDrawer.startDrawCircle(options);
   }
 }
