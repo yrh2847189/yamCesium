@@ -5,6 +5,9 @@ import PlotPolylineDrawer from "./PlotPolylineDrawer";
 import PlotPolygonDrawer from "./PlotPolygonDrawer";
 import PlotCircleDrawer from "./PlotCircleDrawer";
 import PlotRectangleDrawer from "./PlotRectangleDrawer";
+import PlotAttackArrowDrawer from "./PlotAttackArrowDrawer";
+import PlotPincerArrowDrawer from "./PlotPincerArrowDrawer";
+import PlotStraightArrowDrawer from "./PlotStraightArrowDrawer";
 
 export default class PlotTracker {
   viewer: any;
@@ -14,6 +17,9 @@ export default class PlotTracker {
   polygonDrawer: PlotPolygonDrawer;
   rectangleDrawer: PlotRectangleDrawer;
   circleDrawer: PlotCircleDrawer;
+  attackArrowDrawer: PlotAttackArrowDrawer;
+  pincerArrowDrawer: PlotPincerArrowDrawer;
+  straightArrowDrawer: PlotStraightArrowDrawer;
 
   constructor(viewer: any) {
     this.viewer = viewer;
@@ -22,6 +28,9 @@ export default class PlotTracker {
     this.polygonDrawer = new PlotPolygonDrawer(viewer);
     this.rectangleDrawer = new PlotRectangleDrawer(viewer);
     this.circleDrawer = new PlotCircleDrawer(viewer);
+    this.attackArrowDrawer = new PlotAttackArrowDrawer(viewer);
+    this.pincerArrowDrawer = new PlotPincerArrowDrawer(viewer);
+    this.straightArrowDrawer = new PlotStraightArrowDrawer(viewer);
     this.ctrArr.push(this.pointDrawer);
   }
 
@@ -81,5 +90,32 @@ export default class PlotTracker {
       this.ctrArr.push(this.circleDrawer);
     }
     return this.circleDrawer.startDrawCircle(options);
+  }
+
+  trackAttackArrow(options: any) {
+    this.clear();
+    if (this.attackArrowDrawer == null) {
+      this.attackArrowDrawer = new PlotAttackArrowDrawer(this.viewer);
+      this.ctrArr.push(this.attackArrowDrawer);
+    }
+    return this.attackArrowDrawer.startDrawAttackArrow(options);
+  }
+
+  trackPincerArrow(options: any) {
+    this.clear();
+    if (this.pincerArrowDrawer == null) {
+      this.pincerArrowDrawer = new PlotPincerArrowDrawer(this.viewer);
+      this.ctrArr.push(this.pincerArrowDrawer);
+    }
+    return this.pincerArrowDrawer.startDrawPincerArrow(options);
+  }
+
+  trackStraightArrow(options: any) {
+    this.clear();
+    if (this.straightArrowDrawer == null) {
+      this.straightArrowDrawer = new PlotStraightArrowDrawer(this.viewer);
+      this.ctrArr.push(this.straightArrowDrawer);
+    }
+    return this.straightArrowDrawer.startDrawStraightArrow(options);
   }
 }

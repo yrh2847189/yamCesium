@@ -294,7 +294,7 @@ export default class Plot {
     let material = new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)"));
     let outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString('rgba(67,106,190,0.5)')
+      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
     });
     let rect = Cesium.Rectangle.fromCartesianArray(positions);
     let arr = [rect.west, rect.north, rect.east, rect.north, rect.east, rect.south, rect.west, rect.south, rect.west,
@@ -307,10 +307,10 @@ export default class Plot {
       objId: objId,
       shapeType: "Rectangle",
       polyline: {
-          positions: outlinePositions,
-          clampToGround: true,
-          width: 2,
-          material: outlineMaterial
+        positions: outlinePositions,
+        clampToGround: true,
+        width: 2,
+        material: outlineMaterial
       },
       rectangle: {
         coordinates: rect,
@@ -318,7 +318,7 @@ export default class Plot {
       }
     };
     const entity = this.viewer.entities.add(bData);
-    this.draw.shape.push(entity)
+    this.draw.shape.push(entity);
     return entity;
   }
 
@@ -363,7 +363,7 @@ export default class Plot {
   }
 
   createCircle(positions: any, objId: string) {
-    var distance = 0;
+    let distance = 0;
     for (let i = 0; i < positions.length - 1; i++) {
       const point1cartographic = Cesium.Cartographic.fromCartesian(positions[i]);
       const point2cartographic = Cesium.Cartographic.fromCartesian(positions[i + 1]);
@@ -440,6 +440,238 @@ export default class Plot {
         resolve(res);
       }).catch(() => {
         let res = this.showCircle({ positions: oldPositions, objId: objId });
+        reject(res);
+      });
+    });
+  }
+
+  drawAttackArrow(options?: any) {
+    const objId = (new Date()).getTime() + "";
+    return new Promise((resolve, reject) => {
+      this.plotTracker.trackAttackArrow(options).then((data: any) => {
+        this.draw.shapeDic[objId] = {
+          custom: data.custom,
+          positions: data.positions
+        };
+        let entity = this.createAttackArrow(data.positions, objId);
+        resolve({ data: data, entity: entity });
+      }).catch((err: any) => {
+        reject(err);
+      });
+    });
+  }
+
+  showAttackArrow(options: any) {
+    const { positions, objId } = options;
+    let entity = this.createAttackArrow(positions, objId);
+    return { positions: positions, entity: entity };
+  }
+
+  createAttackArrow(positions: any, objId: string) {
+    const material = Cesium.Color.fromCssColorString("#ff0").withAlpha(0.5);
+    const outlineMaterial = new Cesium.PolylineDashMaterialProperty({
+      dashLength: 16,
+      color: Cesium.Color.fromCssColorString("#f00").withAlpha(0.7)
+    });
+    const outlinePositions: any = [].concat(positions);
+    outlinePositions.push(positions[0]);
+    const bData = {
+      layerId: this.draw.layerId,
+      objId: objId,
+      shapeType: "AttackArrow",
+      polyline: {
+        positions: outlinePositions,
+        clampToGround: true,
+        width: 2,
+        material: outlineMaterial
+      },
+      polygon: new Cesium.PolygonGraphics({
+        hierarchy: positions,
+        asynchronous: false,
+        material: material
+      })
+    };
+    const entity = this.viewer.entities.add(bData);
+    this.draw.shape.push(entity);
+    return entity;
+  }
+
+
+  editAttackArrow(objId: string) {
+    let data = this.draw.shapeDic[objId];
+    let oldData = JSON.parse(JSON.stringify(data));
+    //先移除entity
+    this.clearEntityById(objId);
+    return new Promise((resolve, reject) => {
+      this.plotTracker.attackArrowDrawer.showModifyAttackArrow({ custom: data.custom }).then((data: any) => {
+        //保存编辑结果
+        this.draw.shapeDic[objId] = {
+          custom: data.custom,
+          positions: data.positions
+        };
+        let res = this.showAttackArrow({ positions: data.positions, objId: objId });
+        resolve(res);
+      }).catch(() => {
+        //保存编辑结果
+        this.draw.shapeDic[objId] = {
+          custom: oldData.custom,
+          positions: oldData.positions
+        };
+        let res = this.showAttackArrow({ positions: oldData.positions, objId: objId });
+        reject(res);
+      });
+    });
+  }
+
+  drawPincerArrow(options?: any) {
+    const objId = (new Date()).getTime() + "";
+    return new Promise((resolve, reject) => {
+      this.plotTracker.trackPincerArrow(options).then((data: any) => {
+        this.draw.shapeDic[objId] = {
+          custom: data.custom,
+          positions: data.positions
+        };
+        let entity = this.createPincerArrow(data.positions, objId);
+        resolve({ data: data, entity: entity });
+      }).catch((err: any) => {
+        reject(err);
+      });
+    });
+  }
+
+  showPincerArrow(options: any) {
+    const { positions, objId } = options;
+    let entity = this.createPincerArrow(positions, objId);
+    return { positions: positions, entity: entity };
+  }
+
+  createPincerArrow(positions: any, objId: string) {
+    const material = Cesium.Color.fromCssColorString("#ff0").withAlpha(0.5);
+    const outlineMaterial = new Cesium.PolylineDashMaterialProperty({
+      dashLength: 16,
+      color: Cesium.Color.fromCssColorString("#f00").withAlpha(0.7)
+    });
+    const outlinePositions: any = [].concat(positions);
+    outlinePositions.push(positions[0]);
+    const bData = {
+      layerId: this.draw.layerId,
+      objId: objId,
+      shapeType: "PincerArrow",
+      polyline: {
+        positions: outlinePositions,
+        clampToGround: true,
+        width: 2,
+        material: outlineMaterial
+      },
+      polygon: new Cesium.PolygonGraphics({
+        hierarchy: positions,
+        asynchronous: false,
+        material: material
+      })
+    };
+    const entity = this.viewer.entities.add(bData);
+    this.draw.shape.push(entity);
+    return entity;
+  }
+
+
+  editPincerArrow(objId: string) {
+    let data = this.draw.shapeDic[objId];
+    let oldData = JSON.parse(JSON.stringify(data));
+    //先移除entity
+    this.clearEntityById(objId);
+    return new Promise((resolve, reject) => {
+      this.plotTracker.pincerArrowDrawer.showModifyPincerArrow({ custom: data.custom }).then((data: any) => {
+        //保存编辑结果
+        this.draw.shapeDic[objId] = {
+          custom: data.custom,
+          positions: data.positions
+        };
+        let res = this.showPincerArrow({ positions: data.positions, objId: objId });
+        resolve(res);
+      }).catch(() => {
+        //保存编辑结果
+        this.draw.shapeDic[objId] = {
+          custom: oldData.custom,
+          positions: oldData.positions
+        };
+        let res = this.showPincerArrow({ positions: oldData.positions, objId: objId });
+        reject(res);
+      });
+    });
+  }
+
+
+  drawStraightArrow(options?: any) {
+    const objId = (new Date()).getTime() + "";
+    return new Promise((resolve, reject) => {
+      this.plotTracker.trackStraightArrow(options).then((positions: any) => {
+        this.draw.shapeDic[objId] = {
+          positions: positions
+        };
+        let entity = this.createStraightArrow(positions, objId);
+        resolve({ positions: positions, entity: entity });
+      }).catch((err: any) => {
+        reject(err);
+      });
+    });
+  }
+
+  showStraightArrow(options: any) {
+    const { positions, objId } = options;
+    let entity = this.createStraightArrow(positions, objId);
+    return { positions: positions, entity: entity };
+  }
+
+  createStraightArrow(positions: any, objId: string) {
+    const material = Cesium.Color.fromCssColorString("#ff0").withAlpha(0.5);
+    const outlineMaterial = new Cesium.PolylineDashMaterialProperty({
+      dashLength: 16,
+      color: Cesium.Color.fromCssColorString("#f00").withAlpha(0.7)
+    });
+    const outlinePositions: any = [].concat(positions);
+    outlinePositions.push(positions[0]);
+    const bData = {
+      layerId: this.draw.layerId,
+      objId: objId,
+      shapeType: "StraightArrow",
+      polyline: {
+        positions: outlinePositions,
+        clampToGround: true,
+        width: 2,
+        material: outlineMaterial
+      },
+      polygon: new Cesium.PolygonGraphics({
+        hierarchy: positions,
+        asynchronous: false,
+        material: material
+      })
+    };
+    const entity = this.viewer.entities.add(bData);
+    this.draw.shape.push(entity);
+    return entity;
+  }
+
+
+  editStraightArrow(objId: string) {
+    let positions = this.draw.shapeDic[objId].positions;
+    let oldPositions = JSON.parse(JSON.stringify(positions));
+    //先移除entity
+    this.clearEntityById(objId);
+    return new Promise((resolve, reject) => {
+      this.plotTracker.straightArrowDrawer.showModifyStraightArrow({ positions: positions }).then((positions: any) => {
+        //保存编辑结果
+        this.draw.shapeDic[objId] = {
+          positions: positions
+        };
+        let res = this.showStraightArrow({ positions: positions, objId: objId });
+        resolve(res);
+      }).catch(() => {
+        //保存编辑结果
+        this.draw.shapeDic[objId] = {
+          positions: oldPositions
+        };
+        let res = this.showStraightArrow({ positions: oldPositions, objId: objId });
         reject(res);
       });
     });
