@@ -34,6 +34,8 @@ module.exports = {
     library: 'yamCesium',
     // libraryExport: ['func', 'sum'],
     libraryTarget: 'umd',
+    // umdNamedDefine: true, // umdNamedDefine为设置amd前置名称使用library设置的变量
+    // globalObject: this, // globalObject为改变全局指向
     // 输出的路径  是绝对路径(导入path模块) 这里是用node来做的
     path: path.resolve(__dirname, "dist"),
     // 输出的文件名称
