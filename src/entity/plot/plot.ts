@@ -72,6 +72,7 @@ export default class Plot {
   }
 
   editShape() {
+    // TODO 编辑图形时使用自定义弹窗
     this.draw.flag = 1;
     //清除标绘状态
     this.plotTracker.clear();
