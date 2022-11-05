@@ -122,7 +122,7 @@ export default class PlotRectangleDrawer {
 
     // let definedColor = $("#paigusu").data("color2");
     // if (definedColor) {
-    _this.shapeColor = "rgba(255, 255, 0)"; // 设置自定义的绘图颜色
+    _this.shapeColor = "rgba(67,106,190,0.5)"; // 设置自定义的绘图颜色
     // }
 
     _this.drawHandler = new Cesium.ScreenSpaceEventHandler(_this.canvas);
@@ -307,12 +307,12 @@ export default class PlotRectangleDrawer {
   _showRegion2Map() {
     let _this = this;
     // if (_this.material == null) {
-    _this.material = Cesium.Color.fromCssColorString("#ffff00").withAlpha(0.5);
+    _this.material = Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)");
     // }
     // if (_this.outlineMaterial == null) {
     _this.outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
+      color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
     // }
     let dynamicPositions = new Cesium.CallbackProperty(function() {
@@ -354,12 +354,12 @@ export default class PlotRectangleDrawer {
   _showModifyRegion2Map() {
     let _this = this;
     // if (_this.material == null) {
-    _this.material = Cesium.Color.fromCssColorString("#ff0").withAlpha(0.5);
+    _this.material = Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)");
     // }
     // if (_this.outlineMaterial == null) {
     _this.outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
+      color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
     // }
     let dynamicPositions = new Cesium.CallbackProperty(function() {

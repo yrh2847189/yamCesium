@@ -320,13 +320,13 @@ export default class PlotCircleDrawer {
   _showRegion2Map() {
     let _this = this;
     // if (_this.material == null) {
-    _this.material = Cesium.Color.fromCssColorString("rgba(67,106,190,0.7)");
+    _this.material = Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)");
     // }
     if (_this.radiusLineMaterial == null) {
-      // _this.radiusLineMaterial = new Cesium.PolylineDashMaterialProperty({
-      //     dashLength: 16,
-      //     color: Cesium.Color.fromCssColorString(_this.outlineColor)
-      // });
+      _this.radiusLineMaterial = new Cesium.PolylineDashMaterialProperty({
+          dashLength: 16,
+          color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
+      });
     }
     let dynamicHierarchy = new Cesium.CallbackProperty(() => {
       if (_this.positions.length > 1) {
@@ -358,17 +358,16 @@ export default class PlotCircleDrawer {
     }, false);
     let bData = {
       position: labelDynamicPosition,
-      label: {
-        text: "",
-        font: "14px Helvetica",
-        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-        eyeOffset: new Cesium.ConstantProperty(new Cesium.Cartesian3(0, 0, -9000)),
-        pixelOffset: new Cesium.Cartesian2(16, 16)
-      },
       polygon: new Cesium.PolygonGraphics({
         hierarchy: dynamicHierarchy,
         material: _this.material
-      })
+      }),
+      polyline: {
+        positions: lineDynamicPositions,
+        clampToGround: true,
+        width: 2,
+        material: _this.radiusLineMaterial
+      }
     };
     if (_this.extrudedHeight > 0) {
       bData.polygon.extrudedHeight = _this.extrudedHeight;
@@ -383,13 +382,13 @@ export default class PlotCircleDrawer {
   _showModifyRegion2Map() {
     let _this = this;
     // if (_this.material == null) {
-    _this.material = Cesium.Color.fromCssColorString("rgba(67,106,190,0.7)");
+    _this.material = Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)");
     // }
     if (_this.radiusLineMaterial == null) {
-      // _this.radiusLineMaterial = new Cesium.PolylineDashMaterialProperty({
-      //     dashLength: 16,
-      //     color: Cesium.Color.fromCssColorString('#00f').withAlpha(0.7)
-      // });
+      _this.radiusLineMaterial = new Cesium.PolylineDashMaterialProperty({
+          dashLength: 16,
+          color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
+      });
     }
     let dynamicHierarchy = new Cesium.CallbackProperty(function() {
       let dis: any = _this._computeCircleRadius3D(_this.positions);
@@ -419,16 +418,16 @@ export default class PlotCircleDrawer {
     dis = (dis / 1000).toFixed(3) + "km";
     let bData = {
       position: labelDynamicPosition,
-      label: {
-        font: "14px Helvetica",
-        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-        eyeOffset: new Cesium.ConstantProperty(new Cesium.Cartesian3(0, 0, -9000)),
-        pixelOffset: new Cesium.Cartesian2(16, 16)
-      },
       polygon: new Cesium.PolygonGraphics({
         hierarchy: dynamicHierarchy,
         material: _this.material
-      })
+      }),
+      polyline: {
+        positions: lineDynamicPositions,
+        clampToGround: true,
+        width: 2,
+        material: _this.radiusLineMaterial
+      }
     };
     if (_this.extrudedHeight > 0) {
       bData.polygon.extrudedHeight = _this.extrudedHeight;
@@ -446,7 +445,7 @@ export default class PlotCircleDrawer {
     let _this = this;
     // if (_this.outlineMaterial == null) {
     _this.outlineMaterial = new Cesium.PolylineGlowMaterialProperty({
-      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
+      color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
     // }
     let outelinePositions = new Cesium.CallbackProperty(function() {

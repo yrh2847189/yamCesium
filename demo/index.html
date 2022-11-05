@@ -6,9 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>初始化地球</title>
-  <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/1.85/Build/Cesium/Widgets/widgets.css" />
-  <script type="text/javascript"
-          src="https://cesium.com/downloads/cesiumjs/releases/1.85/Build/Cesium/Cesium.js"></script>
+  <link rel="stylesheet" href="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Widgets/widgets.css" />
+  <script type="text/javascript" src="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Cesium.js"></script>
+
   <style>
     html,
     body,
@@ -48,6 +48,7 @@
       <button id="drawPincerArrow">绘制钳击箭头</button>
       <button id="drawStraightArrow">绘制直线箭头</button>
       <button id="editShape">编辑图形</button>
+      <button id="moveShape">移动图形</button>
     </div>
   </div>
 </div>
@@ -63,7 +64,8 @@
         //通过canvas.toDataURL()实现截图需要将该项设置为true
         preserveDrawingBuffer: true
       }
-    }
+    },
+    terrainProvider: Cesium.createWorldTerrain()
   });
 
   const map = new yamCesium.Map(viewer);
@@ -334,6 +336,30 @@
       console.log("编辑成功");
     }).catch(() => {
       console.log("取消编辑");
+    });
+  });
+
+  // document.querySelector("#deleteShape").addEventListener("click", () => {
+  //   plot.deleteShape().then((data) => {
+  //     console.log(data);
+  //     console.log("删除成功");
+  //   }).catch(() => {
+  //     console.log("取消删除");
+  //   });
+  // });
+
+  document.querySelector("#moveShape").addEventListener("click", () => {
+    // plot.moveShape().then((data) => {
+    //   console.log(data);
+    //   console.log("移动成功");
+    // }).catch(() => {
+    //   console.log("取消移动");
+    // });
+    plot.moveDrawer.moveShape().then(entity =>{
+      console.log(entity);
+      console.log("移动成功");
+    }).catch(() => {
+      console.log("取消移动");
     });
   });
 </script>

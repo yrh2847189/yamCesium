@@ -1,5 +1,6 @@
 import Cesium from "../../cesium/Cesium";
 import PlotTracker from "./PlotTracker";
+import PlotMoveDrawer from "./PlotMoveDrawer";
 
 interface Draw {
   flag: number,
@@ -23,6 +24,7 @@ export default class Plot {
     shapeDic: {}
   };
   plotTracker: PlotTracker;
+  moveDrawer: PlotMoveDrawer;
   editHandler: any;
   _editParams: _editParams = {
     objId: "",
@@ -34,6 +36,7 @@ export default class Plot {
   constructor(viewer: any) {
     this.viewer = viewer;
     this.plotTracker = new PlotTracker(this.viewer);
+    this.moveDrawer = new PlotMoveDrawer(this.viewer, this);
     this.bindGloveEvent();
   }
 
@@ -63,6 +66,11 @@ export default class Plot {
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   }
 
+  moveShape() {
+    this.plotTracker.clear();
+    return this.moveDrawer.moveShape();
+  }
+
   editShape() {
     this.draw.flag = 1;
     //清除标绘状态
@@ -85,6 +93,7 @@ export default class Plot {
   }
 
   drawPoint(options?: any) {
+    this.draw.flag = 0;
     const objId = (new Date()).getTime() + "";
     return new Promise((resolve, reject) => {
       this.plotTracker.trackPoint(options).then((position: any) => {
@@ -134,6 +143,7 @@ export default class Plot {
         let res = this.showPoint({ position: position, objId: objId });
         resolve(res);
       }).catch(() => {
+        this.draw.shapeDic[objId] = oldPosition;
         let res = this.showPoint({ position: oldPosition, objId: objId });
         reject(res);
       });
@@ -141,6 +151,7 @@ export default class Plot {
   }
 
   drawPolyline(options?: any) {
+    this.draw.flag = 0;
     const objId = (new Date()).getTime() + "";
     return new Promise((resolve, reject) => {
       this.plotTracker.trackPolyline(options).then((positions: any) => {
@@ -193,6 +204,7 @@ export default class Plot {
         let res = this.showPolyline({ positions: positions, objId: objId });
         resolve(res);
       }).catch(() => {
+        this.draw.shapeDic[objId] = oldPositions;
         let res = this.showPolyline({ positions: oldPositions, objId: objId });
         reject(res);
       });
@@ -200,6 +212,7 @@ export default class Plot {
   }
 
   drawPolygon(options?: any) {
+    this.draw.flag = 0;
     const objId = (new Date()).getTime() + "";
     return new Promise((resolve, reject) => {
       this.plotTracker.trackPolygon(options).then((positions: any) => {
@@ -222,7 +235,7 @@ export default class Plot {
   createPolygon(positions: Array<any>, objId: string) {
     let outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
+      color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
     // @ts-ignore
     let outlinePositions = [].concat(positions);
@@ -264,6 +277,7 @@ export default class Plot {
         let res = this.showPolygon({ positions: positions, objId: objId });
         resolve(res);
       }).catch(() => {
+        this.draw.shapeDic[objId] = oldPositions;
         let res = this.showPolygon({ positions: oldPositions, objId: objId });
         reject(res);
       });
@@ -271,6 +285,7 @@ export default class Plot {
   }
 
   drawRectangle(options?: any) {
+    this.draw.flag = 0;
     const objId = (new Date()).getTime() + "";
     return new Promise((resolve, reject) => {
       this.plotTracker.trackRectangle(options).then((positions: any) => {
@@ -294,7 +309,7 @@ export default class Plot {
     let material = new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)"));
     let outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
+      color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
     let rect = Cesium.Rectangle.fromCartesianArray(positions);
     let arr = [rect.west, rect.north, rect.east, rect.north, rect.east, rect.south, rect.west, rect.south, rect.west,
@@ -343,6 +358,7 @@ export default class Plot {
   }
 
   drawCircle(options?: any) {
+    this.draw.flag = 0;
     const objId = (new Date()).getTime() + "";
     return new Promise((resolve, reject) => {
       this.plotTracker.trackCircle(options).then((positions: any) => {
@@ -376,14 +392,14 @@ export default class Plot {
       s = Math.abs(point2cartographic.height - point1cartographic.height);
       distance = distance + s;
     }
-    const material = Cesium.Color.fromCssColorString("#ff0").withAlpha(0.5);
+    const material = Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)");
     const outlineMaterial = new Cesium.PolylineGlowMaterialProperty({
-      // dashLength: 16,
-      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.7)")
+      dashLength: 16,
+      color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
     const radiusMaterial = new Cesium.PolylineGlowMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
+      color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
     const pnts = this.plotTracker.circleDrawer._computeCirclePolygon(positions);
     const dis = this.plotTracker.circleDrawer._computeCircleRadius3D(positions);
@@ -402,8 +418,7 @@ export default class Plot {
       ellipse: {
         semiMajorAxis: dis ? dis : dis + 1,
         semiMinorAxis: dis ? dis : dis + 1,
-        material: material,
-        outline: true
+        material: material
       },
       polyline: {
         positions: pnts,
@@ -412,17 +427,8 @@ export default class Plot {
         material: outlineMaterial
       }
     };
-
-    const outlineBdata = {
-      layerId: this.draw.layerId,
-      objId: objId,
-      shapeType: "CircleOutline"
-
-    };
     const entity = this.viewer.entities.add(bData);
     this.draw.shape.push(entity);
-    // const outlineEntity = this.viewer.entities.add(outlineBdata);
-    // this.draw.shape.push(outlineEntity)
     return entity;
   }
 
@@ -439,6 +445,7 @@ export default class Plot {
         let res = this.showCircle({ positions: positions, objId: objId });
         resolve(res);
       }).catch(() => {
+        this.draw.shapeDic[objId] = oldPositions;
         let res = this.showCircle({ positions: oldPositions, objId: objId });
         reject(res);
       });
@@ -446,6 +453,7 @@ export default class Plot {
   }
 
   drawAttackArrow(options?: any) {
+    this.draw.flag = 0;
     const objId = (new Date()).getTime() + "";
     return new Promise((resolve, reject) => {
       this.plotTracker.trackAttackArrow(options).then((data: any) => {
@@ -468,10 +476,10 @@ export default class Plot {
   }
 
   createAttackArrow(positions: any, objId: string) {
-    const material = Cesium.Color.fromCssColorString("#ff0").withAlpha(0.5);
+    const material = Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)");
     const outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString("#f00").withAlpha(0.7)
+      color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
     const outlinePositions: any = [].concat(positions);
     outlinePositions.push(positions[0]);
@@ -524,6 +532,7 @@ export default class Plot {
   }
 
   drawPincerArrow(options?: any) {
+    this.draw.flag = 0;
     const objId = (new Date()).getTime() + "";
     return new Promise((resolve, reject) => {
       this.plotTracker.trackPincerArrow(options).then((data: any) => {
@@ -546,10 +555,10 @@ export default class Plot {
   }
 
   createPincerArrow(positions: any, objId: string) {
-    const material = Cesium.Color.fromCssColorString("#ff0").withAlpha(0.5);
+    const material = Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)");
     const outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString("#f00").withAlpha(0.7)
+      color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
     const outlinePositions: any = [].concat(positions);
     outlinePositions.push(positions[0]);
@@ -603,6 +612,7 @@ export default class Plot {
 
 
   drawStraightArrow(options?: any) {
+    this.draw.flag = 0;
     const objId = (new Date()).getTime() + "";
     return new Promise((resolve, reject) => {
       this.plotTracker.trackStraightArrow(options).then((positions: any) => {
@@ -624,10 +634,10 @@ export default class Plot {
   }
 
   createStraightArrow(positions: any, objId: string) {
-    const material = Cesium.Color.fromCssColorString("#ff0").withAlpha(0.5);
+    const material = Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)");
     const outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString("#f00").withAlpha(0.7)
+      color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
     const outlinePositions: any = [].concat(positions);
     outlinePositions.push(positions[0]);

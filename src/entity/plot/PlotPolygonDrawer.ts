@@ -344,7 +344,7 @@ export default class PlotPolygonDrawer {
     // if (_this.outlineMaterial == null) {
     _this.outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
+      color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
     // }
     let dynamicHierarchy = new Cesium.CallbackProperty(function() {
@@ -417,7 +417,7 @@ export default class PlotPolygonDrawer {
     // if (_this.outlineMaterial == null) {
     _this.outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
-      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
+      color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
     // }
     let bData = {
