@@ -1,5 +1,5 @@
 {
-  "name": "yamCesium",
+  "name": "yam-cesium",
   "version": "0.0.8",
   "description": "cesium组件",
   "main": "index.js",
