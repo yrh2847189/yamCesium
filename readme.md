@@ -68,3 +68,7 @@ npm run build
 **2022-11-05**
 
 绘制图形
+
+**2022-11-06**
+
+安装Cesium，引入Cesium.d.ts
