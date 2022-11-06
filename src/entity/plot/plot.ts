@@ -1,4 +1,4 @@
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 import PlotTracker from "./PlotTracker";
 import PlotMoveDrawer from "./PlotMoveDrawer";
 
@@ -395,10 +395,12 @@ export default class Plot {
     }
     const material = Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)");
     const outlineMaterial = new Cesium.PolylineGlowMaterialProperty({
+    // @ts-ignore
       dashLength: 16,
       color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
     const radiusMaterial = new Cesium.PolylineGlowMaterialProperty({
+      // @ts-ignore
       dashLength: 16,
       color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
@@ -496,6 +498,7 @@ export default class Plot {
       },
       polygon: new Cesium.PolygonGraphics({
         hierarchy: positions,
+        // @ts-ignore
         asynchronous: false,
         material: material
       })
@@ -575,6 +578,7 @@ export default class Plot {
       },
       polygon: new Cesium.PolygonGraphics({
         hierarchy: positions,
+        // @ts-ignore
         asynchronous: false,
         material: material
       })
@@ -654,6 +658,7 @@ export default class Plot {
       },
       polygon: new Cesium.PolygonGraphics({
         hierarchy: positions,
+        // @ts-ignore
         asynchronous: false,
         material: material
       })

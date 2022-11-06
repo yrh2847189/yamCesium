@@ -1,5 +1,5 @@
 import PlotToolTip from "./PlotToolTip";
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 import layer from "../../plugins/lib/layer/Layer";
 
 export default class PlotPolygonDrawer {
@@ -379,12 +379,12 @@ export default class PlotPolygonDrawer {
         show: _this.outline
       }
     };
-    if (_this.extrudedHeight > 0) {
-      bData.polygon.extrudedHeight = _this.extrudedHeight;
-      bData.polygon.extrudedHeightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
-      bData.polygon.closeTop = true;
-      bData.polygon.closeBottom = true;
-    }
+    // if (_this.extrudedHeight > 0) {
+    //   bData.polygon.extrudedHeight = _this.extrudedHeight;
+    //   bData.polygon.extrudedHeightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
+    //   bData.polygon.closeTop = true;
+    //   bData.polygon.closeBottom = true;
+    // }
     _this.entity = _this.viewer.entities.add(bData);
     _this.entity.layerId = _this.layerId;
   }
@@ -434,13 +434,13 @@ export default class PlotPolygonDrawer {
         show: _this.outline
       }
     };
-    if (!_this.ground && _this.extrudedHeight > 0) { // 当贴地属性为false并且拉伸高度大于0时，拉伸
-      bData.polygon.extrudedHeight = _this.extrudedHeight;
-      bData.polygon.heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
-      // bData.polygon.extrudedHeightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
-      bData.polygon.closeTop = true;
-      bData.polygon.closeBottom = true;
-    }
+    // if (!_this.ground && _this.extrudedHeight > 0) { // 当贴地属性为false并且拉伸高度大于0时，拉伸
+    //   bData.polygon.extrudedHeight = _this.extrudedHeight;
+    //   bData.polygon.heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
+    //   // bData.polygon.extrudedHeightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
+    //   bData.polygon.closeTop = true;
+    //   bData.polygon.closeBottom = true;
+    // }
     _this.entity = _this.viewer.entities.add(bData);
     _this.entity.layerId = _this.layerId;
     let positions = _this.tempPositions;

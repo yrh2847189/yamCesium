@@ -1,4 +1,4 @@
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 import KDBush from 'kdbush'
 /**
  * Defines how screen space objects (billboards, points, labels) are clustered.
@@ -60,6 +60,7 @@ export default class PrimitiveCluster {
   _minimumClusterSizeDirty: boolean | undefined;
 
   constructor(options: primitiveCluster) {
+    // @ts-ignore
     options = Cesium.defaultValue(options, Cesium.defaultValue.EMPTY_OBJECT);
 
     this._enabled = Cesium.defaultValue(options.enabled, false);
@@ -657,16 +658,19 @@ const labelBoundingBoxScratch = new Cesium.BoundingRectangle();
 
 function getBoundingBox(item: any, coord: any, pixelRange: any, primitiveCluster: any, result: any) {
   if (Cesium.defined(item._labelCollection) && primitiveCluster._clusterLabels) {
+    // @ts-ignore
     result = Cesium.Label.getScreenSpaceBoundingBox(item, coord, result);
   } else if (
     Cesium.defined(item._billboardCollection) &&
     primitiveCluster._clusterBillboards
   ) {
+    // @ts-ignore
     result = Cesium.Billboard.getScreenSpaceBoundingBox(item, coord, result);
   } else if (
     Cesium.defined(item._pointPrimitiveCollection) &&
     primitiveCluster._clusterPoints
   ) {
+    // @ts-ignore
     result = Cesium.PointPrimitive.getScreenSpaceBoundingBox(item, coord, result);
   }
 
@@ -682,6 +686,7 @@ function getBoundingBox(item: any, coord: any, pixelRange: any, primitiveCluster
     const labelIndex =
       primitiveCluster._collectionIndicesByEntity[item.id.id].labelIndex;
     const label = primitiveCluster._labelCollection.get(labelIndex);
+    // @ts-ignore
     const labelBBox = Cesium.Label.getScreenSpaceBoundingBox(
       label,
       coord,
@@ -848,6 +853,7 @@ function createDeclutterCallback(primitiveCluster: any) {
 
     const ellipsoid = scene.mapProjection.ellipsoid;
     const cameraPosition = scene.camera.positionWC;
+    // @ts-ignore
     const occluder = new Cesium.EllipsoidalOccluder(ellipsoid, cameraPosition);
 
     const points: any = [];
@@ -904,6 +910,7 @@ function createDeclutterCallback(primitiveCluster: any) {
           continue;
         }
 
+        // @ts-ignore
         const coord = Cesium.Billboard._computeScreenSpacePosition(
           Cesium.Matrix4.IDENTITY,
           cluster.position,

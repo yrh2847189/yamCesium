@@ -1,6 +1,6 @@
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 import * as events from "events";
-
+// @ts-ignore
 const Knockout = Cesium.knockout;
 
 export default class Immersion {

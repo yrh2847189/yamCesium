@@ -1,9 +1,11 @@
 {
   "include": ["src/**/*"],
   "compilerOptions": {
-		"target": "ES6",
+		"target": "ES2015",
 		"module": "ES2015",
 		"strict": true,
     "allowSyntheticDefaultImports": true,
-  }
+    "moduleResolution": "node" // 设置该属性允许引入第三方库的d.ts文件
+  },
+  "types": ["cesium"]
 }

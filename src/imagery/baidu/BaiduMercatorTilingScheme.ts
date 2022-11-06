@@ -1,4 +1,4 @@
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 
 import BaiduMercatorProjection from './BaiduMercatorProjection'
 import CoordTransform from '../../transform/CoordTransform'
@@ -51,6 +51,7 @@ class BaiduMercatorTilingScheme extends Cesium.WebMercatorTilingScheme {
    * @param result
    * @returns {module:cesium.Rectangle|*}
    */
+  // @ts-ignore
   tileXYToNativeRectangle(x: number, y: number, level: string, result: any) {
     const tileWidth = this.resolutions[level]
     const west = x * tileWidth
@@ -76,6 +77,7 @@ class BaiduMercatorTilingScheme extends Cesium.WebMercatorTilingScheme {
    * @param result
    * @returns {undefined|*}
    */
+  // @ts-ignore
   positionToTileXY(position: any, level: string, result: any) {
     const rectangle = this._rectangle
     if (!Cesium.Rectangle.contains(rectangle, position)) {

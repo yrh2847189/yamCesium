@@ -1,4 +1,4 @@
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 const IMG_URL =
   'https://p{s}.map.gtimg.com/sateTiles/{z}/{sx}/{sy}/{x}_{reverseY}.jpg?version=400'
 

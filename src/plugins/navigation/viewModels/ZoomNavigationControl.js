@@ -1,4 +1,4 @@
-import Cesium from '../../../cesium/Cesium'
+import * as Cesium from "cesium";
 import NavigationControl from './NavigationControl'
 import Utils from '../core/Utils'
 var defined = Cesium.defined

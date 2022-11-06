@@ -1,4 +1,4 @@
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 
 export default class PlotMoveDrawer {
   viewer: any;
@@ -100,6 +100,7 @@ export default class PlotMoveDrawer {
         //记录按下去的坐标
         this.startPoint = this.viewer.scene.pickPosition(movement.position);
         this.viewer.scene.screenSpaceCameraController.enableRotate = false; //锁定相机
+        // @ts-ignore
         this.startTime = new Cesium.JulianDate.now();
         if (this.plot.flag == 0) {
           switch (this.obj.shapeType) {
@@ -308,6 +309,7 @@ export default class PlotMoveDrawer {
                 let arr = [rect.west, rect.north, rect.east, rect.north, rect.east, rect.south, rect.west, rect.south, rect.west, rect.north];
                 this.savePolylineCurrentsPoint = Cesium.Cartesian3.fromRadiansArray(arr);
               }
+              // TODO 移动圆形有问题
               if (this.pointDragged.id.shapeType == "Circle") {
                 this.currentsPoint = [];
                 for (let i = 0; i < this.ellipsePreviousCoordinates.length; i++) {

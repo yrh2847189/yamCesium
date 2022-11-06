@@ -1,5 +1,5 @@
 import { P } from "./plotUtil"
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 
 export const xp: any = {}
 let doubleArrowDefualParam = {
@@ -210,7 +210,7 @@ xp.algorithm = {},
         this.swallowTailFactor = tailedAttackArrowDefualParam.swallowTailFactor;
         this.swallowTailPnt = tailedAttackArrowDefualParam.swallowTailPnt;
         //控制点
-        let result = {
+        let result: any = {
             controlPoint: null,
             polygonalPoint: null
         };

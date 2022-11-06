@@ -1,5 +1,5 @@
 // import cm from "../lib/CesiumMethod";
-// import Cesium from "../../cesium/Cesium";
+// import * as Cesium from "cesium";
 //
 // interface ViewModel {
 //   measurePointEnabled: boolean,

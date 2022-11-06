@@ -1,4 +1,4 @@
-import Cesium from '../../cesium/Cesium'
+import * as Cesium from "cesium";
 import BaiduMercatorTilingScheme from './BaiduMercatorTilingScheme'
 
 const IMG_URL =
@@ -154,6 +154,7 @@ class BaiduImageryProvider {
         .replace('{x}', String(x - xTiles / 2))
         .replace('{y}', String(yTiles / 2 - y - 1))
     }
+    // @ts-ignore
     return Cesium.ImageryProvider.loadImage(this, url)
   }
 }

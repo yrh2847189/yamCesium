@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import Cesium from '../../../cesium/Cesium'
+import * as Cesium from "cesium";
 import loadView from '../core/loadView'
 var defined = Cesium.defined
 var DeveloperError = Cesium.DeveloperError

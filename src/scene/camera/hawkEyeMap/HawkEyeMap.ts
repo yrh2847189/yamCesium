@@ -1,6 +1,7 @@
-import Cesium from "../../../cesium/Cesium";
+import * as Cesium from "cesium";
 import "./hawkEyeMap.css";
 
+// @ts-ignore
 const Knockout = Cesium.knockout;
 
 export default class HawkEyeMap {

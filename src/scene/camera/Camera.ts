@@ -1,7 +1,7 @@
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 import Immersion from "./Immersion";
 import HawkEyeMap from "./hawkEyeMap/HawkEyeMap";
-
+// @ts-ignore
 const Knockout = Cesium.knockout;
 export default class Camera {
   viewer = null;

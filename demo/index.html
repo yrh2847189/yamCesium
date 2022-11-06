@@ -6,8 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>初始化地球</title>
-  <link rel="stylesheet" href="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Widgets/widgets.css" />
-  <script type="text/javascript" src="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Cesium.js"></script>
+  <link rel="stylesheet"
+        href="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Widgets/widgets.css" />
+  <script type="text/javascript"
+          src="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Cesium.js"></script>
 
   <style>
     html,
@@ -68,13 +70,14 @@
     terrainProvider: Cesium.createWorldTerrain()
   });
 
-  const map = new yamCesium.Map(viewer);
+  const yam = new yamCesium.Map(viewer);
 
   // 汉化
   yamCesium.CesiumZh.load();
 
   let options = {};
-  options.defaultResetView = Cesium.Rectangle.fromDegrees(78.443464, 14.801562, 126.103033, 49.773957);
+  // options.defaultResetView = Cesium.Rectangle.fromDegrees(78.443464, 14.801562, 126.103033, 49.773957);
+  options.defaultResetView = new Cesium.Cartographic(1.8439750668500852, 0.648469690572424, 4368466.038206122);
 
   // 指北针
   options.enableCompass = true;
@@ -96,18 +99,18 @@
   });
 
   document.querySelector("#immersion").addEventListener("click", () => {
-    map.camera.immersion.viewModel.enabled = !map.camera.immersion.viewModel.enabled;
+    yam.camera.immersion.viewModel.enabled = !yam.camera.immersion.viewModel.enabled;
   });
 
   document.querySelector("#firstPersonPerspective").addEventListener("click", () => {
-    map.camera.immersion.viewModel.firstPersonPerspective = !map.camera.immersion.viewModel.firstPersonPerspective;
+    yam.camera.immersion.viewModel.firstPersonPerspective = !yam.camera.immersion.viewModel.firstPersonPerspective;
   });
 
   document.querySelector("#hawkEye").addEventListener("click", () => {
-    map.camera.hawkEye.viewModel.enabled = !map.camera.hawkEye.viewModel.enabled;
+    yam.camera.hawkEye.viewModel.enabled = !yam.camera.hawkEye.viewModel.enabled;
     // 销毁鹰眼图
-    // map.camera.hawkEye.destroy();
-    console.log(map.camera.hawkEye.hawkEyeMap);
+    // yam.camera.hawkEye.destroy();
+    console.log("鹰眼图Viewer对象：", yam.camera.hawkEye.hawkEyeMap);
   });
 
   // primitive聚合
@@ -355,7 +358,7 @@
     // }).catch(() => {
     //   console.log("取消移动");
     // });
-    plot.moveDrawer.moveShape().then(entity =>{
+    plot.moveDrawer.moveShape().then(entity => {
       console.log(entity);
       console.log("移动成功");
     }).catch(() => {

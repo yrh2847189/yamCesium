@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import Cesium from '../../../cesium/Cesium'
+import * as Cesium from "cesium";
 
 var defined = Cesium.defined
 var Ray = Cesium.Ray

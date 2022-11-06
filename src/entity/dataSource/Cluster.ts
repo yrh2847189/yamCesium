@@ -6,7 +6,7 @@
  *
  * @desc 使用primitiveCollection原语集合与primitiveCluster原语集群，处理地图界面显示广告牌billboard数量 > 10w 级时，界面卡顿，浏览器崩溃等问题
  */
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 
 export default class Cluster {
     _v: any = null;
@@ -38,7 +38,8 @@ export default class Cluster {
             new Cesium.PrimitiveCollection()
         );
 
-        const primitiveCluster = new Cesium.PrimitiveCluster();
+        // @ts-ignore
+      const primitiveCluster = new Cesium.PrimitiveCluster();
         this.myPrimitives.add(primitiveCluster);
         primitiveCluster.delay = Cesium.defaultValue(options.delay, 800);
         primitiveCluster.enabled = Cesium.defaultValue(options.enabled, true);

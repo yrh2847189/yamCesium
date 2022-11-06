@@ -1,5 +1,5 @@
 import PlotToolTip from "./PlotToolTip";
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 import layer from "../../plugins/lib/layer/Layer";
 
 export default class PlotCircleDrawer {
@@ -333,7 +333,7 @@ export default class PlotCircleDrawer {
         let dis: any = _this._computeCircleRadius3D(_this.positions);
         dis = (dis / 1000).toFixed(3);
         //  _this.entity.label.text = dis + "km";
-        let pnts = _this._computeCirclePolygon(_this.positions);
+        let pnts = _this._computeCirclePolygon(_this.positions) as Cesium.Cartesian3[];
         return new Cesium.PolygonHierarchy(pnts);
       } else {
         return null;
@@ -369,12 +369,12 @@ export default class PlotCircleDrawer {
         material: _this.radiusLineMaterial
       }
     };
-    if (_this.extrudedHeight > 0) {
-      bData.polygon.extrudedHeight = _this.extrudedHeight;
-      bData.polygon.extrudedHeightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
-      bData.polygon.closeTop = true;
-      bData.polygon.closeBottom = true;
-    }
+    // if (_this.extrudedHeight > 0) {
+    //   bData.polygon.extrudedHeight = _this.extrudedHeight;
+    //   bData.polygon.extrudedHeightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
+    //   bData.polygon.closeTop = true;
+    //   bData.polygon.closeBottom = true;
+    // }
     _this.entity = _this.viewer.entities.add(bData);
     _this.entity.layerId = _this.layerId;
   }
@@ -394,7 +394,7 @@ export default class PlotCircleDrawer {
       let dis: any = _this._computeCircleRadius3D(_this.positions);
       dis = (dis / 1000).toFixed(3);
       // _this.entity.label.text = dis + "km";
-      let pnts = _this._computeCirclePolygon(_this.positions);
+      let pnts = _this._computeCirclePolygon(_this.positions) as Cesium.Cartesian3[];
       return new Cesium.PolygonHierarchy(pnts);
     }, false);
     let lineDynamicPositions = new Cesium.CallbackProperty(function() {
@@ -429,12 +429,12 @@ export default class PlotCircleDrawer {
         material: _this.radiusLineMaterial
       }
     };
-    if (_this.extrudedHeight > 0) {
-      bData.polygon.extrudedHeight = _this.extrudedHeight;
-      bData.polygon.extrudedHeightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
-      bData.polygon.closeTop = true;
-      bData.polygon.closeBottom = true;
-    }
+    // if (_this.extrudedHeight > 0) {
+    //   bData.polygon.extrudedHeight = _this.extrudedHeight;
+    //   bData.polygon.extrudedHeightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
+    //   bData.polygon.closeTop = true;
+    //   bData.polygon.closeBottom = true;
+    // }
     _this.entity = _this.viewer.entities.add(bData);
     _this.entity.layerId = _this.layerId;
     _this._createCenter(_this.positions[0], 0);
@@ -482,8 +482,7 @@ export default class PlotCircleDrawer {
       }
       let cp = positions[0];
       let r = _this._computeCircleRadius3D(positions);
-      let pnts = _this._computeCirclePolygon2(cp, r);
-      return pnts;
+      return _this._computeCirclePolygon2(cp, r);
     } catch (err) {
       return null;
     }
@@ -496,6 +495,7 @@ export default class PlotCircleDrawer {
       if (!center || radius <= 0) {
         return null;
       }
+      // @ts-ignore
       let cep = Cesium.EllipseGeometryLibrary.computeEllipsePositions({
         center: center,
         semiMajorAxis: radius,
@@ -522,6 +522,7 @@ export default class PlotCircleDrawer {
       if (!center || semiMajorAxis <= 0 || semiMinorAxis <= 0) {
         return null;
       }
+      // @ts-ignore
       let cep = Cesium.EllipseGeometryLibrary.computeEllipsePositions({
         center: center,
         semiMajorAxis: semiMajorAxis,

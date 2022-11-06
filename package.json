@@ -1,6 +1,6 @@
 {
   "name": "yam-cesium",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "cesium组件",
   "main": "index.js",
   "scripts": {
@@ -41,7 +41,9 @@
   },
   "dependencies": {
     "@turf/turf": "^6.5.0",
+    "@types/cesium": "^1.70.0",
     "@types/kdbush": "^3.0.1",
+    "cesium": "^1.99.0",
     "kdbush": "^3.0.0"
   }
 }

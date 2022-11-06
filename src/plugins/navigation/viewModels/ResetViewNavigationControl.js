@@ -1,5 +1,5 @@
 
-import Cesium from '../cesium/Cesium'
+import * as Cesium from "cesium";
 import svgReset from '../svgPaths/svgReset'
 import NavigationControl from './NavigationControl'
 

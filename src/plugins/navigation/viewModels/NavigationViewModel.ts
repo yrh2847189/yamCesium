@@ -1,4 +1,4 @@
-import Cesium from "../../../cesium/Cesium";
+import * as Cesium from "cesium";
 import loadView from "../core/loadView";
 import ResetViewNavigationControl from "./ResetViewNavigationControl";
 import ZoomNavigationControl from "./ZoomNavigationControl";
@@ -18,6 +18,7 @@ var Cartesian3 = Cesium.Cartesian3;
 var Matrix4 = Cesium.Matrix4;
 var BoundingSphere = Cesium.BoundingSphere;
 var HeadingPitchRange = Cesium.HeadingPitchRange;
+// @ts-ignore
 var Knockout = Cesium.knockout;
 
 var vectorScratch = new Cartesian2();

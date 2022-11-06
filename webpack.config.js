@@ -44,7 +44,9 @@ module.exports = {
       arrowFunction: false // 关闭webpack的箭头函数，可选
     }
   },
-
+  externals: {
+    cesium: 'Cesium' // 打包时忽略掉Cesium
+  },
   resolve: {
     extensions: [".ts", ".js", '.json']
   },

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 // import registerKnockoutBindings from './core/registerKnockoutBindings'
 import DistanceLegendViewModel from "./viewModels/DistanceLegendViewModel";
 import NavigationViewModel from "./viewModels/NavigationViewModel";
@@ -7,6 +7,7 @@ import NavigationViewModel from "./viewModels/NavigationViewModel";
 var defined = Cesium.defined;
 var definedProperties = Object.defineProperties;
 var CesiumEvent = Cesium.Event;
+// @ts-ignore
 var Knockout = Cesium.knockout;
 var DeveloperError = Cesium.DeveloperError;
 

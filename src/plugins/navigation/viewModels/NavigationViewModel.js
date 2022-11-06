@@ -1,4 +1,4 @@
-import Cesium from '../cesium/Cesium'
+import * as Cesium from "cesium";
 import loadView from '../core/loadView'
 import ResetViewNavigationControl from './ResetViewNavigationControl'
 import ZoomNavigationControl from './ZoomNavigationControl'
@@ -32,7 +32,7 @@ var NavigationViewModel = function (options) {
   if (!defined(this.controls)) {
     this.controls = [
       new ZoomNavigationControl(this.terria, true),
-      new ResetViewNavigationControl(this.terria),      
+      new ResetViewNavigationControl(this.terria),
       new ZoomNavigationControl(this.terria, false)
     ]
   }

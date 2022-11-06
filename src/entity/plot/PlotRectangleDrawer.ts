@@ -1,5 +1,5 @@
 import PlotToolTip from "./PlotToolTip";
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 import layer from "../../plugins/lib/layer/Layer";
 
 export default class PlotRectangleDrawer {

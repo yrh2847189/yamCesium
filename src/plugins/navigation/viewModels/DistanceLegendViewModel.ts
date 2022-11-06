@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import Cesium from "../../../cesium/Cesium";
+import * as Cesium from "cesium";
 import loadView from "../core/loadView";
 
 const defined = Cesium.defined;
@@ -8,6 +8,7 @@ const EllipsoidGeodesic = Cesium.EllipsoidGeodesic;
 const Cartesian2 = Cesium.Cartesian2;
 const getTimestamp = Cesium.getTimestamp;
 const EventHelper = Cesium.EventHelper;
+// @ts-ignore
 const Knockout = Cesium.knockout;
 
 const geodesic = new EllipsoidGeodesic();

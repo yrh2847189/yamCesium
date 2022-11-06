@@ -1,4 +1,4 @@
-import Cesium from "../../cesium/Cesium";
+import * as Cesium from "cesium";
 import PlotToolTip from "./PlotToolTip";
 import { xp } from "./algorithm";
 import layer from "../../plugins/lib/layer/Layer";
@@ -365,12 +365,12 @@ export default class PlotPincerArrowDrawer {
         show: _this.outline
       }
     };
-    if (_this.extrudedHeight > 0) {
-      bData.polygon.extrudedHeight = _this.extrudedHeight;
-      bData.polygon.extrudedHeightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
-      bData.polygon.closeTop = true;
-      bData.polygon.closeBottom = true;
-    }
+    // if (_this.extrudedHeight > 0) {
+    //   bData.polygon.extrudedHeight = _this.extrudedHeight;
+    //   bData.polygon.extrudedHeightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
+    //   bData.polygon.closeTop = true;
+    //   bData.polygon.closeBottom = true;
+    // }
     _this.entity = _this.viewer.entities.add(bData);
     _this.entity.layerId = _this.layerId;
   }
@@ -448,12 +448,12 @@ export default class PlotPincerArrowDrawer {
         show: _this.outline
       }
     };
-    if (_this.extrudedHeight > 0) {
-      bData.polygon.extrudedHeight = _this.extrudedHeight;
-      bData.polygon.extrudedHeightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
-      bData.polygon.closeTop = true;
-      bData.polygon.closeBottom = true;
-    }
+    // if (_this.extrudedHeight > 0) {
+    //   bData.polygon.extrudedHeight = _this.extrudedHeight;
+    //   bData.polygon.extrudedHeightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
+    //   bData.polygon.closeTop = true;
+    //   bData.polygon.closeBottom = true;
+    // }
     _this.entity = _this.viewer.entities.add(bData);
     _this.entity.layerId = _this.layerId;
     let positions = _this.positions;

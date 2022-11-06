@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import Cesium from '../../../cesium/Cesium'
+import * as Cesium from "cesium";
 import createFragmentFromTemplate from './createFragmentFromTemplate'
 var getElement = Cesium.getElement
 var Knockout = Cesium.knockout

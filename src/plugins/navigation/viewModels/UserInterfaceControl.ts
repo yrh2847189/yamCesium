@@ -1,8 +1,9 @@
-import Cesium from "../../../cesium/Cesium";
+import * as Cesium from "cesium";
 
 var defined = Cesium.defined;
 var defineProperties = Object.defineProperties;
 var DeveloperError = Cesium.DeveloperError;
+// @ts-ignore
 var Knockout = Cesium.knockout;
 
 /**

@@ -1,5 +1,4 @@
-import Cesium from "./cesium/Cesium";
-
+import * as Cesium from "cesium";
 const pkg = require("../package.json");
 // 设置版本号
 export const version = pkg.version;
@@ -18,10 +17,15 @@ import TencentImageryProvider from "./imagery/tencent/TencentImageryProvider";
 import TdtImageryProvider from "./imagery/tdt/TdtImageryProvider";
 import GoogleImageryProvider from "./imagery/google/GoogleImageryProvider";
 
+// @ts-ignore
 Cesium.AmapImageryProvider = AmapImageryProvider;
+// @ts-ignore
 Cesium.BaiduImageryProvider = BaiduImageryProvider;
+// @ts-ignore
 Cesium.TencentImageryProvider = TencentImageryProvider;
+// @ts-ignore
 Cesium.TdtImageryProvider = TdtImageryProvider;
+// @ts-ignore
 Cesium.GoogleImageryProvider = GoogleImageryProvider;
 
 // 坐标转换工具
@@ -35,6 +39,7 @@ import viewerCesiumNavigationMixin from "./plugins/navigation/viewerCesiumNaviga
 
 // export { CesiumNavigation };
 
+// @ts-ignore
 Cesium.viewerCesiumNavigationMixin = viewerCesiumNavigationMixin;
 
 // 截屏
@@ -61,6 +66,7 @@ export { PublicMethod };
 // primitive图元聚合 （打包KDBush会增加打包文件50kb）
 import PrimitiveCluster from "./entity/dataSource/PrimitiveCluster";
 
+// @ts-ignore
 Cesium.PrimitiveCluster = PrimitiveCluster;
 
 // 聚合工具类
