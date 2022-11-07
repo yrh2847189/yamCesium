@@ -1,4 +1,5 @@
 import * as Cesium from "cesium";
+
 const pkg = require("../package.json");
 // 设置版本号
 export const version = pkg.version;
@@ -80,4 +81,9 @@ import PlotTracker from "./entity/plot/PlotTracker";
 export { PlotTracker };
 
 import Plot from "./entity/plot/Plot";
+
 export { Plot };
+
+import MeasureTools from "./entity/plot/measure/MeasureTools";
+
+export { MeasureTools };

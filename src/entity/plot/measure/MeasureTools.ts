@@ -8,6 +8,7 @@ export default class MeasureTools {
   distance: number = 0;
   pointEntity: Cesium.Entity | undefined;
   tempEntityCollection: Cesium.Entity[] = [];
+  turf: any;
   viewModel: any = {
     measurePointEnabled: false,
     measureDistanceEnabled: false,
@@ -15,49 +16,78 @@ export default class MeasureTools {
     measureHeightEnabled: false
   };
 
-  constructor(viewer: Cesium.Viewer) {
+  constructor(viewer: Cesium.Viewer, turf: any) {
     this.viewer = viewer;
+    // @ts-ignore
+    this.turf = turf || window["turf"];
+    if (!this.turf) {
+      console.error("请引入turf.js");
+      return;
+    }
+    this.bindModel();
   }
 
-  closeFunction(funcName: string) {
-    let _this = this;
-    switch (funcName) {
-      case "位置测量":
-        // 移除最后一个label
-        if (_this.pointEntity) {
-          _this.viewer.entities.remove(_this.pointEntity);
+  /**
+   * 属性绑定
+   */
+  bindModel() {
+    // @ts-ignore
+    Cesium.knockout.track(this.viewModel);
+    // @ts-ignore
+    Cesium.knockout.getObservable(this.viewModel, "measurePointEnabled").subscribe(
+      (newValue: boolean) => {
+        this.clear();
+        if (newValue) {
+          this.closeOtherFunc("measurePointEnabled");
+          this.measurePoint();
+        } else {
+          this.clearTempEntity();
         }
-        _this.distance = 0;
-        break;
-      case "距离测量":
-        for (let i = 0; i < _this.tempEntityCollection.length; i++) {
-          _this.viewer.entities.remove(_this.tempEntityCollection[i]);
+      }
+    );
+    // @ts-ignore
+    Cesium.knockout.getObservable(this.viewModel, "measureDistanceEnabled").subscribe(
+      (newValue: boolean) => {
+        this.clear();
+        if (newValue) {
+          this.closeOtherFunc("measureDistanceEnabled");
+          this.measureDis();
+        } else {
+          this.clearTempEntity();
         }
-        _this.tempEntityCollection = [];
-        break;
-      case "面积测量":
-        for (let i = 0; i < _this.tempEntityCollection.length; i++) {
-          _this.viewer.entities.remove(_this.tempEntityCollection[i]);
+      }
+    );
+    // @ts-ignore
+    Cesium.knockout.getObservable(this.viewModel, "measureAreaEnabled").subscribe(
+      (newValue: boolean) => {
+        this.clear();
+        if (newValue) {
+          this.closeOtherFunc("measureAreaEnabled");
+          this.measureArea();
+        } else {
+          this.clearTempEntity();
         }
-        _this.tempEntityCollection = [];
-        break;
-      case "高度测量":
-        for (let i = 0; i < _this.tempEntityCollection.length; i++) {
-          _this.viewer.entities.remove(_this.tempEntityCollection[i]);
+      }
+    );
+    // @ts-ignore
+    Cesium.knockout.getObservable(this.viewModel, "measureHeightEnabled").subscribe(
+      (newValue: boolean) => {
+        this.clear();
+        if (newValue) {
+          this.closeOtherFunc("measureHeightEnabled");
+          this.measureHeight();
+        } else {
+          this.clearTempEntity();
         }
-        _this.tempEntityCollection = [];
-        break;
-    }
-
-    _this.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
-    _this.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-    _this.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.RIGHT_CLICK);
+      }
+    );
   }
 
   clear() {
     let _this = this;
     // 移除最后一个label
     if (_this.pointEntity) {
+
       _this.viewer.entities.remove(_this.pointEntity);
     }
     _this.distance = 0;
@@ -70,6 +100,7 @@ export default class MeasureTools {
   clearTempEntity() {
     let _this = this;
     for (let i = 0; i < _this.tempEntityCollection.length; i++) {
+
       _this.viewer.entities.remove(_this.tempEntityCollection[i]);
     }
     _this.tempEntityCollection = [];
@@ -93,6 +124,7 @@ export default class MeasureTools {
   destroy() {
     let _this = this;
     for (let i = 0; i < _this.entityCollection.length; i++) {
+
       _this.viewer.entities.remove(_this.entityCollection[i]);
     }
     _this.entityCollection = [];
@@ -108,8 +140,8 @@ export default class MeasureTools {
       if (!Cesium.defined(wp)) {
         return;
       }
-      let ray = _this.viewer.scene.camera.getPickRay(wp);
-      if (!ray || !Cesium.defined(ray)) {
+      let ray = _this.viewer.scene.camera.getPickRay(wp) as Cesium.Ray;
+      if (!Cesium.defined(ray)) {
         return;
       }
       let cartesian = _this.viewer.scene.globe.pick(ray, _this.viewer.scene);
@@ -122,7 +154,8 @@ export default class MeasureTools {
         let lat = Cesium.Math.toDegrees(cartographic.latitude).toFixed(4);
         let elev = _this.viewer.scene.globe.getHeight(cartographic)?.toFixed(2);
         let lengthText = "经度：" + lon + "\n" + "纬度：" + lat + "\n" + "高度：" + elev;
-        let entity = _this.addLabel(cartesian, lengthText);
+        // let entity = _this.addLabel(cartesian, lengthText);
+        let entity = _this.addLabelWithPoint(cartesian, lengthText);
         _this.entityCollection.push(entity);
         // _this.addPoint(cartesian);
       }
@@ -132,6 +165,7 @@ export default class MeasureTools {
     _this.viewer.screenSpaceEventHandler.setInputAction(function(moveEvent: any) {
       let movePosition = _this.viewer.scene.pickPosition(moveEvent.endPosition); // 鼠标移动的点
       if (_this.pointEntity) {
+
         _this.viewer.entities.remove(_this.pointEntity);
       }
       if (movePosition) {
@@ -143,7 +177,7 @@ export default class MeasureTools {
         let lat = Cesium.Math.toDegrees(cartographic.latitude).toFixed(4);
         let elev = _this.viewer.scene.globe.getHeight(cartographic)?.toFixed(2);
         let lengthText = "经度：" + lon + "\n" + "纬度：" + lat + "\n" + "高度：" + elev;
-        _this.pointEntity = _this.addLabel(movePosition, lengthText);
+        _this.pointEntity = _this.addLabelWithPoint(movePosition, lengthText);
         _this.entityCollection.push(_this.pointEntity);
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
@@ -151,6 +185,7 @@ export default class MeasureTools {
     // 右击结束
     _this.viewer.screenSpaceEventHandler.setInputAction(function(clickEvent: any) {
       // 移除最后一个label
+
       _this.pointEntity && _this.viewer.entities.remove(_this.pointEntity);
       _this.distance = 0;
       _this.tempEntityCollection = [];
@@ -159,65 +194,6 @@ export default class MeasureTools {
       _this.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.RIGHT_CLICK);
       _this.viewModel.measurePointEnabled = false;
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
-  }
-
-  measurePolyLine() {
-    let _this = this;
-    let positions: Cesium.Cartesian3[] = [];
-    let labelEntity: Cesium.Entity; // 标签实体
-
-    // 注册鼠标左击事件
-    _this.viewer.screenSpaceEventHandler.setInputAction(function(clickEvent: any) {
-      let cartesian = _this.viewer.scene.pickPosition(clickEvent.position); // 坐标
-
-      // 存储第一个点
-      if (positions.length == 0) {
-        positions.push(cartesian.clone());
-
-        _this.addPoint(cartesian);
-        // 注册鼠标移动事件
-        _this.viewer.screenSpaceEventHandler.setInputAction(function(moveEvent: any) {
-          let movePosition = _this.viewer.scene.pickPosition(moveEvent.endPosition); // 鼠标移动的点
-          if (positions.length == 2) {
-            positions.pop();
-            positions.push(movePosition);
-
-            // 绘制label
-            if (labelEntity) {
-              _this.viewer.entities.remove(labelEntity);
-              _this.entityCollection.splice(_this.entityCollection.indexOf(labelEntity), 1);
-            }
-
-            // 计算中点
-            let centerPoint = Cesium.Cartesian3.midpoint(positions[0], positions[1], new Cesium.Cartesian3());
-            // 计算距离
-            let lengthText = "距离：" + _this.getLengthText(positions[0], positions[1]);
-
-            labelEntity = _this.addLabel(centerPoint, lengthText);
-            _this.entityCollection.push(labelEntity);
-            _this.tempEntityCollection.push(labelEntity);
-
-          } else {
-            positions.push(movePosition);
-
-            // 绘制线
-            _this.addLine(positions);
-          }
-        }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-        // } else {
-        //     // 存储第二个点
-        //     // positions.pop();
-        //     positions.push(cartesian);
-        //     _this.addPoint(cartesian);
-        //     _this.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
-        //     _this.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-        // }
-      } else if (positions.length == 2) {
-        positions.push(cartesian);
-        _this.addPoint(cartesian);
-        _this.addLine(positions);
-      }
-    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   }
 
   measureDis() {
@@ -234,7 +210,13 @@ export default class MeasureTools {
       finalLengthText = totalLengthText;
       clickStatus = true;
       let ray = _this.viewer.camera.getPickRay(clickEvent.position) as Cesium.Ray;
+      if (!Cesium.defined(ray)) {
+        return;
+      }
       let cartesian = _this.viewer.scene.globe.pick(ray, _this.viewer.scene) as Cesium.Cartesian3;
+      if (!Cesium.defined(cartesian)) {
+        return;
+      }
       if (!firstCartesian) {
         firstCartesian = JSON.parse(JSON.stringify(cartesian));
       }
@@ -246,8 +228,14 @@ export default class MeasureTools {
         _this.entityCollection.push(totalLabelEntity);
         _this.tempEntityCollection.push(totalLabelEntity);
         _this.viewer.screenSpaceEventHandler.setInputAction(function(moveEvent: any) {
-          let ray = _this.viewer.camera.getPickRay(moveEvent.endPosition) as Cesium.Ray;
-          let movePosition = _this.viewer.scene.globe.pick(ray, _this.viewer.scene) as Cesium.Cartesian3;
+          let ray = _this.viewer.camera.getPickRay(moveEvent.endPosition);
+          if (!ray) {
+            return;
+          }
+          let movePosition = _this.viewer.scene.globe.pick(ray, _this.viewer.scene);
+          if (!movePosition) {
+            return;
+          }
           if (positions.length == 1) {
             positions.push(movePosition);
             _this.addLine(positions);
@@ -323,9 +311,16 @@ export default class MeasureTools {
         _this.viewer.screenSpaceEventHandler.setInputAction(function(clickEvent: any) {
           // 移除最后一个label
           let ray = _this.viewer.camera.getPickRay(clickEvent.position) as Cesium.Ray;
+          if (!ray) {
+            return;
+          }
           let clickPosition = _this.viewer.scene.globe.pick(ray, _this.viewer.scene) as Cesium.Cartesian3;
+          if (!clickPosition) {
+            return;
+          }
           if (!clickStatus) {
             positions.pop();
+
             _this.viewer.entities.remove(labelEntity);
           }
           if (positions.length < 2) {
@@ -338,11 +333,14 @@ export default class MeasureTools {
           // _this.addPoint(clickPosition);
           _this.distance = 0;
           _this.tempEntityCollection = [];
-          _this.viewer.entities.remove(totalLabelEntity);
           _this.entityCollection.splice(_this.entityCollection.indexOf(totalLabelEntity), 1);
-          totalLabelEntity = _this.addLabel(firstCartesian, finalLengthText);
-          _this.entityCollection.push(totalLabelEntity);
-          _this.tempEntityCollection.push(totalLabelEntity);
+
+          let b = _this.viewer.entities.remove(totalLabelEntity);
+            // _this.tempEntityCollection.push(totalLabelEntity);
+          if (b) {
+            totalLabelEntity = _this.addLabel(firstCartesian, finalLengthText);
+            _this.entityCollection.push(totalLabelEntity);
+          }
           firstCartesian = new Cesium.Cartesian3();
           _this.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
           _this.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
@@ -357,91 +355,6 @@ export default class MeasureTools {
         _this.addPoint(cartesian);
       }
       _this.distance += _this.getLengthText(positions[positions.length - 2], positions[positions.length - 1]);
-    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-  }
-
-  measurePolygon() {
-    let _this = this;
-    let positions: Cesium.Cartesian3[] = [];
-    let clickStatus = false;
-    let labelEntity: Cesium.Entity;
-
-    _this.viewer.screenSpaceEventHandler.setInputAction(function(clickEvent: any) {
-
-      clickStatus = true;
-      let ray = _this.viewer.camera.getPickRay(clickEvent.position) as Cesium.Ray;
-      let cartesian = _this.viewer.scene.globe.pick(ray, _this.viewer.scene) as Cesium.Cartesian3;
-      if (positions.length == 0) {
-        positions.push(cartesian.clone()); //鼠标左击 添加第1个点
-        _this.addPoint(cartesian);
-
-        _this.viewer.screenSpaceEventHandler.setInputAction(function(moveEvent: any) {
-          let ray = _this.viewer.camera.getPickRay(moveEvent.endPosition) as Cesium.Ray;
-          let movePosition = _this.viewer.scene.globe.pick(ray, _this.viewer.scene) as Cesium.Cartesian3;
-          if (positions.length == 1) {
-            positions.push(movePosition);
-            _this.addLine(positions);
-          } else {
-            if (clickStatus) {
-              positions.push(movePosition);
-            } else {
-              positions.pop();
-              positions.push(movePosition);
-            }
-          }
-
-          if (positions.length >= 3) {
-            // 绘制label
-            if (labelEntity) {
-              _this.viewer.entities.remove(labelEntity);
-              _this.entityCollection.splice(_this.entityCollection.indexOf(labelEntity), 1);
-            }
-
-            let text = "面积：" + _this.getArea(positions);
-            let centerPoint = _this.getCenterOfGravityPoint(positions);
-            labelEntity = _this.addLabel(centerPoint, text);
-
-            _this.entityCollection.push(labelEntity);
-            _this.tempEntityCollection.push(labelEntity);
-          }
-
-
-          clickStatus = false;
-        }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-
-
-      } else if (positions.length == 2) {
-        positions.pop();
-        positions.push(cartesian.clone()); // 鼠标左击 添加第2个点
-
-        _this.addPoint(cartesian);
-
-        _this.addPolyGon(positions);
-
-        // 右击结束
-        _this.viewer.screenSpaceEventHandler.setInputAction(function(clickEvent: any) {
-          let ray = _this.viewer.camera.getPickRay(clickEvent.position) as Cesium.Ray;
-          let clickPosition = _this.viewer.scene.globe.pick(ray, _this.viewer.scene) as Cesium.Cartesian3;
-
-          positions.pop();
-          positions.push(clickPosition);
-          positions.push(positions[0]); // 闭合
-          _this.addPoint(clickPosition);
-          _this.tempEntityCollection = [];
-
-          _this.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
-          _this.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-          _this.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.RIGHT_CLICK);
-
-        }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
-
-
-      } else if (positions.length >= 3) {
-        positions.pop();
-        positions.push(cartesian.clone()); // 鼠标左击 添加第3个点
-        _this.addPoint(cartesian);
-      }
-
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   }
 
@@ -482,6 +395,7 @@ export default class MeasureTools {
 
               // 绘制label
               if (labelEntity_1) {
+
                 _this.viewer.entities.remove(labelEntity_1);
                 _this.entityCollection.splice(_this.entityCollection.indexOf(labelEntity_1), 1);
                 _this.viewer.entities.remove(labelEntity_2);
@@ -590,6 +504,7 @@ export default class MeasureTools {
             AllEnities.push(polygon);
           } else {
             if (tempAreaLabel) {
+
               _this.viewer.entities.remove(tempAreaLabel);
             }
             if (polygonPath.length >= 4) {
@@ -655,6 +570,7 @@ export default class MeasureTools {
         _this.tempEntityCollection.push(lastpoint);
 
       }
+
       _this.viewer.entities.remove(tempAreaLabel);
       _this.viewer.trackedEntity = undefined;
       isDraw = false;
@@ -698,7 +614,7 @@ export default class MeasureTools {
             outlineColor: Cesium.Color.WHITE,
             outlineWidth: 3,
             // material: Cesium.Color.YELLOW.withAlpha(0.4)
-            material: Cesium.Color.GREY.withAlpha(0.6)
+            material: Cesium.Color.fromCssColorString("#2a747d").withAlpha(0.5)
           }
         };
         _.prototype.path = positions;
@@ -743,11 +659,19 @@ export default class MeasureTools {
     let _this = this;
     let entity = _this.viewer.entities.add(new Cesium.Entity({
       position: position,
-      billboard: {
-        image: "../../../img/measure/flag.png",
-        width: 20,
-        height: 20,
-        eyeOffset: new Cesium.ConstantProperty(new Cesium.Cartesian3(0, 0, 0)),
+      // billboard: {
+      //   image: "data:image/png;base64,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",
+      //   width: 20,
+      //   height: 20,
+      //   eyeOffset: new Cesium.ConstantProperty(new Cesium.Cartesian3(0, 0, 0)),
+      //   heightReference: Cesium.HeightReference.CLAMP_TO_GROUND, //绝对贴地
+      //   disableDepthTestDistance: Number.POSITIVE_INFINITY //元素在正上方
+      // }
+      point: {
+        pixelSize: 10,
+        color: Cesium.Color.fromCssColorString("#e9fabc").withAlpha(0.6),
+        outlineColor: Cesium.Color.fromCssColorString("#2a747d").withAlpha(0.8),
+        outlineWidth: 2,
         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND, //绝对贴地
         disableDepthTestDistance: Number.POSITIVE_INFINITY //元素在正上方
       }
@@ -767,7 +691,7 @@ export default class MeasureTools {
         positions: dynamicPositions,
         width: 4,
         clampToGround: true,
-        material: Cesium.Color.RED
+        material: Cesium.Color.fromCssColorString("#e9fabc").withAlpha(0.8)
       }
     }));
     _this.entityCollection.push(entity);
@@ -782,7 +706,7 @@ export default class MeasureTools {
     let entity = _this.viewer.entities.add(new Cesium.Entity({
       polygon: {
         hierarchy: dynamicPositions,
-        material: Cesium.Color.RED.withAlpha(0.6),
+        material: Cesium.Color.fromCssColorString("#2a747d").withAlpha(0.5),
         classificationType: Cesium.ClassificationType.BOTH // 贴地表和贴模型,如果设置了，就不能使用挤出高度
       }
     }));
@@ -796,20 +720,14 @@ export default class MeasureTools {
       position: centerPoint,
       label: {
         text: text,
-        font: "12pt sans-serif",
+        font: "16px Microsoft YaHei",
+        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
         style: Cesium.LabelStyle.FILL_AND_OUTLINE, //FILL  FILL_AND_OUTLINE OUTLINE
-        fillColor: Cesium.Color.YELLOW,
+        fillColor: Cesium.Color.WHITE,
         showBackground: false, //指定标签后面背景的可见性
-        backgroundColor: new Cesium.Color(0.165, 0.165, 0.165, 0.0), // 背景颜色
         backgroundPadding: new Cesium.Cartesian2(6, 6), //指定以像素为单位的水平和垂直背景填充padding
         pixelOffset: new Cesium.Cartesian2(0, -25),
-        disableDepthTestDistance: Number.POSITIVE_INFINITY, //元素在正上方
-        translucencyByDistance: new Cesium.NearFarScalar( // 根据距离显隐
-          1.5e5,
-          1.0,
-          1.5e7,
-          0.0
-        )
+        disableDepthTestDistance: Number.POSITIVE_INFINITY //元素在正上方
       }
     }));
   }
@@ -818,23 +736,31 @@ export default class MeasureTools {
     let _this = this;
     return _this.viewer.entities.add(new Cesium.Entity({
       position: centerPoint,
-      billboard: {
-        image: "../../../img/measure/flag.png",
-        width: 20,
-        height: 20,
-        eyeOffset: new Cesium.ConstantProperty(new Cesium.Cartesian3(0, 0, 0)),
+      // billboard: {
+      //   image: "data:image/png;base64,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",
+      //   width: 20,
+      //   height: 20,
+      //   eyeOffset: new Cesium.ConstantProperty(new Cesium.Cartesian3(0, 0, 0)),
+      //   heightReference: Cesium.HeightReference.CLAMP_TO_GROUND, //绝对贴地
+      //   disableDepthTestDistance: Number.POSITIVE_INFINITY //元素在正上方
+      // },
+      point: {
+        pixelSize: 10,
+        color: Cesium.Color.fromCssColorString("#e9fabc").withAlpha(0.6),
+        outlineColor: Cesium.Color.fromCssColorString("#2a747d").withAlpha(0.8),
+        outlineWidth: 2,
         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND, //绝对贴地
         disableDepthTestDistance: Number.POSITIVE_INFINITY //元素在正上方
       },
       label: {
         text: text,
-        font: "12pt sans-serif",
+        font: "16px Microsoft YaHei",
+        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
         style: Cesium.LabelStyle.FILL_AND_OUTLINE, //FILL  FILL_AND_OUTLINE OUTLINE
-        fillColor: Cesium.Color.YELLOW,
+        fillColor: Cesium.Color.WHITE,
         showBackground: false, //指定标签后面背景的可见性
-        backgroundColor: new Cesium.Color(0.165, 0.165, 0.165, 0.0), // 背景颜色
         backgroundPadding: new Cesium.Cartesian2(6, 6), //指定以像素为单位的水平和垂直背景填充padding
-        pixelOffset: new Cesium.Cartesian2(0, -25),
+        pixelOffset: new Cesium.Cartesian2(0, -35),
         disableDepthTestDistance: Number.POSITIVE_INFINITY //元素在正上方
       }
     }));

@@ -10,7 +10,8 @@
         href="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Widgets/widgets.css" />
   <script type="text/javascript"
           src="http://183.230.114.154:9010/map/staticResources/Cesium-1.85/Build/Cesium/Cesium.js"></script>
-
+  <!-- 使用unpkg -->
+  <script src="./turf.min.js"></script>
   <style>
     html,
     body,
@@ -52,10 +53,17 @@
       <button id="editShape">编辑图形</button>
       <button id="moveShape">移动图形</button>
     </div>
+    <div>
+      <button id="measurePosition">测量位置</button>
+      <button id="measureDistance">测量距离</button>
+      <button id="measureArea">测量面积</button>
+      <button id="clearMeasure">清除测量数据</button>
+    </div>
   </div>
 </div>
 <script src="../dist/yam.cesium.min.js"></script>
 <script>
+  // (function() {
   Cesium.Ion.defaultAccessToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0YWJlYzNkNS0yY2M0LTQxZWQtOGZhNi05MjEzYmVmZGVkNTkiLCJpZCI6MzU1NTEsImlhdCI6MTYwNDYyNzY2NH0.JxhQQxEvJTrmeARILcywKaPoPEPjO1RlqL28CRjktx8";
   const viewer = new Cesium.Viewer("cesiumContainer", {
@@ -69,6 +77,8 @@
     },
     terrainProvider: Cesium.createWorldTerrain()
   });
+
+  viewer.scene.globe.depthTestAgainstTerrain = true; // 关闭地形深度检测
 
   const yam = new yamCesium.Map(viewer);
 
@@ -365,6 +375,24 @@
       console.log("取消移动");
     });
   });
+
+  const measureTool = new yamCesium.MeasureTools(viewer);
+
+  document.querySelector("#measurePosition").addEventListener("click", () => {
+    measureTool.viewModel.measurePointEnabled = !measureTool.viewModel.measurePointEnabled;
+  });
+
+  document.querySelector("#measureDistance").addEventListener("click", () => {
+    measureTool.viewModel.measureDistanceEnabled = !measureTool.viewModel.measureDistanceEnabled;
+  });
+  document.querySelector("#measureArea").addEventListener("click", () => {
+    measureTool.viewModel.measureAreaEnabled = !measureTool.viewModel.measureAreaEnabled;
+  });
+  document.querySelector("#clearMeasure").addEventListener("click", () => {
+    measureTool.destroy();
+  });
+
+  // })();
 </script>
 </body>
 
