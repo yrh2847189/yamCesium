@@ -32,7 +32,7 @@ export default class Cluster {
         let billboardCollection = new Cesium.BillboardCollection();
 
         if (Cesium.defined(this.myPrimitives)) {
-            this._v.scene.primitives.remove(this.myPrimitives);
+            // this._v.scene.primitives.remove(this.myPrimitives);
         }
         this.myPrimitives = this._v.scene.primitives.add(
             new Cesium.PrimitiveCollection()
@@ -110,7 +110,10 @@ export default class Cluster {
         // start with custom style
         options.customStyle ? options.customStyle(_, removeListener, primitiveCluster) : customStyle();
         // customStyle();
-        return billboardCollection;
+        return {
+          billboard: billboardCollection,
+          primitive: this.myPrimitives
+        };
     }
 
     /**
