@@ -29,6 +29,7 @@
 22. 引入CesiumMethod和PublicMethod
 23. 挖坑 TODO
 24. 双击旋转 TODO
+25. 底部经纬度显示 TODO
 
 # 如何使用
 
