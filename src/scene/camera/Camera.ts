@@ -24,10 +24,53 @@ export default class Camera {
     this.immersion = new Immersion(viewer);
     this.hawkEye = new HawkEyeMap(viewer);
 
-    // 相机原地旋转
-    this.cameraRotate();
+    this.aroundPointRotate(viewer);
   }
 
+  aroundPointRotate(viewer: any, radius: number = 1000) {
+    let leftDownEvent: any = null, clockEvent: any = null;
+    const handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
+    handler.setInputAction((event: any) => {
+      console.log(1);
+      clearTimeout(leftDownEvent);
+      leftDownEvent = setTimeout(() => {
+        viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+        viewer.scene.screenSpaceCameraController.enableInputs = true;
+        viewer.clock.onTick.removeEventListener(clockEvent);
+      }, 200);
+    }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+    handler.setInputAction(function(movement: any) {
+      clearTimeout(leftDownEvent);
+      viewer.clock.onTick.removeEventListener(clockEvent);
+      //获取加载地形后对应的经纬度和高程：地标坐标
+      const ray = viewer.camera.getPickRay(movement.position);
+      const cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+      const curPosition = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
+      const lng = curPosition.longitude * 180 / Math.PI;
+      const lat = curPosition.latitude * 180 / Math.PI;
+      const boundingSphere = new Cesium.BoundingSphere(Cesium.Cartesian3.fromDegrees(lng, lat, 0), radius);
+      let distance = Cesium.Cartesian3.distance(viewer.camera.position, cartesian);
+      distance = distance > radius ? radius : distance;
+      const offset = new Cesium.HeadingPitchRange(viewer.camera.heading, viewer.camera.pitch, distance);
+      viewer.camera.flyToBoundingSphere(boundingSphere, {
+        offset: offset,
+        complete: function() {
+          const transform = Cesium.Transforms.eastNorthUpToFixedFrame(cartesian);
+          //相机位置初始化
+          viewer.scene.camera.lookAtTransform(transform, new Cesium.HeadingPitchRange(viewer.camera.heading, viewer.camera.pitch, distance));
+          // 定时任务
+          clockEvent = function() {
+            viewer.scene.camera.rotateRight(0.005);
+          };
+          viewer.clock.onTick.addEventListener(clockEvent);
+        }
+      });
+    }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+  }
+
+  /**
+   * 相机原地旋转
+   */
   cameraRotate() {
     let timeId: string | number | NodeJS.Timeout | undefined;
     let handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
