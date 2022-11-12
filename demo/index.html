@@ -413,6 +413,33 @@
       roll: Cesium.Math.toRadians(0)
     }
   });
+
+  // 绕点旋转
+  let leftDownEvent = null, clockEvent = null;
+  const handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
+  handler.setInputAction((event) => {
+    clearTimeout(leftDownEvent);
+    leftDownEvent = setTimeout(() => {
+      // 停止绕点旋转
+      yam.camera.stopAround();
+    }, 200);
+  }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+
+  handler.setInputAction((movement) => {
+    // 当双击时，取消单击事件
+    clearTimeout(leftDownEvent);
+    viewer.clock.onTick.removeEventListener(clockEvent);
+    const ray = viewer.camera.getPickRay(movement.position);
+    if (!ray) {
+      return;
+    }
+    const cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+    if (!cartesian) {
+      return;
+    }
+    // 绕点旋转
+    yam.camera.flyAround(cartesian);
+  }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 </script>
 </body>
 
