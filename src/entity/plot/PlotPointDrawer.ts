@@ -1,7 +1,7 @@
 import PlotToolTip from "./PlotToolTip";
 import * as Cesium from "cesium";
 import layer from "../../plugins/lib/layer/Layer";
-import Plot from "./plot";
+import Plot from "./Plot";
 
 interface drawOptions {
   confirmHandler?: Function; // 自定义确认弹窗事件

@@ -2,7 +2,7 @@
  * 公共函数
  */
 
-export default class publicMethod {
+export default class PublicMethod {
 
   /**
    * 将json格式的参数遍历放入obj对象中
