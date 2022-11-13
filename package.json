@@ -1,16 +1,16 @@
 {
   "name": "yam-cesium",
-  "version": "0.1.7-beta",
+  "version": "0.1.9-beta",
   "description": "cesium常用工具库",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git@github.com:Flashowing/yamCesium.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode production && tsc -p .",
+    "build": "webpack --mode production && tsc",
     "dev": "webpack-dev-server --open"
   },
   "keywords": [
@@ -18,10 +18,10 @@
     "cesiumjs"
   ],
   "files": [
-    "dist/"
+    "dist"
   ],
   "author": "cyam",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.4.0",
     "@babel/plugin-transform-runtime": "^7.4.0",
