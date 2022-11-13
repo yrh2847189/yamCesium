@@ -1,6 +1,6 @@
 {
   "name": "yam-cesium",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "cesium常用工具库",
   "main": "index.js",
   "types": "index.d.ts",
