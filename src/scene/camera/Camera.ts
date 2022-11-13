@@ -73,6 +73,20 @@ export default class Camera {
     this.viewer.scene.screenSpaceCameraController.enableInputs = true;
   }
 
+  look(lon: number, lat: number, offset: number) {
+    if (!this.viewer) {
+      return;
+    }
+    const center = Cesium.Cartesian3.fromDegrees(lon, lat);
+    const transform = Cesium.Transforms.eastNorthUpToFixedFrame(center);
+    const camera = this.viewer.camera;
+    camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
+    camera.lookAtTransform(transform, new Cesium.Cartesian3(-offset, -offset, offset));
+    setTimeout(function () {
+      camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+    }, 100)
+  }
+
   /**
    * 相机原地旋转
    */
