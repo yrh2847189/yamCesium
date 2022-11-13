@@ -50,3 +50,4 @@ export default class PlotPolygonDrawer {
     _clearMarkers(layerName: string): void;
     _clearAnchors(): void;
 }
+//# sourceMappingURL=PlotPolygonDrawer.d.ts.map

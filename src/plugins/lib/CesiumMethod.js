@@ -102,11 +102,11 @@ export default class CesiumMethod {
         let terrain = this.viewer.scene.terrainProvider;
         let promise = Cesium.sampleTerrainMostDetailed(terrain, positions);
         // @ts-ignore
-        Cesium.when(promise, function (updatedPositions) {
-            callback(updatedPositions);
-        }).otherwise(function (error) {
-            console.log(error);
-        });
+        // Cesium.when(promise, function(updatedPositions: Cesium.Cartesian3) {
+        //   callback(updatedPositions);
+        // }).otherwise(function(error: any) {
+        //   console.log(error);
+        // });
     }
     /**
      * 获取camera高度

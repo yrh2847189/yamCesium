@@ -52,3 +52,4 @@ export default class PlotPolylineDrawer {
     _clearAnchors(): void;
     _clearMarkers(layerName: string): void;
 }
+//# sourceMappingURL=PlotPolylineDrawer.d.ts.map

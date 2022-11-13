@@ -36,3 +36,4 @@ export default class PlotPointDrawer {
     _clearMarkers(layerName: string): void;
 }
 export {};
+//# sourceMappingURL=PlotPointDrawer.d.ts.map

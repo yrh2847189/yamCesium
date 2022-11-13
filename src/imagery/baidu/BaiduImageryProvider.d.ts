@@ -23,6 +23,7 @@ declare class BaiduImageryProvider {
     get credit(): any;
     get hasAlphaChannel(): boolean;
     getTileCredits(x: number, y: number, level: string): void;
-    requestImage(x: number, y: number, level: string): Promise<Cesium.CompressedTextureBuffer | Cesium.ImageryTypes> | undefined;
+    requestImage(x: number, y: number, level: string): Promise<Cesium.ImageryTypes | Cesium.CompressedTextureBuffer> | undefined;
 }
 export default BaiduImageryProvider;
+//# sourceMappingURL=BaiduImageryProvider.d.ts.map

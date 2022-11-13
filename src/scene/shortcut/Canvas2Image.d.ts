@@ -14,3 +14,4 @@ export declare const Canvas2Image: {
     convertToGIF: (canvas: HTMLCanvasElement, width: number, height: number) => HTMLImageElement | undefined;
     convertToBMP: (canvas: HTMLCanvasElement, width: number, height: number) => HTMLImageElement | undefined;
 };
+//# sourceMappingURL=Canvas2Image.d.ts.map

@@ -6,3 +6,4 @@ export default class PlotToolTip {
     setVisible(visible: boolean): void;
     showAt(position: any, message: string): void;
 }
+//# sourceMappingURL=PlotToolTip.d.ts.map

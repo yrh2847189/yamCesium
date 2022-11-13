@@ -4,3 +4,4 @@ declare class AmapMercatorTilingScheme extends Cesium.WebMercatorTilingScheme {
     constructor(options?: any);
 }
 export default AmapMercatorTilingScheme;
+//# sourceMappingURL=AmapMercatorTilingScheme.d.ts.map

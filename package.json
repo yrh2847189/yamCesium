@@ -3,6 +3,11 @@
   "version": "0.1.2",
   "description": "cesium常用工具库",
   "main": "index.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Flashowing/yamCesium.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
@@ -11,6 +16,11 @@
   "keywords": [
     "cesium",
     "cesiumjs"
+  ],
+  "files": [
+    "src/",
+    "license",
+    "readme.md"
   ],
   "author": "cyam",
   "license": "ISC",
@@ -35,7 +45,6 @@
     "html-webpack-plugin": "^5.5.0",
     "prettier": "^1.16.4",
     "rimraf": "^2.6.3",
-    "rollup-plugin-dts": "^5.0.0",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.3.1",
     "typescript": "^4.7.4",

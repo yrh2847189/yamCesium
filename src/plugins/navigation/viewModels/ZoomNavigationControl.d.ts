@@ -42,3 +42,4 @@ declare class ZoomNavigationControl extends NavigationControl {
     zoom(relativeAmount: number): void;
 }
 export default ZoomNavigationControl;
+//# sourceMappingURL=ZoomNavigationControl.d.ts.map

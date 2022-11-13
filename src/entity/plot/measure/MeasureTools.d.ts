@@ -31,3 +31,4 @@ export default class MeasureTools {
     getArea(points: Cesium.Cartesian3[]): string;
     getCenterOfGravityPoint(mPoints: Cesium.Cartesian3[]): Cesium.Cartesian3;
 }
+//# sourceMappingURL=MeasureTools.d.ts.map

@@ -23,3 +23,4 @@ declare class BaiduMercatorTilingScheme extends Cesium.WebMercatorTilingScheme {
     positionToTileXY(position: any, level: string, result: any): any;
 }
 export default BaiduMercatorTilingScheme;
+//# sourceMappingURL=BaiduMercatorTilingScheme.d.ts.map

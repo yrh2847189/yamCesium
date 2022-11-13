@@ -49,3 +49,4 @@ export default class PlotStraightArrowDrawer {
     _clearMarkers(layerName: string): void;
     _clearAnchors(): void;
 }
+//# sourceMappingURL=PlotStraightArrowDrawer.d.ts.map

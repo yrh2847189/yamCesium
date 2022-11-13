@@ -16,3 +16,4 @@ export default class HawkEyeMap {
      */
     bindModel(): void;
 }
+//# sourceMappingURL=HawkEyeMap.d.ts.map

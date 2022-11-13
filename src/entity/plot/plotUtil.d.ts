@@ -5,3 +5,4 @@ interface PType {
 }
 export declare const P: PType;
 export {};
+//# sourceMappingURL=plotUtil.d.ts.map

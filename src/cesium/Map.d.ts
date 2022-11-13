@@ -4,3 +4,4 @@ export default class Map {
     camera: Camera;
     constructor(viewer: Cesium.Viewer);
 }
+//# sourceMappingURL=Map.d.ts.map

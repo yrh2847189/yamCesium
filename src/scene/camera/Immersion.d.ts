@@ -20,3 +20,4 @@ export default class Immersion {
      */
     bindModel(): void;
 }
+//# sourceMappingURL=Immersion.d.ts.map

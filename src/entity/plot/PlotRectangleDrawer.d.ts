@@ -42,3 +42,4 @@ export default class PlotRectangleDrawer {
     _isSimpleXYZ(p1: any, p2: any): boolean;
     _clearMarkers(layerName: string): void;
 }
+//# sourceMappingURL=PlotRectangleDrawer.d.ts.map

@@ -37,3 +37,4 @@ export default class Camera {
     _cameraRotate(): void;
     private _rotateHeading;
 }
+//# sourceMappingURL=Camera.d.ts.map

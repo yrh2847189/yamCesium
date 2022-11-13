@@ -28,3 +28,4 @@ declare class UserInterfaceControl {
     activate(): void;
 }
 export default UserInterfaceControl;
+//# sourceMappingURL=UserInterfaceControl.d.ts.map

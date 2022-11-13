@@ -138,3 +138,4 @@ declare class BaiduMercatorProjection {
     getZoomUnits(zoom: number): number;
 }
 export default BaiduMercatorProjection;
+//# sourceMappingURL=BaiduMercatorProjection.d.ts.map

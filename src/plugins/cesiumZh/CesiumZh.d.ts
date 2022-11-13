@@ -13,3 +13,4 @@ export declare const CesiumZh: {
     load: () => void;
 };
 export default CesiumZh;
+//# sourceMappingURL=CesiumZh.d.ts.map

@@ -27,3 +27,4 @@ export default class layer {
     static open(options: LayerOptions): Promise<unknown>;
 }
 export {};
+//# sourceMappingURL=Layer.d.ts.map

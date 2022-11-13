@@ -56,3 +56,4 @@ export default class Cluster {
      */
     destroy(): void;
 }
+//# sourceMappingURL=Cluster.d.ts.map

@@ -57,3 +57,4 @@ export default class PlotMoveDrawer {
     confirmClick(): void;
     getEntityByObjId(objId: any): any;
 }
+//# sourceMappingURL=PlotMoveDrawer.d.ts.map

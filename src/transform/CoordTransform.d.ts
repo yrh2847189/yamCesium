@@ -63,3 +63,4 @@ declare class CoordTransform {
     static out_of_china(lng: number, lat: number): boolean;
 }
 export default CoordTransform;
+//# sourceMappingURL=CoordTransform.d.ts.map

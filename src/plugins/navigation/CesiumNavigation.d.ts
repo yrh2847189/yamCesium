@@ -25,3 +25,4 @@ declare class CesiumNavigation {
     addOnDestroyListener(callback: any): void;
 }
 export default CesiumNavigation;
+//# sourceMappingURL=CesiumNavigation.d.ts.map

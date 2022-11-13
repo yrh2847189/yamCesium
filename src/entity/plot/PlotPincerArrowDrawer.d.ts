@@ -51,3 +51,4 @@ export default class PlotPincerArrowDrawer {
     _clearMarkers(layerName: string): void;
     _clearAnchors(): void;
 }
+//# sourceMappingURL=PlotPincerArrowDrawer.d.ts.map

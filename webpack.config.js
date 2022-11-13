@@ -2,7 +2,6 @@ const path = require("path");
 const pkg = require('./package.json');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-import dts from "rollup-plugin-dts";
 const {
   CleanWebpackPlugin
 } = require("clean-webpack-plugin");

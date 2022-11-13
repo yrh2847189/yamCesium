@@ -51,3 +51,4 @@ export default class PlotCircleDrawer {
     createToolBar(): Promise<void>;
     _clearMarkers(layerName: string): void;
 }
+//# sourceMappingURL=PlotCircleDrawer.d.ts.map

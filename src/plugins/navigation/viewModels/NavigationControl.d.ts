@@ -12,3 +12,4 @@ declare class NavigationControl extends UserInterfaceControl {
     constructor(terria: any);
 }
 export default NavigationControl;
+//# sourceMappingURL=NavigationControl.d.ts.map

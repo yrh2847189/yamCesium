@@ -29,3 +29,4 @@ export default class PlotTracker {
     trackPincerArrow(options: any): Promise<unknown>;
     trackStraightArrow(options: any): Promise<unknown>;
 }
+//# sourceMappingURL=PlotTracker.d.ts.map

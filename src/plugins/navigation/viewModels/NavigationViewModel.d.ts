@@ -51,3 +51,4 @@ declare class NavigationViewModel {
     rotate(viewModel: any, compassElement: any, cursorVector: any): true | undefined;
 }
 export default NavigationViewModel;
+//# sourceMappingURL=NavigationViewModel.d.ts.map

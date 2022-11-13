@@ -50,3 +50,4 @@ export default class PlotAttackArrowDrawer {
     _clearMarkers(layerName: string): void;
     _clearAnchors(): void;
 }
+//# sourceMappingURL=PlotAttackArrowDrawer.d.ts.map

@@ -22,3 +22,4 @@ export default class PublicMethod {
     static downloadTxt(filename: string, content: any, contentType: string): void;
     static getQueryVariable(variable: string | number): string | false;
 }
+//# sourceMappingURL=PublicMethod.d.ts.map

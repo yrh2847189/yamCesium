@@ -29,3 +29,4 @@ declare class ResetViewNavigationControl extends NavigationControl {
     activate(): void;
 }
 export default ResetViewNavigationControl;
+//# sourceMappingURL=ResetViewNavigationControl.d.ts.map

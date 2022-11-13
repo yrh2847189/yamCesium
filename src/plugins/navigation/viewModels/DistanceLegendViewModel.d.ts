@@ -12,3 +12,4 @@ declare class DistanceLegendViewModel {
     static create(options: any): DistanceLegendViewModel;
 }
 export default DistanceLegendViewModel;
+//# sourceMappingURL=DistanceLegendViewModel.d.ts.map

@@ -22,3 +22,4 @@ declare namespace viewerCesiumNavigationMixin {
     var mixinWidget: (cesiumWidget: any, options: any) => CesiumNavigation;
 }
 export default viewerCesiumNavigationMixin;
+//# sourceMappingURL=viewerCesiumNavigationMixin.d.ts.map

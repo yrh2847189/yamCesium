@@ -195,3 +195,4 @@ export {};
  *     cluster.label.text = entities.length.toLocaleString();
  * });
  */
+//# sourceMappingURL=PrimitiveCluster.d.ts.map

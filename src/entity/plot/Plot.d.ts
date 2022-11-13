@@ -83,3 +83,4 @@ export default class Plot {
     getEntity(objId: string): any;
 }
 export {};
+//# sourceMappingURL=Plot.d.ts.map

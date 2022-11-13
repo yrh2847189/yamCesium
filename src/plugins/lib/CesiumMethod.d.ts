@@ -78,3 +78,4 @@ export default class CesiumMethod {
      */
     static measureDistanceWithCartesian3(cartesian1: Cesium.Cartesian3, cartesian2: Cesium.Cartesian3): number;
 }
+//# sourceMappingURL=CesiumMethod.d.ts.map
