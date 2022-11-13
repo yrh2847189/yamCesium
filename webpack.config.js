@@ -60,6 +60,7 @@ module.exports = {
     new webpack.BannerPlugin(banner),
     new CopyWebpackPlugin({ patterns: [{ from: path.resolve(__dirname, "src"), to: './' }] }),
     new CopyWebpackPlugin({ patterns: [{ from: path.resolve(__dirname, "src"), to: './' }] }),
+    new CopyWebpackPlugin({ patterns: [{ from: path.resolve(__dirname, "package.json"), to: './' }] }),
     new CopyWebpackPlugin({ patterns: [{ from: path.resolve(__dirname, "LICENSE"), to: './' }] }),
     new CopyWebpackPlugin({ patterns: [{ from: path.resolve(__dirname, "readme.md"), to: './' }] }),
     // new HtmlWebpackPlugin({
