@@ -108,7 +108,7 @@
   options.enableDistanceLegend = true;
   // 指南针外环
   options.enableCompassOuterRing = true;
-  viewer.extend(Cesium.viewerCesiumNavigationMixin, options);
+  viewer.extend(yamCesium.viewerCesiumNavigationMixin, options);
 
   document.querySelector("#shortcut").addEventListener("click", () => {
     // 获取canvas

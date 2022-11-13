@@ -1,9 +1,9 @@
 {
   "name": "yam-cesium",
-  "version": "0.1.9-beta",
+  "version": "0.2.0",
   "description": "cesium常用工具库",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git@github.com:Flashowing/yamCesium.git"
