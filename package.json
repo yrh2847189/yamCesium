@@ -1,6 +1,6 @@
 {
   "name": "yam-cesium",
-  "version": "0.1.4",
+  "version": "0.1.4-bata",
   "description": "cesium常用工具库",
   "main": "index.js",
   "types": "index.d.ts",
@@ -34,6 +34,7 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
     "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^11.0.0",
     "core-js": "^3.25.5",
     "css-loader": "^6.7.1",
     "eslint": "^5.15.3",
