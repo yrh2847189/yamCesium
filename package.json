@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode production",
+    "build": "webpack --mode production && tsc",
     "dev": "webpack-dev-server --open"
   },
   "keywords": [
@@ -18,7 +18,7 @@
     "cesiumjs"
   ],
   "files": [
-    "src/",
+    "dist/",
     "license",
     "readme.md"
   ],
@@ -43,7 +43,6 @@
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "html-webpack-plugin": "^5.5.0",
-    "npm-dts-webpack-plugin": "^1.3.12",
     "prettier": "^1.16.4",
     "rimraf": "^2.6.3",
     "style-loader": "^3.3.1",
