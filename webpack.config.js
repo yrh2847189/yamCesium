@@ -2,6 +2,7 @@ const path = require("path");
 const pkg = require('./package.json');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const NpmDtsPlugin = require('npm-dts-webpack-plugin')
 const {
   CleanWebpackPlugin
 } = require("clean-webpack-plugin");
@@ -56,7 +57,8 @@ module.exports = {
   plugins: [
     // new BundleAnalyzerPlugin(), // 查看打包文件大小
     new CleanWebpackPlugin(),
-    new webpack.BannerPlugin(banner)
+    new webpack.BannerPlugin(banner),
+    new NpmDtsPlugin()
     // new HtmlWebpackPlugin({
     // 	title: 'TS测试',
     // 	template: './src/index.html'

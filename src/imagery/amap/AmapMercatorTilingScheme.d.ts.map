@@ -1,1 +1,0 @@
-{"version":3,"file":"AmapMercatorTilingScheme.d.ts","sourceRoot":"","sources":["AmapMercatorTilingScheme.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,MAAM,QAAQ,CAAC;AAIjC,cAAM,wBAAyB,SAAQ,MAAM,CAAC,uBAAuB;IACnE,WAAW,EAAE,GAAG,CAAM;gBACV,OAAO,GAAE,GAAQ;CA4B9B;AAED,eAAe,wBAAwB,CAAA"}
