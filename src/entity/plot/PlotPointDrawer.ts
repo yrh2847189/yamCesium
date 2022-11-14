@@ -8,7 +8,7 @@ interface drawOptions {
   position?: any;
 }
 
-export default class PlotPointDrawer {
+class PlotPointDrawer {
   viewer: any;
   scene: any;
   clock: any;
@@ -288,3 +288,4 @@ export default class PlotPointDrawer {
     }
   }
 }
+export default PlotPointDrawer;

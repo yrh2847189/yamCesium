@@ -2,7 +2,7 @@ import PlotToolTip from "./PlotToolTip";
 import * as Cesium from "cesium";
 import layer from "../../plugins/lib/layer/Layer";
 
-export default class PlotPolylineDrawer {
+class PlotPolylineDrawer {
   viewer: any = null;
   scene: any = null;
   clock: any = null;
@@ -738,3 +738,4 @@ export default class PlotPolylineDrawer {
   }
 
 }
+export default PlotPolylineDrawer;

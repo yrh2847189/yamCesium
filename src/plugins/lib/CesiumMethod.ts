@@ -1,8 +1,9 @@
 // @ts-ignore
-const turf = window.turf;
+// const turf = window.turf;
+import * as turf from "@turf/turf";
 import * as Cesium from "cesium";
 
-export default class CesiumMethod {
+class CesiumMethod {
   viewer: Cesium.Viewer;
 
   constructor(viewer: Cesium.Viewer) {
@@ -169,3 +170,4 @@ export default class CesiumMethod {
   }
 }
 
+export default CesiumMethod;

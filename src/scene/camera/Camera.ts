@@ -3,7 +3,8 @@ import Immersion from "./Immersion";
 import HawkEyeMap from "./hawkEyeMap/HawkEyeMap";
 // @ts-ignore
 const Knockout = Cesium.knockout;
-export default class Camera {
+
+class Camera {
   viewer: Cesium.Viewer;
   /**
    * 第一人称视角
@@ -82,9 +83,9 @@ export default class Camera {
     const camera = this.viewer.camera;
     camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
     camera.lookAtTransform(transform, new Cesium.Cartesian3(-offset, -offset, offset));
-    setTimeout(function () {
+    setTimeout(function() {
       camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-    }, 100)
+    }, 100);
   }
 
   /**
@@ -130,5 +131,6 @@ export default class Camera {
       }
     });
   }
-
 }
+
+export default Camera;

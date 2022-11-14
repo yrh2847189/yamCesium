@@ -20,7 +20,6 @@ module.exports = {
   },
   mode: "production", //'development' 、 'production'、'none'
   entry: "./src/index.ts",
-
   // devServer: {
   // 	open: true,
   // 	port: 8081,
@@ -30,7 +29,6 @@ module.exports = {
   // 	maxEntrypointSize: 10000000,
   // 	maxAssetSize: 30000000
   // },
-
   output: {
     library: 'yamCesium',
     // libraryExport: ['func', 'sum'],
@@ -51,9 +49,6 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js", '.json']
   },
-
-
-
   plugins: [
     // new BundleAnalyzerPlugin(), // 查看打包文件大小
     new CleanWebpackPlugin(),

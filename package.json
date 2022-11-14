@@ -1,6 +1,6 @@
 {
   "name": "yam-cesium",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "cesium常用工具库",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,7 +11,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production && tsc",
-    "dev": "webpack-dev-server --open"
+    "dev": "webpack-dev-server --open",
+    "docs": "tsc && jsdoc src -r -c jsdoc/conf.json -d docs"
   },
   "keywords": [
     "cesium",
@@ -42,6 +43,9 @@
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "html-webpack-plugin": "^5.5.0",
+    "jsdoc": "~3.6.3",
+    "jsdoc-babel": "^0.5.0",
+    "jsdoc-export-default-interop": "^0.3.1",
     "prettier": "^1.16.4",
     "rimraf": "^2.6.3",
     "style-loader": "^3.3.1",
