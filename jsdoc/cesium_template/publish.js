@@ -357,7 +357,7 @@ exports.publish = function(taffyData, opts, tutorials) {
         doclet.meta.filename = docletPath;
         // doclet.meta.sourceUrl = "./" + url;
         doclet.meta.sourceUrl = conf["sourceUrl"]
-          .replace("{version}", pkg.version)
+          .replace("{version}", "v" + pkg.version)
           .replace("{filename}", docletPath.replace(/\.(js)$/g, ".ts"));
       }
     }
