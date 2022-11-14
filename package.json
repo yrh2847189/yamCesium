@@ -14,10 +14,7 @@
     "dev": "webpack-dev-server --open",
     "docs": "tsc && jsdoc src -r -c jsdoc/conf.json -d docs"
   },
-  "keywords": [
-    "cesium",
-    "cesiumjs"
-  ],
+  "keywords": ["cesium","cesiumjs"],
   "files": [
     "dist"
   ],
