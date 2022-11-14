@@ -20,7 +20,6 @@ module.exports = {
   },
   mode: "production", //'development' 、 'production'、'none'
   entry: "./src/index.ts",
-
   // devServer: {
   // 	open: true,
   // 	port: 8081,
@@ -30,7 +29,6 @@ module.exports = {
   // 	maxEntrypointSize: 10000000,
   // 	maxAssetSize: 30000000
   // },
-
   output: {
     library: 'yamCesium',
     // libraryExport: ['func', 'sum'],
@@ -51,9 +49,6 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js", '.json']
   },
-
-
-
   plugins: [
     // new BundleAnalyzerPlugin(), // 查看打包文件大小
     new CleanWebpackPlugin(),
@@ -82,6 +77,7 @@ module.exports = {
                     useBuiltIns: "usage" //按需加载
                   }
                 ]
+
               ]
             }
           },
@@ -102,11 +98,6 @@ module.exports = {
               // 将css文件变成commitjs模块加载js中, 里面的内容是样式字符串
               'css-loader'
           ]
-      },
-      {
-        test: /\.js$/,
-        exclude: /(node_modules)/, // 排除文件
-        loader: 'babel-loader'
       }
     ]
   }
