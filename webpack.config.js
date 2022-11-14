@@ -82,7 +82,6 @@ module.exports = {
                     useBuiltIns: "usage" //按需加载
                   }
                 ]
-
               ]
             }
           },
@@ -103,6 +102,11 @@ module.exports = {
               // 将css文件变成commitjs模块加载js中, 里面的内容是样式字符串
               'css-loader'
           ]
+      },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules)/, // 排除文件
+        loader: 'babel-loader'
       }
     ]
   }

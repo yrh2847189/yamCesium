@@ -65,9 +65,9 @@ import PrimitiveCluster from "./entity/dataSource/PrimitiveCluster";
 export { PrimitiveCluster };
 
 // 聚合工具类
-import Cluster from "./entity/dataSource/Cluster";
+import ClusterUtil from "./entity/dataSource/ClusterUtil";
 
-export { Cluster };
+export { ClusterUtil };
 
 // 绘制
 import PlotTracker from "./entity/plot/PlotTracker";

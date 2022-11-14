@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: plugins/navigation/CesiumNavigation.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: plugins/navigation/CesiumNavigation.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable no-unused-vars */
+import * as Cesium from "cesium";
+// import registerKnockoutBindings from './core/registerKnockoutBindings'
+import DistanceLegendViewModel from "./viewModels/DistanceLegendViewModel";
+import NavigationViewModel from "./viewModels/NavigationViewModel";
+var defined = Cesium.defined;
+var definedProperties = Object.defineProperties;
+var CesiumEvent = Cesium.Event;
+// @ts-ignore
+var Knockout = Cesium.knockout;
+var DeveloperError = Cesium.DeveloperError;
+/**
+ * @alias CesiumNavigation
+ * @constructor
+ *
+ * @param {Viewer|CesiumWidget} viewerCesiumWidget The Viewer or CesiumWidget instance
+ */
+class CesiumNavigation {
+    constructor(viewerCesiumWidget, options) {
+        this._navigationLocked = false;
+        this._onDestroyListeners = [];
+        this.initialize(viewerCesiumWidget, options);
+    }
+    /**
+     * @param {Viewer|CesiumWidget} viewerCesiumWidget The Viewer or CesiumWidget instance
+     * @param options
+     */
+    initialize(viewerCesiumWidget, options) {
+        if (!defined(viewerCesiumWidget)) {
+            throw new DeveloperError("CesiumWidget or Viewer is required.");
+        }
+        //        options = defaultValue(options, defaultValue.EMPTY_OBJECT);
+        var cesiumWidget = defined(viewerCesiumWidget.cesiumWidget) ? viewerCesiumWidget.cesiumWidget : viewerCesiumWidget;
+        var container = document.createElement("div");
+        container.className = "cesium-widget-cesiumNavigationContainer";
+        cesiumWidget.container.appendChild(container);
+        this.terria = viewerCesiumWidget;
+        this.terria.options = (defined(options)) ? options : {};
+        this.terria.afterWidgetChanged = new CesiumEvent();
+        this.terria.beforeWidgetChanged = new CesiumEvent();
+        this.container = container;
+        // this.navigationDiv.setAttribute("id", "navigationDiv");
+        // Register custom Knockout.js bindings.  If you're not using the TerriaJS user interface, you can remove this.
+        // registerKnockoutBindings()
+        if (!defined(this.terria.options.enableDistanceLegend) || this.terria.options.enableDistanceLegend) {
+            this.distanceLegendDiv = document.createElement("div");
+            container.appendChild(this.distanceLegendDiv);
+            this.distanceLegendDiv.setAttribute("id", "distanceLegendDiv");
+            this.distanceLegendViewModel = DistanceLegendViewModel.create({
+                container: this.distanceLegendDiv,
+                terria: this.terria,
+                mapElement: container,
+                enableDistanceLegend: true
+            });
+        }
+        if ((!defined(this.terria.options.enableZoomControls) || this.terria.options.enableZoomControls) &amp;&amp; (!defined(this.terria.options.enableCompass) || this.terria.options.enableCompass)) {
+            this.navigationDiv = document.createElement("div");
+            this.navigationDiv.setAttribute("id", "navigationDiv");
+            container.appendChild(this.navigationDiv);
+            // Create the navigation controls.
+            this.navigationViewModel = NavigationViewModel.create({
+                container: this.navigationDiv,
+                terria: this.terria,
+                enableZoomControls: true,
+                enableCompass: true
+            });
+        }
+        else if ((defined(this.terria.options.enableZoomControls) &amp;&amp; !this.terria.options.enableZoomControls) &amp;&amp; (!defined(this.terria.options.enableCompass) || this.terria.options.enableCompass)) {
+            this.navigationDiv = document.createElement("div");
+            this.navigationDiv.setAttribute("id", "navigationDiv");
+            container.appendChild(this.navigationDiv);
+            // Create the navigation controls.
+            this.navigationViewModel = NavigationViewModel.create({
+                container: this.navigationDiv,
+                terria: this.terria,
+                enableZoomControls: false,
+                enableCompass: true
+            });
+        }
+        else if ((!defined(this.terria.options.enableZoomControls) || this.terria.options.enableZoomControls) &amp;&amp; (defined(this.terria.options.enableCompass) &amp;&amp; !this.terria.options.enableCompass)) {
+            this.navigationDiv = document.createElement("div");
+            this.navigationDiv.setAttribute("id", "navigationDiv");
+            container.appendChild(this.navigationDiv);
+            // Create the navigation controls.
+            this.navigationViewModel = NavigationViewModel.create({
+                container: this.navigationDiv,
+                terria: this.terria,
+                enableZoomControls: true,
+                enableCompass: false
+            });
+        }
+        else if ((defined(this.terria.options.enableZoomControls) &amp;&amp; !this.terria.options.enableZoomControls) &amp;&amp; (defined(this.terria.options.enableCompass) &amp;&amp; !this.terria.options.enableCompass)) {
+            // this.navigationDiv.setAttribute("id", "navigationDiv");
+            // container.appendChild(this.navigationDiv);
+            // Create the navigation controls.
+            //            this.navigationViewModel = NavigationViewModel.create({
+            //                container: this.navigationDiv,
+            //                terria: this.terria,
+            //                enableZoomControls: false,
+            //                enableCompass: false
+            //            });
+        }
+    }
+    setNavigationLocked(locked) {
+        this._navigationLocked = locked;
+        this.navigationViewModel.setNavigationLocked(this._navigationLocked);
+    }
+    getNavigationLocked() {
+        return this._navigationLocked;
+    }
+    destroy() {
+        if (defined(this.navigationViewModel)) {
+            this.navigationViewModel.destroy();
+        }
+        if (defined(this.distanceLegendViewModel)) {
+            this.distanceLegendViewModel.destroy();
+        }
+        if (defined(this.navigationDiv)) {
+            this.navigationDiv.parentNode.removeChild(this.navigationDiv);
+        }
+        delete this.navigationDiv;
+        if (defined(this.distanceLegendDiv)) {
+            this.distanceLegendDiv.parentNode.removeChild(this.distanceLegendDiv);
+        }
+        delete this.distanceLegendDiv;
+        if (defined(this.container)) {
+            this.container.parentNode.removeChild(this.container);
+        }
+        delete this.container;
+        for (let i = 0; i &lt; this._onDestroyListeners.length; i++) {
+            this._onDestroyListeners[i]();
+        }
+    }
+    addOnDestroyListener(callback) {
+        if (typeof callback === "function") {
+            this._onDestroyListeners.push(callback);
+        }
+    }
+}
+export default CesiumNavigation;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-viewerCesiumNavigationMixin.html">viewerCesiumNavigationMixin</a></li></ul><h3>Classes</h3><ul><li><a href="AmapImageryProvider.html">AmapImageryProvider</a></li><li><a href="AmapMercatorTilingScheme.html">AmapMercatorTilingScheme</a></li><li><a href="BaiduImageryProvider.html">BaiduImageryProvider</a></li><li><a href="BaiduMercatorTilingScheme.html">BaiduMercatorTilingScheme</a></li><li><a href="Canvas2Image.html">Canvas2Image</a></li><li><a href="CesiumNavigation.html">CesiumNavigation</a></li><li><a href="CesiumZh.html">CesiumZh</a></li><li><a href="ClusterUtil.html">ClusterUtil</a></li><li><a href="CoordTransform.html">CoordTransform</a></li><li><a href="Map.html">Map</a></li><li><a href="NavigationControl.html">NavigationControl</a></li><li><a href="PrimitiveCluster.html">PrimitiveCluster</a></li><li><a href="PublicMethod.html">PublicMethod</a></li><li><a href="ResetViewNavigationControl.html">ResetViewNavigationControl</a></li><li><a href="UserInterfaceControl.html">UserInterfaceControl</a></li><li><a href="ZoomOutNavigationControl.html">ZoomOutNavigationControl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#EARTH_RADIUS">EARTH_RADIUS</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Mon Nov 14 2022 23:16:25 GMT+0800 (中国标准时间)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

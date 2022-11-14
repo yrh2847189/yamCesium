@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BaiduImageryProvider - Cesium Documentation</title>
+
+    <!--[if lt IE 9]>
+      <script src="javascript/html5.js"></script>
+    <![endif]-->
+    <link href="styles/jsdoc-default.css" rel="stylesheet">
+    <link href="styles/prism.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">
+        <a href="index.html"><img src="Images/CesiumLogo.png" class="cesiumLogo"></a>
+        BaiduImageryProvider
+        <div class="titleCenterer"></div>
+    </h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+    <div class="nameContainer">
+    <h4 class="name" id="BaiduImageryProvider">
+        <a href="#BaiduImageryProvider" class="doc-link"></a>
+        new Cesium.BaiduImageryProvider<span class="signature">(options)</span>
+        
+
+<div class="source-link rightLinks">
+    <a href="https://github.com/Flashowing/yamCesium/tree/0.2.0/src/imagery/baidu/BaiduImageryProvider.ts#L9">imagery/baidu/BaiduImageryProvider.js 9</a>
+</div>
+
+
+    </h4>
+
+    </div>
+
+    
+
+
+<div class="description">
+    百度地图图层
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">BaiduImageryProviderOptions</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+            
+                百度地图图层参数
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ellipsoid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Ellipsoid</span>
+
+
+            
+            </td>
+
+            
+                <td class="default">
+                
+                    <code class="language-javascript">Ellipsoid.WGS84</code>
+                
+                </td>
+            
+
+            <td class="description last">
+            
+                
+                        <span class="optional">optional</span>
+                
+                
+
+                
+            
+                其表面被平铺的椭球体。默认为WGS84椭球.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>numberOfLevelZeroTilesX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="default">
+                
+                    <code class="language-javascript">1</code>
+                
+                </td>
+            
+
+            <td class="description last">
+            
+                
+                        <span class="optional">optional</span>
+                
+                
+
+                
+            
+                X方向上0级的平铺数瓦片树.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>numberOfLevelZeroTilesY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="default">
+                
+                    <code class="language-javascript">1</code>
+                
+                </td>
+            
+
+            <td class="description last">
+            
+                
+                        <span class="optional">optional</span>
+                
+                
+
+                
+            
+                级别0处Y方向的平铺数瓦片树.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rectangleSouthwestInMeters</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Cartesian2</span>
+
+
+            
+            </td>
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">
+            
+                
+                        <span class="optional">optional</span>
+                
+                
+
+                
+            
+                覆盖的矩形的西南角瓷砖方案，单位为米。如果未指定此参数或矩形NortheastInMeters地球在经度方向上覆盖，在纬度方向上覆盖相等的距离方向，导致正方形投影.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rectangleNortheastInMeters</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Cartesian2</span>
+
+
+            
+            </td>
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">
+            
+                
+                        <span class="optional">optional</span>
+                
+                
+
+                
+            
+                覆盖的矩形的东北角瓷砖方案，单位为米。如果未指定此参数或矩形SouthwestInMeters地球在经度方向上覆盖，在纬度方向上覆盖相等的距离方向，导致正方形投影.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>style</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">
+            
+                
+                        <span class="optional">optional</span>
+                
+                
+
+                
+            
+                图层类型 img:影像图，vec:矢量图，custom:自定义图</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>crs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">
+            
+                
+                        <span class="optional">optional</span>
+                
+                
+
+                
+            
+                投影方式 BD09:百度墨卡托，WGS84:WGS84坐标系</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+    <div class="help">
+        Need help? The fastest way to get answers is from the community and team on the <a href="https://community.cesium.com/">Cesium Forum</a>.
+    </div>
+
+    <footer>
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a>
+    </footer>
+</div>
+
+<div class="nav">
+    <div class="menu">
+        <input type="text" class="classFilter" id="ClassFilter" placeholder="Search">
+        <ul id="ClassList"><li data-name="AmapImageryProvider"><a href="AmapImageryProvider.html">AmapImageryProvider</a></li><li data-name="AmapMercatorTilingScheme"><a href="AmapMercatorTilingScheme.html">AmapMercatorTilingScheme</a></li><li data-name="BaiduImageryProvider"><a href="BaiduImageryProvider.html">BaiduImageryProvider</a></li><li data-name="BaiduMercatorTilingScheme"><a href="BaiduMercatorTilingScheme.html">BaiduMercatorTilingScheme</a></li><li data-name="Canvas2Image"><a href="Canvas2Image.html">Canvas2Image</a></li><li data-name="CesiumNavigation"><a href="CesiumNavigation.html">CesiumNavigation</a></li><li data-name="CesiumZh"><a href="CesiumZh.html">CesiumZh</a></li><li data-name="ClusterUtil"><a href="ClusterUtil.html">ClusterUtil</a></li><li data-name="CoordTransform"><a href="CoordTransform.html">CoordTransform</a></li><li data-name="EARTH_RADIUS"><a href="global.html#EARTH_RADIUS">EARTH_RADIUS</a></li><li data-name="Map"><a href="Map.html">Map</a></li><li data-name="NavigationControl"><a href="NavigationControl.html">NavigationControl</a></li><li data-name="PrimitiveCluster"><a href="PrimitiveCluster.html">PrimitiveCluster</a></li><li data-name="PublicMethod"><a href="PublicMethod.html">PublicMethod</a></li><li data-name="ResetViewNavigationControl"><a href="ResetViewNavigationControl.html">ResetViewNavigationControl</a></li><li data-name="UserInterfaceControl"><a href="UserInterfaceControl.html">UserInterfaceControl</a></li><li data-name="viewerCesiumNavigationMixin"><a href="viewerCesiumNavigationMixin.html">viewerCesiumNavigationMixin</a></li><li data-name="ZoomOutNavigationControl"><a href="ZoomOutNavigationControl.html">ZoomOutNavigationControl</a></li></ul>
+    </div>
+</div>
+
+<script>
+if (window.frameElement) {
+    document.body.className = 'embedded';
+
+    var ele = document.createElement('a');
+    ele.className = 'popout';
+    ele.target = '_blank';
+    ele.href = window.location.href;
+    ele.title = 'Pop out';
+    document.getElementById('main').appendChild(ele);
+}
+
+// Set targets on external links.  Sandcastle and GitHub shouldn't be embedded in any iframe.
+Array.prototype.forEach.call(document.getElementsByTagName('a'), function(a) {
+    if (/^https?:/i.test(a.getAttribute('href'))) {
+        a.target='_blank';
+    }
+});
+</script>
+
+<script src="javascript/prism.js"></script>
+<script src="javascript/cesiumDoc.js"></script>
+
+</body>
+</html>

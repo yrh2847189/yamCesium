@@ -15,7 +15,7 @@ interface _editParams {
   shapeType: string,
 }
 
-export default class Plot {
+class Plot {
   viewer: any;
   draw: Draw = {
     flag: 0,
@@ -395,7 +395,7 @@ export default class Plot {
     }
     const material = Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)");
     const outlineMaterial = new Cesium.PolylineGlowMaterialProperty({
-    // @ts-ignore
+      // @ts-ignore
       dashLength: 16,
       color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });
@@ -724,3 +724,5 @@ export default class Plot {
     }
   }
 }
+
+export default Plot;

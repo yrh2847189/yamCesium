@@ -1,6 +1,6 @@
 import * as Cesium from "cesium";
 
-export default class PlotMoveDrawer {
+class PlotMoveDrawer {
   viewer: any;
   scene: any;
   clock: any;
@@ -549,3 +549,4 @@ export default class PlotMoveDrawer {
     }
   }
 }
+export default PlotMoveDrawer;

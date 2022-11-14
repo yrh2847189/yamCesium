@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: imagery/baidu/BaiduMercatorTilingScheme.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: imagery/baidu/BaiduMercatorTilingScheme.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import * as Cesium from "cesium";
+import BaiduMercatorProjection from "./BaiduMercatorProjection";
+import CoordTransform from "../../transform/CoordTransform";
+/**
+ * @class
+ * @extends Cesium.WebMercatorTilingScheme
+ */
+class BaiduMercatorTilingScheme extends Cesium.WebMercatorTilingScheme {
+    constructor(options) {
+        super(options);
+        this._projection = {};
+        this.resolutions = [];
+        this._rectangle = {};
+        let projection = new BaiduMercatorProjection();
+        this._projection.project = function (cartographic, result = []) {
+            result = result || {};
+            result = CoordTransform.WGS84ToGCJ02(Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude));
+            result = CoordTransform.GCJ02ToBD09(result[0], result[1]);
+            result[0] = Math.min(result[0], 180);
+            result[0] = Math.max(result[0], -180);
+            result[1] = Math.min(result[1], 74.000022);
+            result[1] = Math.max(result[1], -71.988531);
+            result = projection.lngLatToPoint({
+                lng: result[0],
+                lat: result[1]
+            });
+            return new Cesium.Cartesian2(result.x, result.y);
+        };
+        this._projection.unproject = function (cartesian, result = []) {
+            result = result || {};
+            result = projection.mercatorToLngLat({
+                lng: cartesian.x,
+                lat: cartesian.y
+            });
+            result = CoordTransform.BD09ToGCJ02(result.lng, result.lat);
+            result = CoordTransform.GCJ02ToWGS84(result[0], result[1]);
+            return new Cesium.Cartographic(Cesium.Math.toRadians(result[0]), Cesium.Math.toRadians(result[1]));
+        };
+        this.resolutions = options.resolutions || [];
+    }
+    /**
+     *
+     * @param x
+     * @param y
+     * @param level
+     * @param result
+     * @returns {module:cesium.Rectangle|*}
+     */
+    // @ts-ignore
+    tileXYToNativeRectangle(x, y, level, result) {
+        const tileWidth = this.resolutions[level];
+        const west = x * tileWidth;
+        const east = (x + 1) * tileWidth;
+        const north = ((y = -y) + 1) * tileWidth;
+        const south = y * tileWidth;
+        if (!Cesium.defined(result)) {
+            return new Cesium.Rectangle(west, south, east, north);
+        }
+        result.west = west;
+        result.south = south;
+        result.east = east;
+        result.north = north;
+        return result;
+    }
+    /**
+     *
+     * @param position
+     * @param level
+     * @param result
+     * @returns {undefined|*}
+     */
+    // @ts-ignore
+    positionToTileXY(position, level, result) {
+        const rectangle = this._rectangle;
+        if (!Cesium.Rectangle.contains(rectangle, position)) {
+            return undefined;
+        }
+        const projection = this._projection;
+        const webMercatorPosition = projection.project(position);
+        if (!Cesium.defined(webMercatorPosition)) {
+            return undefined;
+        }
+        const tileWidth = this.resolutions[level];
+        const xTileCoordinate = Math.floor(webMercatorPosition.x / tileWidth);
+        const yTileCoordinate = -Math.floor(webMercatorPosition.y / tileWidth);
+        if (!Cesium.defined(result)) {
+            return new Cesium.Cartesian2(xTileCoordinate, yTileCoordinate);
+        }
+        result.x = xTileCoordinate;
+        result.y = yTileCoordinate;
+        return result;
+    }
+}
+export default BaiduMercatorTilingScheme;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-viewerCesiumNavigationMixin.html">viewerCesiumNavigationMixin</a></li></ul><h3>Classes</h3><ul><li><a href="AmapImageryProvider.html">AmapImageryProvider</a></li><li><a href="AmapMercatorTilingScheme.html">AmapMercatorTilingScheme</a></li><li><a href="BaiduImageryProvider.html">BaiduImageryProvider</a></li><li><a href="BaiduMercatorTilingScheme.html">BaiduMercatorTilingScheme</a></li><li><a href="Canvas2Image.html">Canvas2Image</a></li><li><a href="CesiumNavigation.html">CesiumNavigation</a></li><li><a href="CesiumZh.html">CesiumZh</a></li><li><a href="ClusterUtil.html">ClusterUtil</a></li><li><a href="CoordTransform.html">CoordTransform</a></li><li><a href="Map.html">Map</a></li><li><a href="NavigationControl.html">NavigationControl</a></li><li><a href="PrimitiveCluster.html">PrimitiveCluster</a></li><li><a href="PublicMethod.html">PublicMethod</a></li><li><a href="ResetViewNavigationControl.html">ResetViewNavigationControl</a></li><li><a href="UserInterfaceControl.html">UserInterfaceControl</a></li><li><a href="ZoomOutNavigationControl.html">ZoomOutNavigationControl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#EARTH_RADIUS">EARTH_RADIUS</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Mon Nov 14 2022 23:16:25 GMT+0800 (中国标准时间)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

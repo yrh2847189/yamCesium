@@ -1,8 +1,7 @@
 /**
  * 公共函数
  */
-
-export default class PublicMethod {
+class PublicMethod {
 
   /**
    * 将json格式的参数遍历放入obj对象中
@@ -24,7 +23,7 @@ export default class PublicMethod {
    * @param {object} dict 字典对象
    * @returns 字典的中与type对应key的值
    */
-  static compareDict (type: any, dict: any) {
+  static compareDict(type: any, dict: any) {
     for (const key in dict) {
       if (Object.hasOwnProperty.call(dict, key)) {
         const element = dict[key];
@@ -34,14 +33,15 @@ export default class PublicMethod {
       }
     }
   }
+
   /**
    *  filename 保存的文件名
    *  txt 保存的文本
    */
-  static downloadTxt (filename: string, content: any, contentType: string) {
-    if (!contentType) contentType = 'application/octet-stream';
-    var a = document.createElement('a');
-    var blob = new Blob([content], {'type': contentType});
+  static downloadTxt(filename: string, content: any, contentType: string) {
+    if (!contentType) contentType = "application/octet-stream";
+    var a = document.createElement("a");
+    var blob = new Blob([content], { "type": contentType });
     a.href = window.URL.createObjectURL(blob);
     a.download = filename;
     a.click();
@@ -59,3 +59,4 @@ export default class PublicMethod {
     return false;
   }
 }
+export default PublicMethod;
