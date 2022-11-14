@@ -1,4 +1,5 @@
 import * as Cesium from "cesium";
+import CesiumMethod from "../../plugins/lib/CesiumMethod";
 
 class PlotMoveDrawer {
   viewer: any;
@@ -93,7 +94,7 @@ class PlotMoveDrawer {
         isMoving = true;
         this.objId = this.obj.objId;
 
-        this.circleOutlineEntity = this.getEntityByObjId(this.objId);
+        // this.circleOutlineEntity = this.getEntityByObjId(this.objId);
         // console.log(this.circleOutlineEntity);
         this.leftDownFlag = true;
         this.currentsPoint = [];
@@ -309,7 +310,6 @@ class PlotMoveDrawer {
                 let arr = [rect.west, rect.north, rect.east, rect.north, rect.east, rect.south, rect.west, rect.south, rect.west, rect.north];
                 this.savePolylineCurrentsPoint = Cesium.Cartesian3.fromRadiansArray(arr);
               }
-              // TODO 移动圆形有问题
               if (this.pointDragged.id.shapeType == "Circle") {
                 this.currentsPoint = [];
                 for (let i = 0; i < this.ellipsePreviousCoordinates.length; i++) {
@@ -322,7 +322,13 @@ class PlotMoveDrawer {
                 this.saveCircleCurrentsPoint = this.currentsPoint;
 
                 // 给边框的坐标赋值
-                this.savePolylineCurrentsPoint = this.plot.plotTracker.circleDrawer._computeCirclePolygon(this.saveCircleCurrentsPoint);
+                // this.savePolylineCurrentsPoint = this.plot.plotTracker.circleDrawer._computeCirclePolygon(this.saveCircleCurrentsPoint);
+                // 给边框的坐标赋值
+                let outlinePositions: any = [].concat(this.currentsPoint);
+                outlinePositions.push(this.currentsPoint[0]); // 将第一个点添加到边框坐标中，让边框闭合
+                this.savePolylineCurrentsPoint = outlinePositions;
+
+                this.plot.draw.shapeDic[this.objId] = CesiumMethod._computeCirclePolygon(this.savePolylineCurrentsPoint);
               }
             }
           }
@@ -401,12 +407,14 @@ class PlotMoveDrawer {
       return this.saveCircleCurrentsPoint[0];
     }, false);
 
-
-    this.polylinePreviousCoordinates = this.circleOutlineEntity.polyline.positions.getValue();
-    this.savePolylineCurrentsPoint = this.circleOutlineEntity.polyline.positions.getValue();
-    this.circleOutlineEntity.polyline.positions = new Cesium.CallbackProperty(() => {
-      return this.savePolylineCurrentsPoint;
+    pointDragged.id.polyline.positions = new Cesium.CallbackProperty(() => {
+      return CesiumMethod._computeCirclePolygon(this.savePolylineCurrentsPoint);
     }, false);
+    // this.polylinePreviousCoordinates = this.circleOutlineEntity.polyline.positions.getValue();
+    // this.savePolylineCurrentsPoint = this.circleOutlineEntity.polyline.positions.getValue();
+    // this.circleOutlineEntity.polyline.positions = new Cesium.CallbackProperty(() => {
+    //   return this.savePolylineCurrentsPoint;
+    // }, false);
   }
 
   clickPoint(pointDragged: any) {
@@ -497,7 +505,8 @@ class PlotMoveDrawer {
         break;
       case "Circle":
         this.obj.position = this.saveCircleCurrentsPoint[0];
-        this.circleOutlineEntity.polyline.positions = this.savePolylineCurrentsPoint;
+        // this.circleOutlineEntity.polyline.positions = this.savePolylineCurrentsPoint;
+        this.obj.polyline.positions = CesiumMethod._computeCirclePolygon(this.savePolylineCurrentsPoint);
         break;
       case "BufferLine":
         this.obj.polyline.positions = this.saveBufferLineCurrentsPoint;
@@ -549,4 +558,5 @@ class PlotMoveDrawer {
     }
   }
 }
+
 export default PlotMoveDrawer;

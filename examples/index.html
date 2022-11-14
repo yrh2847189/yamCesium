@@ -61,7 +61,7 @@
     </div>
   </div>
 </div>
-<script src="../dist/yam.cesium.min.js"></script>
+<script src="../dist/build/yam.cesium.min.js"></script>
 <script>
   // (function() {
   Cesium.Ion.defaultAccessToken =
@@ -136,7 +136,7 @@
 
   // primitive聚合
   viewer.scene.debugShowFramesPerSecond = true;
-  const cluster = new yamCesium.Cluster(viewer);
+  const cluster = new yamCesium.ClusterUtil(viewer);
 
   const ellipsoid = viewer.scene.globe.ellipsoid;
   let billboardCount = 1489;

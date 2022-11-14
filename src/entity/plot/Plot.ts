@@ -394,8 +394,7 @@ class Plot {
       distance = distance + s;
     }
     const material = Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)");
-    const outlineMaterial = new Cesium.PolylineGlowMaterialProperty({
-      // @ts-ignore
+    const outlineMaterial = new Cesium.PolylineDashMaterialProperty({
       dashLength: 16,
       color: Cesium.Color.fromCssColorString("rgb(210,215,68)")
     });

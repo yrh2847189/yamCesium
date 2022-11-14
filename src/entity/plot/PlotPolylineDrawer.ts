@@ -24,7 +24,6 @@ class PlotPolylineDrawer {
   markers: any = {};
   layerId: string = "globeDrawerLayer";
   width: number = 8;
-  shapeColor: any = null;
   params: any = {};
   shapeName: string = "折线";
   floatingPoint: any = null;
@@ -95,7 +94,6 @@ class PlotPolylineDrawer {
   startDrawPolyline(options: any) {
 
     this.positions = options.positions || [];
-    this.shapeColor = "rgba(255,255,255,1)"; // 设置自定义的绘图颜色
     this.drawHandler = new Cesium.ScreenSpaceEventHandler(this.canvas);
     this.drawHandler.setInputAction((event: any) => {
       let position = event.position;
@@ -305,7 +303,7 @@ class PlotPolylineDrawer {
     // if (_this.material == null) {
     _this.material = new Cesium.PolylineGlowMaterialProperty({
       glowPower: 0.25,
-      color: Cesium.Color.fromCssColorString(_this.shapeColor)
+      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
     });
     // }
     let dynamicPositions = new Cesium.CallbackProperty(function() {
@@ -335,7 +333,7 @@ class PlotPolylineDrawer {
     // if (_this.material == null) {
     _this.material = new Cesium.PolylineGlowMaterialProperty({
       glowPower: 0.25,
-      color: Cesium.Color.fromCssColorString(_this.shapeColor)
+      color: Cesium.Color.fromCssColorString("rgba(67,106,190,0.5)")
     });
     // }
     let bData = {
