@@ -6,11 +6,6 @@
 		"strict": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-//    "declarationMap": true,
-//    "outDir": "./dist",
-//    "rootDir": "./src",
-//    "sourceMap": true,
-//    "esModuleInterop": true,
     "moduleResolution": "node" // 设置该属性允许引入第三方库的d.ts文件
   },
   "types": ["cesium"]
