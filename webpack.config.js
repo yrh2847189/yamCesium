@@ -16,7 +16,7 @@ hash: [hash]
 `
 module.exports = {
   optimization: {
-    minimize: false // 关闭代码压缩，可选
+    minimize: true // 关闭代码压缩，可选
   },
   mode: "production", //'development' 、 'production'、'none'
   entry: "./src/index.ts",
@@ -44,7 +44,9 @@ module.exports = {
     }
   },
   externals: {
-    cesium: 'Cesium' // 打包时忽略掉Cesium
+    cesium: 'Cesium', // 打包时忽略掉Cesium
+    "@turf/turf": 'turf',
+    kdbush: "KDBush"
   },
   resolve: {
     extensions: [".ts", ".js", '.json']
