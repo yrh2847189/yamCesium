@@ -55,7 +55,7 @@ module.exports = {
     // new BundleAnalyzerPlugin(), // 查看打包文件大小
     new CleanWebpackPlugin(),
     new webpack.BannerPlugin(banner),
-    new CopyWebpackPlugin({ patterns: [{ from: path.resolve(__dirname, "src"), to: './' }] }),
+    // new CopyWebpackPlugin({ patterns: [{ from: path.resolve(__dirname, "src"), to: './' }] }),
     // new HtmlWebpackPlugin({
     // 	title: 'TS测试',
     // 	template: './src/index.html'

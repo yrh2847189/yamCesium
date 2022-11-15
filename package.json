@@ -8,11 +8,15 @@
     "type": "git",
     "url": "git@github.com:Flashowing/yamCesium.git"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production && tsc",
     "dev": "webpack-dev-server --open",
-    "docs": "tsc && jsdoc src -r -c jsdoc/conf.json -d docs"
+    "docs": "tsc && jsdoc src -r -c jsdoc/conf.json -d docs",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "cesium",
