@@ -44,7 +44,9 @@ module.exports = {
     }
   },
   externals: {
-    cesium: 'Cesium' // 打包时忽略掉Cesium
+    cesium: 'Cesium', // 打包时忽略掉Cesium
+    "@turf/turf": 'turf',
+    kdbush: "KDBush"
   },
   resolve: {
     extensions: [".ts", ".js", '.json']

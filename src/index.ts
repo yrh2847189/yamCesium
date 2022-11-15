@@ -62,7 +62,9 @@ export { PublicMethod };
 // primitive图元聚合 （打包KDBush会增加打包文件50kb）
 import PrimitiveCluster from "./entity/dataSource/PrimitiveCluster";
 
-export { PrimitiveCluster };
+// @ts-ignore
+Cesium.PrimitiveCluster = PrimitiveCluster;
+// export { PrimitiveCluster };
 
 // 聚合工具类
 import ClusterUtil from "./entity/dataSource/ClusterUtil";
@@ -81,3 +83,10 @@ export { Plot };
 import MeasureTools from "./entity/plot/measure/MeasureTools";
 
 export { MeasureTools };
+
+import Effect from "./effect/Effect";
+
+/**
+ * 效果
+ */
+export { Effect };

@@ -10,6 +10,9 @@
 9. @babel/preset-evn //babel预设环境
 10. babel-loader //babel在webpack中的加载器
 11. core-js //用来把JS的新语法转成低版本的JS语法，兼容老版本的浏览器
+12. kdbush //聚合点的工具
+13. turf //空间计算的工具
+14. jsdoc //文档生成
 
 
 # 简介
@@ -30,7 +33,7 @@
 9. popup TODO
 10. 第一人称视角
 11. 鹰眼图
-12. 雷达扫描 TODO
+12. 雷达扫描
 13. 热力图 TODO
 14. geojson TODO
 15. 水面 TODO
@@ -42,8 +45,9 @@
 21. Geocoder TODO
 22. 引入CesiumMethod和PublicMethod
 23. 挖坑 TODO
-24. 双击旋转 TODO
+24. 双击旋转
 25. 底部经纬度显示 TODO
+26. 天气 TODO
 
 
 # 更新日志

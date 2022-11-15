@@ -61,7 +61,7 @@
     </div>
   </div>
 </div>
-<script src="../dist/yam.cesium.min.js"></script>
+<script src="../dist/build/yam.cesium.min.js"></script>
 <script>
   // (function() {
   Cesium.Ion.defaultAccessToken =
@@ -136,7 +136,7 @@
 
   // primitive聚合
   viewer.scene.debugShowFramesPerSecond = true;
-  const cluster = new yamCesium.Cluster(viewer);
+  const cluster = new yamCesium.ClusterUtil(viewer);
 
   const ellipsoid = viewer.scene.globe.ellipsoid;
   let billboardCount = 1489;
@@ -440,6 +440,24 @@
     // 绕点旋转
     yam.camera.flyAround(cartesian);
   }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+
+  // 圆扩散
+  new yamCesium.Effect.circleSpread({
+    viewer: viewer,
+    center: Cesium.Cartesian3.fromDegrees(106.39264248451848, 29.806932566541033, 1200),
+    color: Cesium.Color.RED.withAlpha(0.5),
+    radius: 500,
+    duration: 2000
+  });
+
+  // 雷达扫描
+  new yamCesium.Effect.radarScan({
+    viewer: viewer,
+    center: Cesium.Cartesian3.fromDegrees(106.39264248451848, 29.806932566541033, 1200),
+    color: Cesium.Color.GREEN.withAlpha(0.5),
+    radius: 500,
+    duration: 2000
+  });
 </script>
 </body>
 
