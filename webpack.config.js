@@ -12,6 +12,7 @@ ${pkg.name}
 ${pkg.description}
 @version v${pkg.version}
 (c) 2022 ${pkg.author}
+date: ${new Date().toLocaleString()}
 hash: [hash]
 `
 module.exports = {
