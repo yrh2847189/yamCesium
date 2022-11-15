@@ -5,7 +5,8 @@ dist
 dist-ssr
 docs
 *.local
-
+src/**/*.js
+src/**/*.d.ts
 # lock
 yarn.lock
 package-lock.json
