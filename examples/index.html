@@ -458,6 +458,15 @@
     radius: 500,
     duration: 2000
   });
+
+  let randomData = yamCesium.Effect.heatMap.randomData(1000);
+
+  new yamCesium.Effect.heatMap({
+    viewer: viewer,
+    rect: Cesium.Rectangle.fromDegrees(106.23981504570496, 29.640241208388307, 106.5416197281101, 29.871498171685833),
+    max: randomData.max,
+    data: randomData.data
+  });
 </script>
 </body>
 

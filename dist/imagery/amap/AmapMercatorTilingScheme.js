@@ -13,45 +13,33 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports);
-        if (v !== undefined) module.exports = v;
+import * as Cesium from "cesium";
+import CoordTransform from "../../transform/CoordTransform";
+/**
+ * @class
+ * @desc 高德地图瓦片坐标系
+ * @extends Cesium.WebMercatorTilingScheme
+ */
+var AmapMercatorTilingScheme = /** @class */ (function (_super) {
+    __extends(AmapMercatorTilingScheme, _super);
+    function AmapMercatorTilingScheme(options) {
+        var _this = _super.call(this, options) || this;
+        _this._projection = {};
+        var projection = new Cesium.WebMercatorProjection();
+        _this._projection.project = function (cartographic, result) {
+            if (result === void 0) { result = []; }
+            result = CoordTransform.WGS84ToGCJ02(Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude));
+            result = projection.project(new Cesium.Cartographic(Cesium.Math.toRadians(result[0]), Cesium.Math.toRadians(result[1])));
+            return new Cesium.Cartesian2(result.x, result.y);
+        };
+        _this._projection.unproject = function (cartesian, result) {
+            if (result === void 0) { result = []; }
+            var cartographic = projection.unproject(cartesian);
+            result = CoordTransform.GCJ02ToWGS84(Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude));
+            return new Cesium.Cartographic(Cesium.Math.toRadians(result[0]), Cesium.Math.toRadians(result[1]));
+        };
+        return _this;
     }
-    else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "cesium", "../../transform/CoordTransform"], factory);
-    }
-})(function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var Cesium = require("cesium");
-    var CoordTransform_1 = require("../../transform/CoordTransform");
-    /**
-     * @class
-     * @desc 高德地图瓦片坐标系
-     * @extends Cesium.WebMercatorTilingScheme
-     */
-    var AmapMercatorTilingScheme = /** @class */ (function (_super) {
-        __extends(AmapMercatorTilingScheme, _super);
-        function AmapMercatorTilingScheme(options) {
-            var _this = _super.call(this, options) || this;
-            _this._projection = {};
-            var projection = new Cesium.WebMercatorProjection();
-            _this._projection.project = function (cartographic, result) {
-                if (result === void 0) { result = []; }
-                result = CoordTransform_1.default.WGS84ToGCJ02(Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude));
-                result = projection.project(new Cesium.Cartographic(Cesium.Math.toRadians(result[0]), Cesium.Math.toRadians(result[1])));
-                return new Cesium.Cartesian2(result.x, result.y);
-            };
-            _this._projection.unproject = function (cartesian, result) {
-                if (result === void 0) { result = []; }
-                var cartographic = projection.unproject(cartesian);
-                result = CoordTransform_1.default.GCJ02ToWGS84(Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude));
-                return new Cesium.Cartographic(Cesium.Math.toRadians(result[0]), Cesium.Math.toRadians(result[1]));
-            };
-            return _this;
-        }
-        return AmapMercatorTilingScheme;
-    }(Cesium.WebMercatorTilingScheme));
-    exports.default = AmapMercatorTilingScheme;
-});
+    return AmapMercatorTilingScheme;
+}(Cesium.WebMercatorTilingScheme));
+export default AmapMercatorTilingScheme;

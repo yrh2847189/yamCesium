@@ -13,30 +13,18 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports);
-        if (v !== undefined) module.exports = v;
+import * as Cesium from "cesium";
+var MAP_URL = "https://t{s}.tianditu.gov.cn/DataServer?T={style}_w&x={x}&y={y}&l={z}&tk={key}";
+var TdtImageryProvider = /** @class */ (function (_super) {
+    __extends(TdtImageryProvider, _super);
+    function TdtImageryProvider(options) {
+        return _super.call(this, {
+            url: MAP_URL.replace(/\{style\}/g, options.style || "vec").replace(/\{key\}/g, options.key || ""),
+            subdomains: ["0", "1", "2", "3", "4", "5", "6", "7"],
+            tilingScheme: new Cesium.WebMercatorTilingScheme(),
+            maximumLevel: 18
+        }) || this;
     }
-    else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "cesium"], factory);
-    }
-})(function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var Cesium = require("cesium");
-    var MAP_URL = "https://t{s}.tianditu.gov.cn/DataServer?T={style}_w&x={x}&y={y}&l={z}&tk={key}";
-    var TdtImageryProvider = /** @class */ (function (_super) {
-        __extends(TdtImageryProvider, _super);
-        function TdtImageryProvider(options) {
-            return _super.call(this, {
-                url: MAP_URL.replace(/\{style\}/g, options.style || "vec").replace(/\{key\}/g, options.key || ""),
-                subdomains: ["0", "1", "2", "3", "4", "5", "6", "7"],
-                tilingScheme: new Cesium.WebMercatorTilingScheme(),
-                maximumLevel: 18
-            }) || this;
-        }
-        return TdtImageryProvider;
-    }(Cesium.UrlTemplateImageryProvider));
-    exports.default = TdtImageryProvider;
-});
+    return TdtImageryProvider;
+}(Cesium.UrlTemplateImageryProvider));
+export default TdtImageryProvider;
