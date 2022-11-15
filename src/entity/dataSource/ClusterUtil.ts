@@ -7,7 +7,8 @@ class ClusterUtil {
 
   _myPrimitives: Cesium.PrimitiveCollection;
 
-  _myPrimitiveCluster: PrimitiveCluster;
+  // @ts-ignore
+  _myPrimitiveCluster: Cesium.PrimitiveCluster;
 
   _myBillboardCollection: Cesium.BillboardCollection;
 
@@ -31,7 +32,8 @@ class ClusterUtil {
    * @constant
    * @desc 自定义原语集群
    */
-  get myPrimitiveCluster(): PrimitiveCluster {
+  // @ts-ignore
+  get myPrimitiveCluster(): Cesium.PrimitiveCluster {
     return this._myPrimitiveCluster;
   }
 

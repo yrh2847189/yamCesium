@@ -902,7 +902,8 @@ function createDeclutterCallback(primitiveCluster: any) {
     let collection;
     let collectionIndex;
 
-    const index = new KDBush(points, getX, getY, 64, Int32Array);
+    // @ts-ignore
+    const index = new Cesium.kdbush(points, getX, getY, 64, Int32Array);
 
     if (currentHeight < previousHeight) {
       length = clusters.length;
