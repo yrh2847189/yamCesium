@@ -15,7 +15,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production && tsc",
     "dev": "webpack-dev-server --open",
-    "docs": "tsc && jsdoc src -r -c jsdoc/conf.json -d docs",
+    "docs": "tsc && jsdoc dist -r -c jsdoc/conf.json",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

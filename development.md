@@ -22,33 +22,28 @@
 
 # 功能点
 
-1. Cesium 地图插件，用于添加国内各大地图厂商的地图。该功能基于[cesium-map](https://github.com/dvgis/cesium-map)插件进行封装。
-2. Cesium navigation插件，用于添加地图导航控件。该功能基于[cesium-navigation-umd](https://github.com/worlddai/cesium-navigation-umd)
-   插件进行封装。
+1. 地图瓦片插件，用于添加百度、高德、腾讯的地图
+2. 指北针
 3. 截屏，保存场景图片。注：必须设置preserveDrawingBuffer: true
 4. 测量
 5. 点聚合 TODO 完成primitive聚合，datasource聚合待完成
 6. 图形绘制
-7. 图层管理 TODO
-8. 3dtiles模型 TODO
-9. popup TODO
-10. 第一人称视角
-11. 鹰眼图
-12. 雷达扫描
-13. 热力图 TODO
-14. geojson TODO
-15. 水面 TODO
-16. 坐标转换
-17. dat.gui TODO
-18. turf
-19. proj4js TODO
-20. 汉化
-21. Geocoder TODO
-22. 引入CesiumMethod和PublicMethod
-23. 挖坑 TODO
-24. 双击旋转
-25. 底部经纬度显示 TODO
-26. 天气 TODO 
+7. 3dtiles模型 TODO
+8. popup TODO
+9. 第一人称视角
+10. 鹰眼图
+11. 雷达扫描
+12. 热力图
+13. geojson TODO
+14. 水面 TODO
+15. 坐标转换
+16. turf
+17. proj4js TODO
+18. 汉化
+19. 引入CesiumMethod和PublicMethod
+20. 挖坑 TODO
+21. 双击旋转
+22. 天气 TODO 
 
 
 # 更新日志

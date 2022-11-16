@@ -1,16 +1,21 @@
 {
-  "include": ["src/**/*"],
+  "include": [
+    "src/**/*"
+  ],
   "compilerOptions": {
-		"target": "es5",
-		"module": "ES2015",
-		"strict": true,
+    "target": "es5",
+    "module": "ES2015",
+    "strict": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",
     "esModuleInterop": true,
-//    "allowJs": true,
-    "moduleResolution": "node" // 设置该属性允许引入第三方库的d.ts文件
+    //    "allowJs": true,
+    "moduleResolution": "node"
+    // 设置该属性允许引入第三方库的d.ts文件
   },
-  "types": ["cesium"]
+  "types": [
+    "cesium"
+  ]
 }

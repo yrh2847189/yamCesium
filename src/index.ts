@@ -90,3 +90,16 @@ import Effect from "./effect/Effect";
  * 效果
  */
 export { Effect };
+
+// import skyBoxOnGround from "SkyBoxOnGround.js";
+import skyBoxOnGround from "./scene/weather/SkyBoxOnGround";
+// const skyBoxOnGround = require("scene/weather/SkyBoxOnGround.js");
+// @ts-ignore
+// Cesium.skyBoxOnGround = skyBoxOnGround;
+skyBoxOnGround();
+/**
+ * 天气
+ */
+import Weather from "./scene/weather/Weather";
+
+export { Weather };

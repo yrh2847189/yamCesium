@@ -59,6 +59,15 @@
       <button id="measureArea">测量面积</button>
       <button id="clearMeasure">清除测量数据</button>
     </div>
+    <div>
+      <button id="lightRain">小雨</button>
+      <button id="moderateRain">中雨</button>
+      <button id="heavyRain">大雨</button>
+      <button id="rainDrop">雨滴</button>
+      <button id="thunder">闪电</button>
+      <button id="snow">雪</button>
+      <button id="cloudy">多云</button>
+    </div>
   </div>
 </div>
 <script src="../dist/build/yam.cesium.min.js"></script>
@@ -466,6 +475,44 @@
     rect: Cesium.Rectangle.fromDegrees(106.23981504570496, 29.640241208388307, 106.5416197281101, 29.871498171685833),
     max: randomData.max,
     data: randomData.data
+  });
+
+  // 天气
+  const weather = new yamCesium.Weather(viewer);
+  // 小雨
+  document.querySelector("#lightRain").addEventListener("click", () => {
+    weather.viewModel.lightRainEnabled = !weather.viewModel.lightRainEnabled;
+  });
+  // 中雨
+  document.querySelector("#moderateRain").addEventListener("click", () => {
+    weather.viewModel.moderateRainEnabled = !weather.viewModel.moderateRainEnabled;
+  });
+  // 大雨
+  document.querySelector("#heavyRain").addEventListener("click", () => {
+    weather.viewModel.heavyRainEnabled = !weather.viewModel.heavyRainEnabled;
+  });
+  // 雨滴
+  document.querySelector("#rainDrop").addEventListener("click", () => {
+    weather.viewModel.raindropEnabled = !weather.viewModel.raindropEnabled;
+  });
+  // 闪电
+  document.querySelector("#thunder").addEventListener("click", () => {
+    weather.viewModel.thunderEnabled = !weather.viewModel.thunderEnabled;
+  });
+  // 雪
+  document.querySelector("#snow").addEventListener("click", () => {
+    weather.viewModel.snowEnabled = !weather.viewModel.snowEnabled;
+  });
+  // 多云
+  document.querySelector("#cloudy").addEventListener("click", () => {
+    weather.loadSkybox({
+      positiveX: "http://222.178.182.14:18090/web/img/weather/cloudy/Right.jpg",
+      negativeX: "http://222.178.182.14:18090/web/img/weather/cloudy/Left.jpg",
+      positiveY: "http://222.178.182.14:18090/web/img/weather/cloudy/Front.jpg",
+      negativeY: "http://222.178.182.14:18090/web/img/weather/cloudy/Back.jpg",
+      positiveZ: "http://222.178.182.14:18090/web/img/weather/cloudy/Up.jpg",
+      negativeZ: "http://222.178.182.14:18090/web/img/weather/cloudy/Down.jpg"
+    })
   });
 </script>
 </body>
